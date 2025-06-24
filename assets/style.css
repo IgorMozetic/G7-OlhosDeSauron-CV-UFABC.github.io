@@ -28,7 +28,8 @@ header {
   transform: translateY(-2px);
 }
 
-.link-list a.text-black:hover {
+.link-list a.text-black:hover,
+.archives-list a:hover {
   text-decoration: underline !important;
 }
 

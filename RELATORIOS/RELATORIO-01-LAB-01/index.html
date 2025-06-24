@@ -33,7 +33,7 @@
       <p><b>Data de Realização do relatório:</b> 18/06/2025</p>
       <p><b>Data de Publicação do relatório:</b> 25/06/2025</p>
     </div>
-    <section class="py-3">
+    <section class="pb-4">
       <p class="h3"><b>INTRODUÇÃO</b></p>
       <p class="py-1">
         Este relatório tem por finalidade relatar, de forma abrangente, as atividades desenvolvidas no âmbito do
@@ -61,21 +61,92 @@
       </p>
       <small class="py-1">
         Para acessar o arquivo PDF com as instruções que foi utilizado para realização da prática, clique no <a
-          href="assets/esza019_2025.2__Lab1_img_video_.pdf" target="_blank">LINK</a>.
+          href="assets/esza019_2025.2__Lab1_img_video_.pdf" target="_blank" class="text-black"><b>Link</b></a>.
       </small>
     </section>
 
-    <section class="py-3">
+    <section class="pb-4">
       <p class="h3"><b>PROCEDIMENTOS EXPERIMENTAIS</b></p>
+      <p>Para a realização da prática, foi solicitado para que fosse realizado o <i>download</i> de uma pasta
+        compactada, localizada na aba "Semana 3 - (16 e 18/6/2025)" dentro da pasta "Lab1 - CAPtura de imagem e de
+        Video" no <i>Moodle</i>.</p>
+      <p>Dentro dessa pasta compactada, haviam 6 itens, sendo eles quatro arquivos em python, uma imagem e um vídeo:
+      </p>
+      <ul class="archives-list">
+        <li><a class="text-black text-decoration-none" href="assets/Lab1_arquivos/L1_1_img.py">L1_1_img.py</a></li>
+        <li><a class="text-black text-decoration-none" href="assets/Lab1_arquivos/L1_2_video.py">L1_2_video.py</a></li>
+        <li><a class="text-black text-decoration-none" href="assets/Lab1_arquivos/L1_3_webcam.py">L1_3_webcam.py</a>
+        </li>
+        <li><a class="text-black text-decoration-none" href="assets/Lab1_arquivos/L1_4_webcap.py">L1_4_webcap.py</a>
+        </li>
+        <li><a class="text-black text-decoration-none" href="assets/Lab1_arquivos/messi5.jpg"
+            target="_blank">messi5.jpg</a></li>
+        <li><a class="text-black text-decoration-none" href="assets/Lab1_arquivos/big_buck_bunny.mp4"
+            target="_blank">big_buck_bunny.mp4</a>
+        </li>
+        <small>Para baixar a pasta compactada, clique <a class="text-black"
+            href="assets/Lab1_arquivos.zip"><b>aqui</b></a></small>
+      </ul>
+      <p>Após a realização do <i>download</i>, foi solicitado a iniciação do ambiente virtual para que a prática pudesse
+        começar a ser realizada.</p>
       <div class="py-3">
         <p class="h4">PARTE 1: Processamento Básico nas Imagens e Vídeos.</p>
       </div>
+      <div class="py-3">
+        <p>
+          A) <u>Leitura de imagem em arquivo</u>: O programa “L1_1_img.py” realiza a leitura e de imagem
+          gravado num arquivo e mostra a imagem numa janela do linux. Além disso, o programa permite salvar aimagem em
+          arquivo. Execute e verifique o resultado:
+        </p>
+        <p class="w-100 text-center"><code class="text-black border border-black py-2 px-3">Python3 L1_1_img.py</code>
+        </p>
+        <p>&emsp; <u>Responda</u>: por que a janela aberta não mostra a imagem colorida?</p>
+      </div>
+      <div class="py-3">
+        <p>
+          B) <u>Leitura de vídeo em arquivo</u>: O programa “L1_2_video.py” realiza a leitura de video gravado num
+          arquivo e exibe a sequencia das imagems numa janela do linux. Execute e verifique o resultado:
+        </p>
+        <p class="w-100 text-center"><code class="text-black border border-black py-2 px-3">Python3 L1_2_video.py</code>
+        </p>
+        <p>&emsp; <u>Altere</u>: modifique o programa para que as imagens sejam exibidas mais rápidamente e depois
+          para que sejam exibidas mais lentamente.</p>
+        <p>&emsp; <u>Responda</u>: qual a explicação de alteração de velocidade de exibição, e apresente suas soluções
+          detalhadamente.</p>
+      </div>
+      <div class="py-3">
+        <p>
+          C) <u>Leitura de imagem de câmera</u>: O programa “L1_3_webcam.py” realiza a leitura de imagens da camera
+          instalada no computador e exibe a sequencia das imagems amostradas numa janela do linux. Execute e verifique o
+          resultado:
+        </p>
+        <p class="w-100 text-center"><code
+            class="text-black border border-black py-2 px-3">Python3 L1_3_webcam.py</code>
+        </p>
+        <p>&emsp; <u>Altere</u>: modifique o programa para que uma imagem da câmera seja salva num arquivo “foto1.png”
+          no momento em que for clicada a tecla ‘x’ no teclado. Apresente o resultado e sua solução detalhadamente.
+        </p>
+      </div>
+      <div class="py-3">
+        <p>
+          D) <u>Gravação de vídeo da câmera</u>: O programa “L1_4_webcap.py” realiza a leitura de imagens da câmera,
+          exibr a sequência de imagens numa nova janela do Linux, e ao digitar a tecla “q” salva toda a sequência de
+          imagens num arquivo “saida.avi” no formato AVI de vídeo. Execute e verifique o resultado:
+        </p>
+        <p class="w-100 text-center"><code
+            class="text-black border border-black py-2 px-3">Python3 L1_4_webcap.py</code>
+        </p>
+        <p>&emsp; <u>Altere</u>: modifique o programa para que as imagens gravadas estejam “normais” no arquivo de video
+          salvo, e apresentem uma velocidade de exibição adequada. Apresente o resultado e sua solução detalhadamente.
+        </p>
+      </div>
+
       <div class="py-3">
         <p class="h4">PARTE 2: Obtenção de Fotos e Vídeos</p>
       </div>
     </section>
 
-    <section class="py-3">
+    <section class="pb-4">
       <p class="h3"><b>ANÁLISE E DISCUSSÃO DOS ESTUDADOS REALIZADOS</b></p>
       <div class="py-3">
         <p class="h4">PARTE 1: Processamento Básico nas Imagens e Vídeos.</p>
@@ -85,12 +156,12 @@
       </div>
     </section>
 
-    <section class="py-3">
+    <section class="pb-4">
       <p class="h3"><b>CONCLUSÕES</b></p>
 
     </section>
 
-    <section class="py-3">
+    <section class="pb-4">
       <p class="h3"><b>REFERÊNCIAS</b></p>
 
     </section>
