@@ -10,7 +10,7 @@ body {
 }
 
 /* Create two columns/boxes that floats next to each other */
-nav {
+nav.p-4 {
   background: #ccc;
 }
 
