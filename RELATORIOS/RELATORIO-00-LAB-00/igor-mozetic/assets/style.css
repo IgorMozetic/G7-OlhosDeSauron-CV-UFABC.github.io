@@ -1,0 +1,37 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #f0f0f0;
+}
+
+/* Create two columns/boxes that floats next to each other */
+nav {
+  background: #ccc;
+}
+
+/* Style the list inside the menu */
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+article {
+  background-color: #f1f1f1;
+}
+
+h1,
+h2,
+h3 {
+  color: #242424;
+}
+
+img {
+  width: 200px;
+  height: auto;
+  margin-right: 10px;
+}
