@@ -40,3 +40,7 @@ footer {
   position: fixed;
   text-align: center;
 }
+
+pre code span {
+  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace !important;
+}
