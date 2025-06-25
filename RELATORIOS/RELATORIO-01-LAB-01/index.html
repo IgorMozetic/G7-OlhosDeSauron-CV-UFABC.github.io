@@ -84,8 +84,7 @@
         </li>
         <li><a class="text-black text-decoration-none" href="assets/Lab1_arquivos/messi5.jpg"
             target="_blank">messi5.jpg</a></li>
-        <li><a class="text-black text-decoration-none" href="assets/Lab1_arquivos/big_buck_bunny.mp4"
-            target="_blank">big_buck_bunny.mp4</a>
+        <li><a class="text-black text-decoration-none" href="assets/" target="_blank">big_buck_bunny.mp4</a>
         </li>
         <small>Para baixar a pasta compactada, clique <a class="text-black"
             href="assets/Lab1_arquivos.zip"><b>aqui</b></a></small>
@@ -181,7 +180,7 @@
                 <source src="assets/Lab1_arquivos/big_buck_bunny.mp4" type="video/mp4">
                 Your browser does not support the video tag.
               </video>
-              <figcaption><i>Figura 2</i>: Resultado da execução do comando para o vídeo <code
+              <figcaption><i>Vídeo 1</i>: Resultado da execução do comando para o vídeo <code
                   class="text-black">Python3 L1_2_video.py</code></figcaption>
             </figure>
           </div>
@@ -381,7 +380,7 @@ cv.destroyAllWindows()
                   type="video/avi">
                 Your browser does not support the video tag.
               </video>
-              <figcaption><i>Figura 4</i>: Resultado da execução do comando para o arquivo <code
+              <figcaption><i>Vídeo 2</i>: Resultado da execução do comando para o arquivo <code
                   class="text-black">Python3 L1_4_webcap.py</code></figcaption>
             </figure>
           </div>
@@ -493,27 +492,195 @@ cv.destroyAllWindows()
             iluminação ficar boa. Podem usar qualquer editor de imagem caso necessitem “Compor” as fotos individuais
             para formar a foto geral.
           </p>
-        </div>
-        <div class="py-3">
-          <p>
-            B) Façam uma foto-montagem “Avatar”, juntando todos avatares numa única imagem. Meu Podem usar qualquer
-            editor de imagem para “Compor” as fotos individuais que cada um da equipe vai fornecer.
+          <div class="analise">&emsp;
+            <p>Começando a PARTE 2, nessa alternativa do relatório, foi solicitado para que fosse tirada uma foto com
+              todos os integrantes do grupo com cores de camisa diferentes utilizando os códigos da PARTE 01. Segue a
+              foto:
+            </p>
+            <div class="d-flex justify-content-center align-items-center py-2">
+              <figure class="text-center">
+                <img src="assets/parte-02/procedimentos-experimentais/imagem-parte02-alternativa-A.png" alt="Imagem">
+                <figcaption><i>Figura 5</i>: Integrante do Grupo 07 - Olhos de Sauron</figcaption>
+              </figure>
+            </div>
+            <p>Após modificar o código original da PARTE 01 para que atendesse as expectativas na PARTE 02, segue o
+              código:
+            </p>
+            <div class="d-flex justify-content-center">
+              <figure>
+                <pre><code class="language-python">import numpy as np
+import cv2 as cv
 
-          </p>
+cap = cv.VideoCapture(0)
+
+if not cap.isOpened():
+    print("Cannot open camera")
+    exit()
+    
+while True:
+    # Capture frame-by-frame
+    ret, frame = cap.read()
+    # if frame is read correctly ret is True
+    if not ret:
+        print("Can't receive frame (stream end?). Exiting ...")
+        break
+    
+    # Display the resulting frame
+    cv.imshow('frame', frame)
+    
+    if cv.waitKey(1) == ord('q'):
+        break
+
+# When everything done, release the capture
+cap.release()
+cv.destroyAllWindows()
+  </code></pre>
+                <figcaption class="text-center"><i>Código 5</i>: Código modificado do arquivo <code
+                    class="text-black">L1_3_webcam.py</code></figcaption>
+              </figure>
+            </div>
+
+            <p><b>explicação</b></p>
+
+            <hr>
+          </div>
         </div>
-        <div class="py-3">
-          <p>
-            C) Filmem com a webcam DOIS vídeos com pessoas e DOIS videos com um objeto:
+      </div>
+      <div class="py-3">
+        <p>
+          B) Façam uma foto-montagem “Avatar”, juntando todos avatares numa única imagem. Podem usar qualquer
+          editor de imagem para “Compor” as fotos individuais que cada um da equipe vai fornecer.
+        </p>
+        <div class="analise">&emsp;
+          <p>Nessa alternativa do relatório, foi solicitado para que fosse realizada uma imagem dos avatares de todos os
+            integrantes do grupo juntos. Para realização foi utilizado o aplicativo <i>Paint</i>. Segue a imagem
+            montada:
           </p>
-          <ol type="i">
-            <li>um com mudanças lentas de movimento;</li>
-            <li>e outro com mudanças rápidas de movimento.</li>
-            <li>
-              Em cada um dos vídeos os membros da equipe DEVEM ser diferentes. Podem ser apenas dois membros, um em
-              cada vídeo, e sugiro escolherem os que possuem as melhores câmeras.
-            </li>
-          </ol>
+          <div class="d-flex justify-content-center align-items-center py-2">
+            <figure class="text-center">
+              <img src="assets/parte-02/procedimentos-experimentais/imagem-parte02-alternativa-B.png" alt="Imagem">
+              <figcaption><i>Figura 6</i>: Avateres dos integrante do Grupo 07 - Olhos de Sauron</figcaption>
+            </figure>
+          </div>
+
+          <hr>
         </div>
+      </div>
+      <div class="py-3">
+        <p>
+          C) Filmem com a webcam DOIS vídeos com pessoas e DOIS videos com um objeto:
+        </p>
+        <ol type="i">
+          <li>um com mudanças lentas de movimento;</li>
+          <li>e outro com mudanças rápidas de movimento.</li>
+          <li>
+            Em cada um dos vídeos os membros da equipe DEVEM ser diferentes. Podem ser apenas dois membros, um em
+            cada vídeo, e sugiro escolherem os que possuem as melhores câmeras.
+          </li>
+        </ol>
+        <div class="analise">&emsp;
+          <p>Nessa alternativa do relatório, foi solicitado para que fosse realizado a gravação de 4 vídeos, sendo eles:
+          </p>
+          <ul>
+            <li class="py-3">Vídeo com mudanças lentas de movimento;</li>
+            <div class="d-flex justify-content-center align-items-center py-2">
+              <figure class="text-center">
+                <video autoplay muted loop>
+                  <source src="assets/parte-02/procedimentos-experimentais/video-normal-lento-parte02-alternativa-C.mp4"
+                    type="video/mp4">
+                  <source src="assets/parte-02/procedimentos-experimentais/video-normal-lento-parte02-alternativa-C.avi"
+                    type="video/avi">
+                  Your browser does not support the video tag.
+                </video>
+                <figcaption><i>Vídeo 3</i>: Movimentos Lentos</figcaption>
+              </figure>
+            </div>
+            <li class="py-3">Vídeo com mudanças rápidas de movimento</li>
+            <div class="d-flex justify-content-center align-items-center py-2">
+              <figure class="text-center">
+                <video autoplay muted loop>
+                  <source
+                    src="assets/parte-02/procedimentos-experimentais/video-normal-rapido-parte02-alternativa-C.mp4"
+                    type="video/mp4">
+                  <source
+                    src="assets/parte-02/procedimentos-experimentais/video-normal-rapido-parte02-alternativa-C.avi"
+                    type="video/avi">
+                  Your browser does not support the video tag.
+                </video>
+                <figcaption><i>Vídeo 4</i>: Movimentos rápidos</figcaption>
+              </figure>
+            </div>
+            <li class="py-3">Vídeo com mudanças lentas de movimento segurando um objeto</li>
+            <div class="d-flex justify-content-center align-items-center py-2">
+              <figure class="text-center">
+                <video autoplay muted loop>
+                  <source src="assets/parte-02/procedimentos-experimentais/video-objeto-lento-parte02-alternativa-C.mp4"
+                    type="video/mp4">
+                  <source src="assets/parte-02/procedimentos-experimentais/video-objeto-lento-parte02-alternativa-C.avi"
+                    type="video/avi">
+                  Your browser does not support the video tag.
+                </video>
+                <figcaption><i>Vídeo 5</i>: Movimentos lentos com objeto</figcaption>
+              </figure>
+            </div>
+            <li class="py-3">Vídeo com mudanças rápidas de movimento segurando um objeto</li>
+            <div class="d-flex justify-content-center align-items-center py-2">
+              <figure class="text-center">
+                <video autoplay muted loop>
+                  <source
+                    src="assets/parte-02/procedimentos-experimentais/video-objeto-rapido-parte02-alternativa-C.mp4"
+                    type="video/mp4">
+                  <source
+                    src="assets/parte-02/procedimentos-experimentais/video-objeto-rapido-parte02-alternativa-C.avi"
+                    type="video/avi">
+                  Your browser does not support the video tag.
+                </video>
+                <figcaption><i>Vídeo 6</i>: Movimentos rápidos com objeto</figcaption>
+              </figure>
+            </div>
+          </ul>
+          <p>Após modificar o código original da PARTE 01 para que atendesse as expectativas na PARTE 02, segue o
+            código:
+          </p>
+          <div class="d-flex justify-content-center">
+            <figure>
+              <pre><code class="language-python">import numpy as np
+import cv2 as cv
+
+cap = cv.VideoCapture(0)
+
+if not cap.isOpened():
+    print("Cannot open camera")
+    exit()
+    
+while True:
+    # Capture frame-by-frame
+    ret, frame = cap.read()
+    # if frame is read correctly ret is True
+    if not ret:
+        print("Can't receive frame (stream end?). Exiting ...")
+        break
+    
+    # Display the resulting frame
+    cv.imshow('frame', frame)
+    
+    if cv.waitKey(1) == ord('q'):
+        break
+
+# When everything done, release the capture
+cap.release()
+cv.destroyAllWindows()
+  </code></pre>
+              <figcaption class="text-center"><i>Código 6</i>: Código modificado do arquivo <code
+                  class="text-black">L1_4_webcap.py</code></figcaption>
+            </figure>
+          </div>
+
+          <p><b>explicação</b></p>
+
+          <hr>
+        </div>
+      </div>
       </div>
 
     </section>
