@@ -16,7 +16,7 @@
     <h1 class="m-0">Grupo 07: Equipe Olhos de Sauron - CV - Q2.2025</h1>
   </header>
 
-  <main class="py-5 w-100 container">
+  <main class="py-5 w-100 container relatorio">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a class="text-black"
@@ -26,13 +26,14 @@
       </ol>
     </nav>
     <p class="h3 w-100 text-center"><a href="#" class="text-decoration-none text-black">LAB 1 - Relatório</a></p>
-    <div class="details py-4">
+    <div class="details py-3">
       <p><b>INTEGRANTES:</b></p>
       <p>Igor Domingos da Silva Mozetic - 11202320802</p>
       <p>Jhonattan Ferreira Machado - 11202320245</p>
       <p>Mikael Alves Monteiro - 21055813</p>
       <p><b>Data de Realização do relatório:</b> 18/06/2025</p>
       <p><b>Data de Publicação do relatório:</b> 25/06/2025</p>
+      <hr>
     </div>
     <section class="pb-4">
       <p class="h3"><b>INTRODUÇÃO</b></p>
@@ -64,23 +65,8 @@
         Para acessar o arquivo PDF com as instruções que foi utilizado para realização da prática, clique no <a
           href="assets/esza019_2025.2__Lab1_img_video_.pdf" target="_blank" class="text-black"><b>Link</b></a>.
       </small>
+      <hr>
     </section>
-
-    <!-- exemplo de código
-    <div class="col-md-6">
-      <pre><code class="language-python">import numpy as np # importando bilbioteca 
-import cv2 as cv # importando bilbioteca
-
-img = cv.imread('messi5.jpg',0)
-cv.imshow('image',img)
-k = cv.waitKey(0)
-if k == 27:         # wait for ESC key to exit
-    cv.destroyAllWindows()
-elif k == ord('s'): # wait for 's' key to save and exit
-    cv.imwrite('messigray.png',img)
-    cv.destroyAllWindows()
-</code></pre>
-    </div> -->
 
     <section class="pb-4">
       <p class="h3"><b>PROCEDIMENTOS EXPERIMENTAIS</b></p>
@@ -106,6 +92,434 @@ elif k == ord('s'): # wait for 's' key to save and exit
       </ul>
       <p>Após a realização do <i>download</i>, foi solicitado a iniciação do ambiente virtual para que a prática pudesse
         começar a ser realizada.</p>
+      <div class="py-3">
+        <p class="h4">PARTE 1: Processamento Básico nas Imagens e Vídeos.</p>
+      </div>
+      <div class="py-3">
+        <p>
+          A) <u>Leitura de imagem em arquivo</u>: O programa “L1_1_img.py” realiza a leitura e de imagem gravado num
+          arquivo e mostra a imagem numa janela do linux. Além disso, o programa permite salvar aimagem em arquivo.
+          Execute e verifique o resultado:
+        </p>
+        <p class="w-100 text-center"><code class="text-black border border-black py-2 px-3">Python3 L1_1_img.py</code>
+        </p>
+        <div class="analise">&emsp;
+          <p>Nessa alternativa do relatório, foi solicitado para executar o comando acima no terminal e analisar
+            como a figura seria exibida em uma nova janela. Ao executar o comando, foi obtido o seguinte resultado: </p>
+          <div class="d-flex justify-content-center align-items-center py-2">
+            <figure class="text-center">
+              <img src="assets/parte-01/procedimentos-experimentais/imagem-parte01-alternativa-A.png" alt="Imagem">
+              <figcaption><i>Figura 1</i>: Resultado da execução do comando para a imagem<code
+                  class="text-black">Python3 L1_1_img.py</code></figcaption>
+            </figure>
+          </div>
+          <p>Analisando o resultado obtido, é perceptível que a imagem está em tom de cinza. Para entender o motivo
+            desse acontecimento é necessário analisar o código do arquivo. Segue o código:
+          </p>
+          <div class="d-flex justify-content-center">
+            <figure>
+              <pre><code class="language-python">import numpy as np 
+  import cv2 as cv
+  
+  img = cv.imread('messi5.jpg',0)
+  cv.imshow('image',img)
+  k = cv.waitKey(0)
+  if k == 27:         # wait for ESC key to exit
+      cv.destroyAllWindows()
+  elif k == ord('s'): # wait for 's' key to save and exit
+      cv.imwrite('messigray.png',img)
+      cv.destroyAllWindows()
+  </code></pre>
+              <figcaption class="text-center"><i>Código 1</i>: Código do arquivo <code
+                  class="text-black">L1_1_img.py</code></figcaption>
+            </figure>
+          </div>
+          <p>No código, as duas primeiras linhas estão sendo importadas as bibliotecas que serão utilizadas no restante
+            do código.</p>
+          <p>Na 3º linha <code>img = cv.imread('messi5.jpg',0)</code>, o código está carregando a imagem chamada
+            <strong>"messi5.jpg"</strong> em modo <i>grayscale</i> (tons de cinza), pois o segundo parâmetro é 0. A
+            imagem é armazenada na variável <code>img</code>.
+          </p>
+          <p>Na 4º linha <code>cv.imshow('image',img)</code>, o código está exibindo a imagem carregada em uma janela
+            com o nome <strong>"image"</strong>. Essa janela mostra o conteúdo da variável <code>img</code>.</p>
+          <p>Na 5ª linha <code>k = cv.waitKey(0)</code>, o programa fica aguardando indefinidamente até que o usuário
+            pressione alguma tecla. A tecla pressionada é armazenada na variável <code>k</code>.</p>
+          <p>Na 6ª linha <code>if k == 27:</code>, o código verifica se a tecla pressionada foi a tecla ESC
+            (representada pelo código 27). Se for, ele fecha todas as janelas abertas com
+            <code>cv.destroyAllWindows()</code>.
+          </p>
+          <p>Na 8ª linha <code>elif k == ord('s'):</code>, o código verifica se a tecla pressionada foi a tecla
+            <strong>'s'</strong>. Se for, ele salva a imagem carregada com o nome <strong>"messigray.png"</strong> e
+            também fecha todas as janelas.
+          </p>
+          <hr>
+        </div>
+
+      </div>
+      <div class="py-3">
+        <p>
+          B) <u>Leitura de vídeo em arquivo</u>: O programa “L1_2_video.py” realiza a leitura de video gravado num
+          arquivo e exibe a sequencia das imagems numa janela do linux. Execute e verifique o resultado:
+        </p>
+        <p class="w-100 text-center"><code class="text-black border border-black py-2 px-3">Python3 L1_2_video.py</code>
+        </p>
+        <div class="analise">&emsp;
+          <p>Nessa alternativa do relatório, foi solicitado para executar o comando acima no terminal e analisar
+            como o vídeo seria exibido através de uma sequência de iamgens em uma nova janela. Ao executar o comando,
+            foi obtido o seguinte resultado: </p>
+          <div class="d-flex justify-content-center align-items-center py-2">
+            <figure class="text-center">
+              <img src="assets/parte-01/procedimentos-experimentais/imagem-parte01-alternativa-B.png" alt="Imagem">
+              <figcaption><i>Figura 2</i>: Resultado da execução do comando para o vídeo <code
+                  class="text-black">Python3 L1_2_video.py</code></figcaption>
+            </figure>
+          </div>
+          <p>O vídeo em questão é:</p>
+          <div class="d-flex justify-content-center align-items-center py-2">
+            <figure class="text-center">
+              <video autoplay muted loop>
+                <source src="assets/Lab1_arquivos/big_buck_bunny.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+              <figcaption><i>Figura 2</i>: Resultado da execução do comando para o vídeo <code
+                  class="text-black">Python3 L1_2_video.py</code></figcaption>
+            </figure>
+          </div>
+          <p>Para entender o motivo desse acontecimento é necessário analisar o código do arquivo. Segue o código:
+          </p>
+          <div class="d-flex justify-content-center">
+            <figure>
+              <pre><code class="language-python">import time
+import numpy as np
+import cv2 as cv
+
+cap = cv.VideoCapture('big_buck_bunny.mp4')
+
+while(cap.isOpened()):
+    ret, frame = cap.read()
+    
+    if ret==True:
+        # show the frame
+        cv.imshow('frame',frame)
+
+        #wait next frame by 40ms - 25fps
+        time.sleep(1/25.0) 
+        
+        if cv.waitKey(1) & 0xFF == ord('q'):
+            break
+    else:
+        break
+               
+cap.release()
+cv.destroyAllWindows()
+  </code></pre>
+              <figcaption class="text-center"><i>Código 2</i>: Código do arquivo <code
+                  class="text-black">L1_2_video.py</code></figcaption>
+            </figure>
+          </div>
+          <p>No código, as três primeiras linhas estão importando as bibliotecas necessárias para a execução:
+            <code>time</code> para controle de tempo, <code>numpy</code> para manipulação de arrays (embora não seja
+            utilizada diretamente neste trecho), e <code>cv2</code> para processamento de vídeo e imagem com OpenCV.
+          </p>
+
+          <p>Na 4ª linha <code>cap = cv.VideoCapture('big_buck_bunny.mp4')</code>, o código está carregando o vídeo
+            chamado <strong>"big_buck_bunny.mp4"</strong> para reprodução. A função <code>VideoCapture</code> cria um
+            objeto que será usado para capturar quadro a quadro do vídeo.</p>
+
+          <p>Na 6ª linha <code>while(cap.isOpened()):</code>, o código inicia um loop que continuará enquanto o vídeo
+            estiver aberto corretamente e houver quadros para ler.</p>
+
+          <p>Na 7ª linha <code>ret, frame = cap.read()</code>, o código tenta ler o próximo quadro do vídeo.
+            <code>ret</code> será <code>True</code> se o quadro for lido com sucesso, e <code>frame</code> contém a
+            imagem do quadro atual.
+          </p>
+
+          <p>Na 9ª linha <code>if ret==True:</code>, o código verifica se o quadro foi lido com sucesso. Se sim, o bloco
+            de instruções dentro do <code>if</code> será executado.</p>
+
+          <p>Na 11ª linha <code>cv.imshow('frame',frame)</code>, o código exibe o quadro atual em uma janela chamada
+            <strong>"frame"</strong>.
+          </p>
+
+          <p>Na 13ª linha <code>time.sleep(1/25.0)</code>, o código pausa por 1/25 segundos (ou 40 milissegundos), para
+            simular uma taxa de atualização de 25 quadros por segundo (fps), que é comum em vídeos.</p>
+
+          <p>Na 15ª linha <code>if cv.waitKey(1) & 0xFF == ord('q'):</code>, o código verifica se a tecla
+            <strong>'q'</strong> foi pressionada. Se sim, o loop será interrompido, encerrando a reprodução do vídeo.
+          </p>
+
+          <p>Na 17ª linha <code>else:</code>, caso <code>ret</code> seja <code>False</code> (por exemplo, se o vídeo
+            chegou ao fim), o loop também é encerrado.</p>
+
+          <p>Na 20ª linha <code>cap.release()</code>, o código libera o objeto de captura de vídeo, liberando os
+            recursos associados.</p>
+
+          <p>Na 21ª linha <code>cv.destroyAllWindows()</code>, o código fecha todas as janelas abertas do OpenCV.</p>
+
+          <hr>
+        </div>
+      </div>
+      <div class="py-3">
+        <p>
+          C) <u>Leitura de imagem de câmera</u>: O programa “L1_3_webcam.py” realiza a leitura de imagens da camera
+          instalada no computador e exibe a sequencia das imagems amostradas numa janela do linux. Execute e verifique o
+          resultado:
+        </p>
+        <p class="w-100 text-center"><code
+            class="text-black border border-black py-2 px-3">Python3 L1_3_webcam.py</code>
+        </p>
+        <div class="analise">&emsp;
+          <p>Nessa alternativa do relatório, foi solicitado para executar o comando acima no terminal e analisar
+            a sequência das imagens da camera instalada no computador exibidas em uma nova janela. Ao executar o
+            comando, foi obtido o seguinte resultado: </p>
+          <div class="d-flex justify-content-center align-items-center py-2">
+            <figure class="text-center">
+              <img src="assets/parte-01/procedimentos-experimentais/imagem-parte01-alternativa-B.png" alt="Imagem">
+              <figcaption><i>Figura 3</i>: Resultado da execução do comando para o arquivo <code
+                  class="text-black">Python3 L1_3_webcam.py</code></figcaption>
+            </figure>
+          </div>
+          <p>Para entender o motivo desse acontecimento é necessário analisar o código do arquivo. Segue o código:
+          </p>
+          <div class="d-flex justify-content-center">
+            <figure>
+              <pre><code class="language-python">import numpy as np
+import cv2 as cv
+
+cap = cv.VideoCapture(0)
+
+if not cap.isOpened():
+    print("Cannot open camera")
+    exit()
+    
+while True:
+    # Capture frame-by-frame
+    ret, frame = cap.read()
+    # if frame is read correctly ret is True
+    if not ret:
+        print("Can't receive frame (stream end?). Exiting ...")
+        break
+    
+    # Display the resulting frame
+    cv.imshow('frame', frame)
+    
+    if cv.waitKey(1) == ord('q'):
+        break
+
+# When everything done, release the capture
+cap.release()
+cv.destroyAllWindows()
+  </code></pre>
+              <figcaption class="text-center"><i>Código 3</i>: Código do arquivo <code
+                  class="text-black">L1_3_webcam.py</code></figcaption>
+            </figure>
+          </div>
+          <p>No código, as duas primeiras linhas estão importando as bibliotecas necessárias: <code>numpy</code> para
+            manipulação de arrays (ainda que não seja usada diretamente) e <code>cv2</code> para captura e exibição de
+            vídeo com OpenCV.</p>
+
+          <p>Na 3ª linha <code>cap = cv.VideoCapture(0)</code>, o código está iniciando a captura de vídeo da câmera
+            padrão do computador (geralmente a webcam). O número <code>0</code> indica que será usada a primeira câmera
+            conectada.</p>
+
+          <p>Na 5ª linha <code>if not cap.isOpened():</code>, o código verifica se a câmera foi aberta corretamente. Se
+            não for possível abrir a câmera, será exibida a mensagem <strong>"Cannot open camera"</strong> e o programa
+            será encerrado com <code>exit()</code>.</p>
+
+          <p>Na 8ª linha <code>while True:</code>, é iniciado um loop infinito para capturar e exibir os quadros da
+            câmera em tempo real.</p>
+
+          <p>Na 10ª linha <code>ret, frame = cap.read()</code>, o código captura o próximo quadro da câmera.
+            <code>ret</code> indica se a captura foi bem-sucedida, e <code>frame</code> armazena a imagem capturada.
+          </p>
+
+          <p>Na 12ª linha <code>if not ret:</code>, o código verifica se ocorreu algum erro ao capturar o quadro. Caso
+            não tenha sido possível ler o quadro corretamente, uma mensagem de erro será exibida e o loop será
+            encerrado.</p>
+
+          <p>Na 16ª linha <code>cv.imshow('frame', frame)</code>, o código exibe o quadro capturado em uma janela
+            chamada <strong>"frame"</strong>, mostrando o vídeo em tempo real.</p>
+
+          <p>Na 18ª linha <code>if cv.waitKey(1) == ord('q'):</code>, o código verifica se a tecla <strong>'q'</strong>
+            foi pressionada. Se sim, o loop é encerrado e o programa segue para liberar os recursos.</p>
+
+          <p>Na 21ª linha <code>cap.release()</code>, o código libera a câmera, encerrando a captura de vídeo.</p>
+
+          <p>Na 22ª linha <code>cv.destroyAllWindows()</code>, o código fecha todas as janelas abertas pelo OpenCV.</p>
+
+          <hr>
+        </div>
+      </div>
+      <div class="py-3">
+        <p>
+          D) <u>Gravação de vídeo da câmera</u>: O programa “L1_4_webcap.py” realiza a leitura de imagens da câmera,
+          exibr a sequência de imagens numa nova janela do Linux, e ao digitar a tecla “q” salva toda a sequência de
+          imagens num arquivo “saida.avi” no formato AVI de vídeo. Execute e verifique o resultado:
+        </p>
+        <p class="w-100 text-center"><code
+            class="text-black border border-black py-2 px-3">Python3 L1_4_webcap.py</code>
+        </p>
+        <div class="analise">&emsp;
+          <p>Nessa alternativa do relatório, foi solicitado para executar o comando acima no terminal e analisar
+            a sequência das imagens da camera instalada no computador exibidas em uma nova janela. Além disso, ao
+            selecionar o tecla "q", salvar toda a sequência de imagens em um arquivo "saida.avi". Ao executar o
+            comando, foi obtido o seguinte resultado: </p>
+          <div class="d-flex justify-content-center align-items-center py-2">
+            <figure class="text-center">
+              <img src="assets/parte-01/procedimentos-experimentais/imagem-parte01-alternativa-B.png" alt="Imagem">
+              <figcaption><i>Figura 4</i>: Resultado da execução do comando para o arquivo <code
+                  class="text-black">Python3 L1_4_webcap.py</code></figcaption>
+            </figure>
+          </div>
+          <p>O vídeo gerado após clicar na tecla "q" é:</p>
+          <div class="d-flex justify-content-center align-items-center py-2">
+            <figure class="text-center">
+              <video autoplay muted loop>
+                <source src="assets/parte-01/procedimentos-experimentais/video-parte01-alternativa-D.mp4"
+                  type="video/mp4">
+                <source src="assets/parte-01/procedimentos-experimentais/video-parte01-alternativa-D.avi"
+                  type="video/avi">
+                Your browser does not support the video tag.
+              </video>
+              <figcaption><i>Figura 4</i>: Resultado da execução do comando para o arquivo <code
+                  class="text-black">Python3 L1_4_webcap.py</code></figcaption>
+            </figure>
+          </div>
+          <p>Para entender o motivo desse acontecimento é necessário analisar o código do arquivo. Segue o código:
+          </p>
+          <div class="d-flex justify-content-center">
+            <figure>
+              <pre><code class="language-python">import numpy as np
+import cv2 as cv
+cap = cv.VideoCapture(0)
+
+# Get current width of frame
+width = cap.get(cv.CAP_PROP_FRAME_WIDTH)   # float
+# Get current height of frame
+height = cap.get(cv.CAP_PROP_FRAME_HEIGHT) # float
+# Define Video Frame Rate in fps
+fps = 30.0
+
+# Define the codec and create VideoWriter object
+fourcc = cv.VideoWriter_fourcc(*'XVID')
+out = cv.VideoWriter('saida.avi', fourcc, fps, (int(width),int(height)) )
+
+while cap.isOpened():
+    ret, frame = cap.read()
+    if not ret:
+        print("Can't receive frame (stream end?). Exiting ...")
+        break
+    frame = cv.flip(frame, 0)
+    # write the flipped frame
+    out.write(frame)
+    cv.imshow('frame', frame)
+    if cv.waitKey(1) == ord('q'):
+        break
+
+# Release everything if job is finished
+cap.release()
+out.release()
+cv.destroyAllWindows()
+  </code></pre>
+              <figcaption class="text-center"><i>Código 4</i>: Código do arquivo <code
+                  class="text-black">L1_4_webcap.py</code></figcaption>
+            </figure>
+          </div>
+          <p>No código, as duas primeiras linhas estão importando as bibliotecas necessárias: <code>numpy</code> para
+            manipulação de arrays e <code>cv2</code> para captura e manipulação de vídeos com OpenCV.</p>
+
+          <p>Na 3ª linha <code>cap = cv.VideoCapture(0)</code>, o código inicia a captura de vídeo da câmera padrão do
+            computador (geralmente a webcam). O número <code>0</code> indica que será usada a primeira câmera
+            disponível.</p>
+
+          <p>Nas linhas 5 e 7, o código obtém as dimensões atuais do vídeo capturado.
+            <code>width = cap.get(cv.CAP_PROP_FRAME_WIDTH)</code> retorna a largura dos quadros e
+            <code>height = cap.get(cv.CAP_PROP_FRAME_HEIGHT)</code> retorna a altura. Ambos os valores são inicialmente
+            <code>float</code>.
+          </p>
+
+          <p>Na linha 9, <code>fps = 30.0</code> define que o vídeo será gravado a 30 quadros por segundo (frames por
+            segundo).</p>
+
+          <p>Na linha 12, <code>fourcc = cv.VideoWriter_fourcc(*'XVID')</code> define o codec de compressão de vídeo que
+            será utilizado para salvar o arquivo. O codec 'XVID' é amplamente usado para arquivos AVI.</p>
+
+          <p>Na linha 13, <code>out = cv.VideoWriter('saida.avi', fourcc, fps, (int(width),int(height)))</code> cria um
+            objeto <code>VideoWriter</code> que será responsável por salvar o vídeo com o nome
+            <strong>'saida.avi'</strong>, usando o codec definido, com a taxa de quadros especificada, e nas dimensões
+            capturadas da câmera.
+          </p>
+
+          <p>Na linha 15, o <code>while cap.isOpened():</code> inicia um loop que continuará enquanto a câmera estiver
+            funcionando corretamente.</p>
+
+          <p>Na linha 16, <code>ret, frame = cap.read()</code> captura um novo quadro da câmera. <code>ret</code> indica
+            se a captura foi bem-sucedida, e <code>frame</code> contém o quadro capturado.</p>
+
+          <p>Na linha 17, <code>if not ret:</code> verifica se houve falha na captura do quadro. Se sim, é exibida uma
+            mensagem de erro e o loop é encerrado.</p>
+
+          <p>Na linha 19, <code>frame = cv.flip(frame, 0)</code> inverte verticalmente o quadro capturado (flip no eixo
+            0).</p>
+
+          <p>Na linha 21, <code>out.write(frame)</code> salva o quadro invertido no arquivo de vídeo definido
+            anteriormente.</p>
+
+          <p>Na linha 22, <code>cv.imshow('frame', frame)</code> exibe o quadro atual (invertido) em uma janela chamada
+            <strong>"frame"</strong>.
+          </p>
+
+          <p>Na linha 23, <code>if cv.waitKey(1) == ord('q'):</code> verifica se a tecla <strong>'q'</strong> foi
+            pressionada. Se for, o loop é encerrado.</p>
+
+          <p>Na linha 26, <code>cap.release()</code> libera a câmera, encerrando a captura de vídeo.</p>
+
+          <p>Na linha 27, <code>out.release()</code> finaliza o arquivo de vídeo e libera o objeto responsável por
+            gravá-lo.</p>
+
+          <p>Na linha 28, <code>cv.destroyAllWindows()</code> fecha todas as janelas abertas pelo OpenCV.</p>
+
+
+          <hr>
+        </div>
+      </div>
+
+      <div class="py-3">
+        <p class="h4">PARTE 2: Obtenção de Fotos e Vídeos</p>
+        <div class="py-3">
+          <p>
+            A) Obter com a webcam uma foto geral com TODOS os integrantes da EQUIPE, sendo que cada um deve usar uma
+            roupa de cor diferente, melhor se for com as cores Vermelho, Verde e Azul destacadas. Cuidem para a
+            iluminação ficar boa. Podem usar qualquer editor de imagem caso necessitem “Compor” as fotos individuais
+            para formar a foto geral.
+          </p>
+        </div>
+        <div class="py-3">
+          <p>
+            B) Façam uma foto-montagem “Avatar”, juntando todos avatares numa única imagem. Meu Podem usar qualquer
+            editor de imagem para “Compor” as fotos individuais que cada um da equipe vai fornecer.
+
+          </p>
+        </div>
+        <div class="py-3">
+          <p>
+            C) Filmem com a webcam DOIS vídeos com pessoas e DOIS videos com um objeto:
+          </p>
+          <ol type="i">
+            <li>um com mudanças lentas de movimento;</li>
+            <li>e outro com mudanças rápidas de movimento.</li>
+            <li>
+              Em cada um dos vídeos os membros da equipe DEVEM ser diferentes. Podem ser apenas dois membros, um em
+              cada vídeo, e sugiro escolherem os que possuem as melhores câmeras.
+            </li>
+          </ol>
+        </div>
+      </div>
+
+    </section>
+
+    <section class="pb-4">
+      <p class="h3"><b>ANÁLISE E DISCUSSÃO DOS ESTUDADOS REALIZADOS</b></p>
       <div class="py-3">
         <p class="h4">PARTE 1: Processamento Básico nas Imagens e Vídeos.</p>
       </div>
@@ -156,45 +570,6 @@ elif k == ord('s'): # wait for 's' key to save and exit
         <p>&emsp; <u>Altere</u>: modifique o programa para que as imagens gravadas estejam “normais” no arquivo de video
           salvo, e apresentem uma velocidade de exibição adequada. Apresente o resultado e sua solução detalhadamente.
         </p>
-      </div>
-
-      <div class="py-3">
-        <p class="h4">PARTE 2: Obtenção de Fotos e Vídeos</p>
-        <div class="py-3">
-          <p>
-            A) Obter com a webcam uma foto geral com TODOS os integrantes da EQUIPE, sendo que cada um deve usar uma
-            roupa de cor diferente, melhor se for com as cores Vermelho, Verde e Azul destacadas. Cuidem para a
-            iluminação ficar boa. Podem usar qualquer editor de imagem caso necessitem “Compor” as fotos individuais
-            para formar a foto geral.
-          </p>
-        </div>
-        <div class="py-3">
-          <p>
-            B) Façam uma foto-montagem “Avatar”, juntando todos avatares numa única imagem. Meu Podem usar qualquer
-            editor de imagem para “Compor” as fotos individuais que cada um da equipe vai fornecer.
-
-          </p>
-        </div>
-        <div class="py-3">
-          <p>
-            C) Filmem com a webcam DOIS vídeos com pessoas e DOIS videos com um objeto:
-          </p>
-          <ol type="i">
-            <li>um com mudanças lentas de movimento;</li>
-            <li>e outro com mudanças rápidas de movimento.</li>
-            <li>
-              Em cada um dos vídeos os membros da equipe DEVEM ser diferentes. Podem ser apenas dois membros, um em
-              cada vídeo, e sugiro escolherem os que possuem as melhores câmeras.
-            </li>
-          </ol>
-        </div>
-      </div>
-    </section>
-
-    <section class="pb-4">
-      <p class="h3"><b>ANÁLISE E DISCUSSÃO DOS ESTUDADOS REALIZADOS</b></p>
-      <div class="py-3">
-        <p class="h4">PARTE 1: Processamento Básico nas Imagens e Vídeos.</p>
       </div>
       <div class="py-3">
         <p class="h4">PARTE 2: Obtenção de Fotos e Vídeos</p>
