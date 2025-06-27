@@ -118,16 +118,16 @@
           <div class="d-flex justify-content-center">
             <figure>
               <pre><code class="language-python">import numpy as np 
-  import cv2 as cv
+import cv2 as cv
   
-  img = cv.imread('messi5.jpg',0)
-  cv.imshow('image',img)
-  k = cv.waitKey(0)
-  if k == 27:         # wait for ESC key to exit
-      cv.destroyAllWindows()
-  elif k == ord('s'): # wait for 's' key to save and exit
-      cv.imwrite('messigray.png',img)
-      cv.destroyAllWindows()
+img = cv.imread('messi5.jpg',0)
+cv.imshow('image',img)
+k = cv.waitKey(0)
+if k == 27:         # wait for ESC key to exit
+    cv.destroyAllWindows()
+elif k == ord('s'): # wait for 's' key to save and exit
+    cv.imwrite('messigray.png',img)
+    cv.destroyAllWindows()
   </code></pre>
               <figcaption class="text-center"><i>Código 1</i>: Código do arquivo <code
                   class="text-black">L1_1_img.py</code></figcaption>
@@ -273,7 +273,7 @@ cv.destroyAllWindows()
             comando, foi obtido o seguinte resultado: </p>
           <div class="d-flex justify-content-center align-items-center py-2">
             <figure class="text-center">
-              <img src="assets/parte-01/procedimentos-experimentais/imagem-parte01-alternativa-B.png" alt="Imagem">
+              <img src="assets/parte-01/procedimentos-experimentais/imagem-parte01-alternativa-C.png" alt="Imagem">
               <figcaption><i>Figura 3</i>: Resultado da execução do comando para o arquivo <code
                   class="text-black">Python3 L1_3_webcam.py</code></figcaption>
             </figure>
@@ -365,7 +365,7 @@ cv.destroyAllWindows()
             comando, foi obtido o seguinte resultado: </p>
           <div class="d-flex justify-content-center align-items-center py-2">
             <figure class="text-center">
-              <img src="assets/parte-01/procedimentos-experimentais/imagem-parte01-alternativa-B.png" alt="Imagem">
+              <img src="assets/parte-01/procedimentos-experimentais/imagem-parte01-alternativa-D.png" alt="Imagem">
               <figcaption><i>Figura 4</i>: Resultado da execução do comando para o arquivo <code
                   class="text-black">Python3 L1_4_webcap.py</code></figcaption>
             </figure>
@@ -493,7 +493,7 @@ cv.destroyAllWindows()
             para formar a foto geral.
           </p>
           <div class="analise">&emsp;
-            <p>Começando a PARTE 2, nessa alternativa do relatório, foi solicitado para que fosse tirada uma foto com
+            <p>Começando a PARTE 02, nessa alternativa do relatório, foi solicitado para que fosse tirada uma foto com
               todos os integrantes do grupo com cores de camisa diferentes utilizando os códigos da PARTE 01. Segue a
               foto:
             </p>
@@ -527,9 +527,12 @@ while True:
     
     # Display the resulting frame
     cv.imshow('frame', frame)
-    
-    if cv.waitKey(1) == ord('q'):
+
+    k = cv.waitKey(0)
+    if k == ord('q'):
         break
+    elif k == ord('s'): # wait for 's' key to save
+      cv.imwrite('captura.png',frame)
 
 # When everything done, release the capture
 cap.release()
@@ -540,8 +543,19 @@ cv.destroyAllWindows()
               </figure>
             </div>
 
-            <p><b>explicação</b></p>
+            <p>O código acima é quase idêntico ao código do item ( C ) da PARTE 01 do experimento, as únicas alterações
+              estão nas linhas: </p>
 
+            <p>Na linha 19 <code>k = cv.waitKey(0)</code>, o código utiliza <strong><code>cv.waitKey(0)</strong></code>,
+                que faz com que o programa pause indefinidamente após exibir cada quadro, aguardando que o usuário
+                pressione uma tecla para continuar.</p>
+
+            <p>Na linha 20 <code>if k == ord('q'):</code>, o código verifica se a tecla pressionada foi
+              <strong>'q'</strong>; se sim, o loop é encerrado, finalizando a execução.
+            </p>
+
+            <p>Na linha 22 <code>cv.imwrite('captura.png', frame)</code>, o código salva o quadro atual da câmera
+              (armazenado na variável <code>frame</code>) como uma imagem com o nome <strong>'captura.png'</strong>.</p>
             <hr>
           </div>
         </div>
@@ -646,29 +660,32 @@ cv.destroyAllWindows()
             <figure>
               <pre><code class="language-python">import numpy as np
 import cv2 as cv
-
 cap = cv.VideoCapture(0)
 
-if not cap.isOpened():
-    print("Cannot open camera")
-    exit()
-    
-while True:
-    # Capture frame-by-frame
+# Get current width of frame
+width = cap.get(cv.CAP_PROP_FRAME_WIDTH)   # float
+# Get current height of frame
+height = cap.get(cv.CAP_PROP_FRAME_HEIGHT) # float
+# Define Video Frame Rate in fps
+fps = 30.0
+
+# Define the codec and create VideoWriter object
+fourcc = cv.VideoWriter_fourcc(*'XVID')
+out = cv.VideoWriter('saida.avi', fourcc, fps, (int(width),int(height)) )
+
+while cap.isOpened():
     ret, frame = cap.read()
-    # if frame is read correctly ret is True
     if not ret:
         print("Can't receive frame (stream end?). Exiting ...")
         break
-    
-    # Display the resulting frame
+    out.write(frame)
     cv.imshow('frame', frame)
-    
     if cv.waitKey(1) == ord('q'):
         break
 
-# When everything done, release the capture
+# Release everything if job is finished
 cap.release()
+out.release()
 cv.destroyAllWindows()
   </code></pre>
               <figcaption class="text-center"><i>Código 6</i>: Código modificado do arquivo <code
@@ -676,7 +693,11 @@ cv.destroyAllWindows()
             </figure>
           </div>
 
-          <p><b>explicação</b></p>
+          <p>O código acima é quase idêntico ao código do item ( D ) da PARTE 01 do experimento, as únicas alterações
+            estão nas linhas: </p>
+
+          <p>Na linha 18, foi retirado o código <code>frame = cv.flip(frame, 0)</code>, pois ele inverte verticalmente o
+            quadro capturado da câmera.</p>
 
           <hr>
         </div>
@@ -699,6 +720,67 @@ cv.destroyAllWindows()
         <p class="w-100 text-center"><code class="text-black border border-black py-2 px-3">Python3 L1_1_img.py</code>
         </p>
         <p>&emsp; <u>Responda</u>: por que a janela aberta não mostra a imagem colorida?</p>
+
+        <div class="analise card p-4">
+
+          <p>No código apresentado, a imagem <strong>'messi5.jpg'</strong> não é exibida em cores porque está
+            sendo
+            carregada em <strong>escala de cinza</strong> (grayscale) devido ao segundo argumento da função
+            <code>cv.imread()</code>.
+          </p>
+
+          <p>Na linha <code>img = cv.imread('messi5.jpg', 0)</code>, o número <strong>0</strong> passado como segundo
+            parâmetro indica ao OpenCV que a imagem deve ser carregada no modo <strong>grayscale</strong>. Isso
+            significa que a imagem será convertida automaticamente para tons de cinza, perdendo as informações de cor
+            originais (RGB).</p>
+
+          <p>Segundo a <a class="text-black"
+              href="https://docs.opencv.org/4.x/d4/da8/group__imgcodecs.html#ga8c9cba4c07f10dfde5ed5b703eb56c7e"
+              target="_blank">documentação oficial do OpenCV</a>, os valores possíveis para o segundo parâmetro de
+            <code>cv.imread()</code> são:
+          </p>
+
+          <ul>
+            <li><strong>cv.IMREAD_COLOR (ou 1):</strong> Carrega a imagem em cores (modo padrão).</li>
+            <li><strong>cv.IMREAD_GRAYSCALE (ou 0):</strong> Carrega a imagem em tons de cinza.</li>
+            <li><strong>cv.IMREAD_UNCHANGED (-1):</strong> Carrega a imagem com o canal alfa, se houver (incluindo
+              transparência).</li>
+          </ul>
+          <ul style="list-style-type:none;">
+            <li>Link para a função <a class="text-black"
+                href="https://docs.opencv.org/4.x/d8/d6a/group__imgcodecs__flags.html#ga61d9b0126a3e57d9277ac48327799c80">ImreadModes.</a>
+            </li>
+            <li>Link para a <a class="text-black"
+                href="https://docs.opencv.org/4.x/d8/d6a/group__imgcodecs__flags.html#enum-members">Tabela com a
+                enumeração</a>.</li>
+          </ul>
+
+          <p>Portanto, para exibir a imagem em cores, o segundo argumento da função <code>cv.imread()</code> deve ser
+            alterado para <code>1</code> ou simplesmente omitido (pois <code>cv.IMREAD_COLOR</code> é o comportamento
+            padrão).
+          </p>
+
+          <p>Logo, o código ficaria dessa maneira:</p>
+
+          <div class="d-flex justify-content-center">
+            <figure>
+              <pre><code class="language-python">import numpy as np 
+import cv2 as cv
+  
+img = cv.imread('messi5.jpg')
+cv.imshow('image',img)
+k = cv.waitKey(0)
+if k == 27:         # wait for ESC key to exit
+    cv.destroyAllWindows()
+elif k == ord('s'): # wait for 's' key to save and exit
+    cv.imwrite('messigray.png',img)
+    cv.destroyAllWindows()
+  </code></pre>
+              <figcaption class="text-center"><i>Código 7</i>: Código modificado do arquivo <code
+                  class="text-black">L1_1_img.py</code></figcaption>
+            </figure>
+          </div>
+        </div>
       </div>
       <div class="py-3">
         <p>
@@ -711,6 +793,84 @@ cv.destroyAllWindows()
           para que sejam exibidas mais lentamente.</p>
         <p>&emsp; <u>Responda</u>: qual a explicação de alteração de velocidade de exibição, e apresente suas soluções
           detalhadamente.</p>
+
+
+        <div class="analise card p-4">
+
+          <p>O programa apresentado lê um vídeo e exibe seus quadros um a um usando o OpenCV, controlando a velocidade
+            de exibição pela função <code>time.sleep()</code>, que pausa o programa por um intervalo de tempo entre os
+            quadros.</p>
+
+          <p>Atualmente, a linha <code>time.sleep(1/25.0)</code> faz o programa aguardar 1/25 segundos (40
+            milissegundos) antes de exibir o próximo quadro, o que corresponde a uma taxa de <strong>25 quadros por
+              segundo (fps)</strong>. Essa pausa é responsável por sincronizar a exibição dos quadros para que o vídeo
+            seja mostrado em velocidade natural.</p>
+
+          <p>Para exibir os quadros mais rapidamente:</p>
+          <ul>
+            <li>Reduza o tempo de pausa na função <code>time.sleep()</code> para um valor menor que 1/25 (menos de 40
+              ms).</li>
+            <li>Exemplo: para aproximadamente 100 fps, utilize <code>time.sleep(1/100.0)</code>, ou seja, 10 ms de
+              pausa.
+            </li>
+          </ul>
+
+          <p>Exemplo de código modificado para mais rápido (100 fps):</p>
+
+          <div class="d-flex justify-content-center">
+            <figure>
+              <pre><code class="language-python">import time
+import numpy as np
+import cv2 as cv
+
+cap = cv.VideoCapture('big_buck_bunny.mp4')
+
+while(cap.isOpened()):
+    ret, frame = cap.read()
+    
+    if ret==True:
+        # show the frame
+        cv.imshow('frame',frame)
+
+        #wait next frame by 10ms - 100fps
+        time.sleep(1/100.0) 
+        
+        if cv.waitKey(1) & 0xFF == ord('q'):
+            break
+    else:
+        break
+               
+cap.release()
+cv.destroyAllWindows()
+  </code></pre>
+              <figcaption class="text-center"><i>Código 8</i>: Código modificado do arquivo <code
+                  class="text-black">L1_2_video.py</code></figcaption>
+            </figure>
+          </div>
+
+          <p>Explicação detalhada:</p>
+          <p>O método <code>time.sleep()</code> pausa a execução do programa pelo número de segundos especificado. Ao
+            diminuir o tempo de pausa, os quadros são exibidos com maior frequência, resultando em uma reprodução mais
+            rápida do vídeo. Por outro lado, aumentar o tempo de pausa faz com que cada quadro permaneça na tela por
+            mais tempo, diminuindo a velocidade de reprodução.</p>
+
+          <p>Além disso, é importante que o valor passado para <code>time.sleep()</code> esteja alinhado à taxa de
+            quadros natural do vídeo para evitar reprodução acelerada ou muito lenta que possa prejudicar a experiência
+            visual.</p>
+
+          <h3>Referências:</h3>
+          <ul>
+            <li><a href="https://docs.python.org/3/library/time.html#time.sleep" target="_blank">Documentação oficial
+                Python - time.sleep()</a></li>
+            <li><a href="https://docs.opencv.org/4.x/d7/dfc/group__highgui.html#ga5870d8a0eacb8fbd30b5b3eab805f658"
+                target="_blank">Documentação OpenCV - cv.waitKey()</a></li>
+            <li><a href="https://learnopencv.com/read-write-and-display-a-video-using-opencv-cpp-python/"
+                target="_blank">Tutorial OpenCV - Leitura e exibição de vídeo</a></li>
+          </ul>
+
+        </div>
+
+
       </div>
       <div class="py-3">
         <p>
@@ -738,14 +898,28 @@ cv.destroyAllWindows()
           salvo, e apresentem uma velocidade de exibição adequada. Apresente o resultado e sua solução detalhadamente.
         </p>
       </div>
-      <div class="py-3">
-        <p class="h4">PARTE 2: Obtenção de Fotos e Vídeos</p>
-      </div>
     </section>
 
     <section class="pb-4">
-      <p class="h3"><b>CONCLUSÕES</b></p>
-
+      <p class="h3 pb-3"><b>CONCLUSÕES</b></p>
+      <p>Neste primeiro experimento prático da disciplina de Visão Computacional, foi possível adquirir conhecimentos
+        fundamentais sobre o uso da biblioteca OpenCV em conjunto com a linguagem Python para manipulação de imagens e
+        vídeos. As atividades realizadas proporcionaram uma introdução à captura de imagens por meio de dispositivos de
+        entrada (como webcams), à exibição em tempo real dessas imagens em janelas gráficas e à sua gravação em arquivos
+        de vídeo.
+        Durante o desenvolvimento, algumas funções da OpenCV se destacaram pela sua utilidade e aplicabilidade prática.
+        A função <code>cv2.VideoCapture()</code> foi fundamental para acessar o dispositivo de captura de vídeo,
+        enquanto <code>cv2.imshow()</code> permitiu a visualização em tempo real dos frames capturados. A função
+        <code>cv2.VideoWriter()</code> possibilitou a gravação dos vídeos gerados, e <code>cv2.waitKey()</code> foi
+        essencial para controlar o fluxo do programa, aguardando comandos do teclado. Por fim,
+        <code>cv2.destroyAllWindows()</code> garantiu o encerramento adequado das janelas abertas, contribuindo para uma
+        finalização segura da aplicação.
+        Além disso, o exercício permitiu compreender melhor o funcionamento de estruturas básicas de controle
+        de fluxo em aplicações de visão computacional, como o uso de laços de repetição para leitura contínua de frames
+        e a aplicação de comandos para encerramento seguro do programa. Dessa forma, o laboratório cumpriu seu papel
+        introdutório, preparando o terreno para o aprofundamento em técnicas mais avançadas de processamento e análise
+        de imagens nas próximas atividades da disciplina.
+      </p>
     </section>
 
     <section class="pb-4">
