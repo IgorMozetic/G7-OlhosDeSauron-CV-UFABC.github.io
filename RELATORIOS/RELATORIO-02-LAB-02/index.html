@@ -1,257 +1,353 @@
-
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relatório de Laboratório 2: Calibração de Câmeras com OpenCV</title>
-    <script>
-        window.MathJax = {
-            tex: {
-                inlineMath: [['$', '$']],
-                displayMath: [['$$', '$$']],
-                processEscapes: true,
-                processEnvironments: true
-            },
-            options: {
-                ignoreHtmlClass: 'tex2jax_ignore',
-                processHtmlClass: 'tex2jax_process'
-            }
-        };
-    </script>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    
-    <style>
-        body {
-            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.8;
-            color: #333;
-            max-width: 1000px;
-            margin: 20px auto;
-            padding: 0 20px;
-            background-color: #fdfdfd;
-        }
-        h1, h2, h3, h4 {
-            color: #2c3e50;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 10px;
-            margin-top: 40px;
-        }
-        h1 {
-            text-align: center;
-            border-bottom: 4px solid #2980b9;
-        }
-        code {
-            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-            background-color: #ecf0f1;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 0.95em;
-        }
-        pre {
-            background-color: #2d2d2d;
-            color: #f8f8f2;
-            padding: 15px;
-            border-radius: 5px;
-            overflow-x: auto;
-            font-size: 0.9em;
-        }
-        pre code {
-            background-color: transparent;
-            padding: 0;
-            color: inherit;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 25px 0;
-            font-size: 0.9em;
-        }
-        th, td {
-            border: 1px solid #bdc3c7;
-            padding: 12px;
-            text-align: left;
-        }
-        th {
-            background-color: #3498db;
-            color: white;
-            font-weight: bold;
-        }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-        img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 20px auto;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 5px;
-        }
-        figcaption {
-            text-align: center;
-            font-style: italic;
-            color: #7f8c8d;
-            margin-top: -10px;
-            margin-bottom: 20px;
-        }
-      .note,.best-practices {
-            padding: 15px;
-            margin: 20px 0;
-            border-left: 5px solid;
-            background-color: #f9f9f9;
-        }
-      .note {
-            border-color: #f1c40f; /* Amarelo */
-        }
-      .best-practices {
-            border-color: #2ecc71; /* Verde */
-        }
-      .katex-display > .katex {
-            text-align: center;
-        }
-       .katex-display {
-            overflow-x: auto;
-            overflow-y: hidden;
-            padding: 1em 0;
-        }
-        .MathJax {
-            font-size: 1.1em !important;
-        }
-        td .MathJax {
-            font-size: 0.9em !important;
-        }
-        .MathJax_Display {
-            margin: 0.5em 0 !important;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Relatório de Laboratório 2: Calibração de Câmeras com OpenCV</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$']],
+        displayMath: [['$$', '$$']],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        ignoreHtmlClass: 'tex2jax_ignore',
+        processHtmlClass: 'tex2jax_process'
+      }
+    };
+  </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <link rel="stylesheet" href="../../assets/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css" rel="stylesheet" />
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 25px 0;
+      font-size: 0.9em;
+    }
+
+    th,
+    td {
+      border: 1px solid #bdc3c7;
+      padding: 12px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #3498db;
+      color: white;
+      font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 20px auto;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 5px;
+    }
+
+    figcaption {
+      text-align: center;
+      font-style: italic;
+      color: #7f8c8d;
+      margin-top: -10px;
+      margin-bottom: 20px;
+    }
+
+    .note,
+    .best-practices {
+      padding: 15px;
+      margin: 20px 0;
+      border-left: 5px solid;
+      background-color: #f9f9f9;
+    }
+
+    .note {
+      border-color: #f1c40f;
+      /* Amarelo */
+    }
+
+    .best-practices {
+      border-color: #2ecc71;
+      /* Verde */
+    }
+
+    .katex-display>.katex {
+      text-align: center;
+    }
+
+    .katex-display {
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 1em 0;
+    }
+
+    .MathJax {
+      font-size: 1.1em !important;
+    }
+
+    td .MathJax {
+      font-size: 0.9em !important;
+    }
+
+    .MathJax_Display {
+      margin: 0.5em 0 !important;
+    }
+  </style>
 </head>
-<body>
 
-<h1>Relatório de Laboratório 2: Calibração de Câmeras com OpenCV</h1>
+<body class="d-flex justify-content-center flex-column align-items-center">
+  <header class="py-4 w-100 text-center text-white">
+    <h1 class="m-0">Grupo 07: Equipe Olhos de Sauron - CV - Q2.2025</h1>
+  </header>
 
-<p><strong>Autores:</strong> <code>[Igor Domingos da Silva Mozetic, Jhonattan Ferreira Machado, Mikael Alves Monteiro]</code></p>
-<p><strong>Data de Realização dos Experimentos:</strong> <code>25/06/2025</code></p>
-<p><strong>Data de Publicação do Relatório:</strong> <code>02/07/2025</code></p>
+  <main class="py-5 w-100 container relatorio">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a class="text-black"
+            href="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/">Home</a></li>
+        <li class="breadcrumb-item"><a class="text-black"
+            href="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/RELATORIOS/">Relatórios</a></li>
+      </ol>
+    </nav>
 
-<h2>1. Introdução: Desvendando a Visão da Câmera</h2>
+    <p class="h3 w-100 text-center"><a href="#" class="text-decoration-none text-black">Relatório de Laboratório 2:
+        Calibração de Câmeras com OpenCV</a></p>
 
-<p>A <strong> calibração de câmeras </strong> é uma etapa fundamental em aplicações de visão computacional que exigem precisão na reconstrução do ambiente tridimensional ou na correção de distorções presentes nas imagens. Esse processo tem como objetivo determinar os parâmetros intrínsecos e extrínsecos de uma câmera, permitindo, assim, compreender e compensar as imperfeições ópticas e geométricas do sistema de captura.</p>
+    <div class="details py-3">
+      <p><b>INTEGRANTES:</b></p>
+      <p>Igor Domingos da Silva Mozetic - 11202320802</p>
+      <p>Jhonattan Ferreira Machado - 11202320245</p>
+      <p>Mikael Alves Monteiro - 21055813</p>
+      <p><b>Data de Realização do relatório:</b> 25/06/2025</p>
+      <p><b>Data de Publicação do relatório:</b> 02/07/2025</p>
+      <hr>
+    </div>
 
-<p>Este relatório apresenta os procedimentos e resultados obtidos no Laboratório 2 da disciplina ESZA019 – Visão Computacional, cujo foco foi a realização prática da calibração de câmeras. Inicialmente, foram explorados conceitos teóricos relacionados à geometria da formação de imagens e aos princípios matemáticos que fundamentam a calibração, incluindo o modelo de câmera pinhole e os efeitos de distorção radial das lentes.</p>
 
-<p>Em seguida, foram executados experimentos de calibração utilizando imagens fornecidas e imagens capturadas diretamente com webcams, além da aplicação de técnicas de correção de distorções nas imagens obtidas. Por fim, os parâmetros resultantes, como matriz de calibração, vetores de rotação e translação e coeficientes de distorção, foram analisados e comparados, proporcionando uma melhor compreensão do comportamento das câmeras utilizadas.</p>
+    <section class="pb-4">
+      <p class="h3"><b>INTRODUÇÃO</b></p>
 
+      <p class="py-1">A <strong> calibração de câmeras </strong> é uma etapa fundamental em aplicações de visão
+        computacional que exigem precisão na reconstrução do ambiente tridimensional ou na correção de distorções
+        presentes nas imagens. Esse processo tem como objetivo determinar os parâmetros intrínsecos e extrínsecos de uma
+        câmera, permitindo, assim, compreender e compensar as imperfeições ópticas e geométricas do sistema de captura.
+      </p>
 
-<p>Se a distância do pinhole ao plano de imagem é a <strong>distância focal</strong> $f$, as equações de projeção são:</p>
+      <p class="py-1">Este relatório apresenta os procedimentos e resultados obtidos no Laboratório 2 da disciplina
+        ESZA019 – Visão Computacional, cujo foco foi a realização prática da calibração de câmeras. Inicialmente, foram
+        explorados conceitos teóricos relacionados à geometria da formação de imagens e aos princípios matemáticos que
+        fundamentam a calibração, incluindo o modelo de câmera pinhole e os efeitos de distorção radial das lentes.</p>
 
-$$x = f \frac{X}{Z} \quad \text{e} \quad y = f \frac{Y}{Z}$$
+      <p class="py-1">Em seguida, foram executados experimentos de calibração utilizando imagens fornecidas e imagens
+        capturadas diretamente com webcams, além da aplicação de técnicas de correção de distorções nas imagens obtidas.
+        Por fim, os parâmetros resultantes, como matriz de calibração, vetores de rotação e translação e coeficientes de
+        distorção, foram analisados e comparados, proporcionando uma melhor compreensão do comportamento das câmeras
+        utilizadas.
+      </p>
 
-<p>Embora simples, essa representação não é linear devido à divisão por $Z$. Para simplificar os cálculos em computação gráfica e visão computacional, utilizamos <strong>coordenadas homogêneas</strong>. Ao adicionar uma quarta coordenada, podemos expressar essa projeção não linear como uma transformação matricial linear. Um ponto 3D $(X, Y, Z)$ torna-se $(X, Y, Z, 1)$ e um ponto 2D $(x, y)$ torna-se $(x, y, 1)$. A projeção pode então ser escrita como:</p>
+      <p class="py-1">Se a distância do pinhole ao plano de imagem é a <strong>distância focal</strong> $f$, as equações
+        de projeção são:
+      </p>
 
-$$\begin{pmatrix} x' \\ y' \\ w' \end{pmatrix} = \begin{bmatrix} f & 0 & 0 & 0 \\ 0 & f & 0 & 0 \\ 0 & 0 & 1 & 0 \end{bmatrix} \begin{pmatrix} X \\ Y \\ Z \\ 1 \end{pmatrix}$$
+      $$x = f \frac{X}{Z} \quad \text{e} \quad y = f \frac{Y}{Z}$$
 
-<p>Onde as coordenadas cartesianas 2D são recuperadas dividindo por $w'$: $x = x'/w'$ e $y = y'/w'$. Essa formulação matricial é a base para todos os modelos de câmera mais complexos.</p>
+      <p class="py-1">Embora simples, essa representação não é linear devido à divisão por $Z$. Para simplificar os
+        cálculos em computação gráfica e visão computacional, utilizamos <strong>coordenadas homogêneas</strong>. Ao
+        adicionar uma quarta coordenada, podemos expressar essa projeção não linear como uma transformação matricial
+        linear. Um ponto 3D $(X, Y, Z)$ torna-se $(X, Y, Z, 1)$ e um ponto 2D $(x, y)$ torna-se $(x, y, 1)$. A projeção
+        pode então ser escrita como:</p>
 
-<h3>2.2. Parâmetros Intrínsecos (Matriz K): A "Personalidade" da Câmera</h3>
+      $$\begin{pmatrix} x' \\ y' \\ w' \end{pmatrix} = \begin{bmatrix} f & 0 & 0 & 0 \\ 0 & f & 0 & 0 \\ 0 & 0 & 1 & 0
+      \end{bmatrix} \begin{pmatrix} X \\ Y \\ Z \\ 1 \end{pmatrix}$$
 
-<p>O modelo pinhole ideal é uma aproximação. Câmeras reais têm propriedades ópticas e de sensor que precisam ser modeladas. Os <strong>parâmetros intrínsecos</strong> são aqueles que definem as características internas e únicas de um conjunto câmera-lente específico. Eles não mudam quando a câmera é movida e são agrupados em uma matriz 3x3 conhecida como <strong>matriz de calibração</strong> ou <strong>matriz intrínseca K</strong>.</p>
+      <p class="py-1">Onde as coordenadas cartesianas 2D são recuperadas dividindo por $w'$: $x = x'/w'$ e $y = y'/w'$.
+        Essa formulação matricial é a base para todos os modelos de câmera mais complexos.</p>
 
-<p>A matriz $K$ é definida como:</p>
-$$K = \begin{bmatrix} f_x & s & c_x \\ 0 & f_y & c_y \\ 0 & 0 & 1 \end{bmatrix}$$
+      <p class="h4"><b>1.1. Parâmetros Intrínsecos (Matriz K): A "Personalidade" da Câmera</b></p>
 
-<p>Vamos detalhar cada um de seus componentes:</p>
+      <p class="py-1">O modelo pinhole ideal é uma aproximação. Câmeras reais têm propriedades ópticas e de sensor que
+        precisam ser modeladas. Os <strong>parâmetros intrínsecos</strong> são aqueles que definem as características
+        internas e únicas de um conjunto câmera-lente específico. Eles não mudam quando a câmera é movida e são
+        agrupados em uma matriz 3x3 conhecida como <strong>matriz de calibração</strong> ou <strong>matriz intrínseca
+          K</strong>.</p>
 
-<ul>
-    <li><strong>Distância Focal ($f_x, f_y$):</strong> Estes não são a distância focal da lente em milímetros. Em vez disso, representam a distância focal expressa em unidades de pixels. Como os pixels em um sensor podem não ser perfeitamente quadrados, podemos ter distâncias focais diferentes para os eixos horizontal ($f_x$) e vertical ($f_y$). A relação é $f_x = F \cdot k_x$ e $f_y = F \cdot k_y$, onde $F$ é a distância focal em unidades de mundo (ex: mm) e $k_x, k_y$ são as densidades de pixels (pixels/mm) nos respectivos eixos.</li>
-    <li><strong>Ponto Principal ($c_x, c_y$):</strong> Este é o ponto no plano da imagem onde o eixo óptico (uma linha imaginária que passa pelo centro da lente e é perpendicular ao sensor) intercepta o sensor. Idealmente, este seria o centro exato da imagem (ex: <code>largura/2</code>, <code>altura/2</code>). No entanto, devido a pequenas imperfeições na montagem da lente e do sensor, o ponto principal quase nunca está perfeitamente no centro.</li>
-    <li><strong>Coeficiente de Inclinação (Skew, $s$):</strong> Este parâmetro descreve a inclinação (ou cisalhamento) entre os eixos x e y do sensor. Em quase todas as câmeras modernas, os eixos dos pixels são perfeitamente perpendiculares, tornando este valor zero ou muito próximo de zero. No entanto, o modelo completo o inclui para generalidade.</li>
-</ul>
+      <p class="py-1">A matriz $K$ é definida como:</p>
+      $$K = \begin{bmatrix} f_x & s & c_x \\ 0 & f_y & c_y \\ 0 & 0 & 1 \end{bmatrix}$$
 
-<p>Com a matriz $K$, a equação de projeção pinhole (em coordenadas de câmera) se torna:</p>
-$$\begin{pmatrix} x \\ y \\ 1 \end{pmatrix} \sim K \begin{pmatrix} X_c \\ Y_c \\ Z_c \end{pmatrix}$$
-<p>Onde o símbolo $\sim$ indica igualdade até um fator de escala.</p>
+      <p class="py-1">Vamos detalhar cada um de seus componentes:</p>
 
-<h3>2.3. Parâmetros Extrínsecos (Matrizes R e t): A Posição da Câmera no Mundo</h3>
+      <ul>
+        <li><strong>Distância Focal ($f_x, f_y$):</strong> Estes não são a distância focal da lente em milímetros. Em
+          vez disso, representam a distância focal expressa em unidades de pixels. Como os pixels em um sensor podem não
+          ser perfeitamente quadrados, podemos ter distâncias focais diferentes para os eixos horizontal ($f_x$) e
+          vertical ($f_y$). A relação é $f_x = F \cdot k_x$ e $f_y = F \cdot k_y$, onde $F$ é a distância focal em
+          unidades de mundo (ex: mm) e $k_x, k_y$ são as densidades de pixels (pixels/mm) nos respectivos eixos.</li>
+        <li><strong>Ponto Principal ($c_x, c_y$):</strong> Este é o ponto no plano da imagem onde o eixo óptico (uma
+          linha imaginária que passa pelo centro da lente e é perpendicular ao sensor) intercepta o sensor. Idealmente,
+          este seria o centro exato da imagem (ex: <code>largura/2</code>, <code>altura/2</code>). No entanto, devido a
+          pequenas imperfeições na montagem da lente e do sensor, o ponto principal quase nunca está perfeitamente no
+          centro.
+        </li>
+        <li><strong>Coeficiente de Inclinação (Skew, $s$):</strong> Este parâmetro descreve a inclinação (ou
+          cisalhamento) entre os eixos x e y do sensor. Em quase todas as câmeras modernas, os eixos dos pixels são
+          perfeitamente perpendiculares, tornando este valor zero ou muito próximo de zero. No entanto, o modelo
+          completo o inclui para generalidade.</li>
+      </ul>
 
-<p>Enquanto os parâmetros intrínsecos descrevem <em>como</em> a câmera forma uma imagem, os <strong>parâmetros extrínsecos</strong> descrevem <em>onde</em> a câmera está e <em>para onde</em> ela está apontando no mundo. Eles definem a transformação de um sistema de coordenadas do mundo (um referencial fixo) para o sistema de coordenadas da câmera. Esta transformação é uma transformação de corpo rígido, composta por uma rotação e uma translação.</p>
+      <p class="py-1">Com a matriz $K$, a equação de projeção pinhole (em coordenadas de câmera) se torna:</p>
+      $$\begin{pmatrix} x \\ y \\ 1 \end{pmatrix} \sim K \begin{pmatrix} X_c \\ Y_c \\ Z_c \end{pmatrix}$$
+      <p class="py-1">Onde o símbolo $\sim$ indica igualdade até um fator de escala.</p>
 
-<ul>
-    <li><strong>Matriz de Rotação (R):</strong> Uma matriz de rotação 3x3 que alinha os eixos do sistema de coordenadas do mundo com os eixos do sistema de coordenadas da câmera. Ela descreve a orientação da câmera (suas inclinações, conhecidas como <em>roll</em>, <em>pitch</em> e <em>yaw</em>).</li>
-    <li><strong>Vetor de Translação (t):</strong> Um vetor de translação 3x1 que descreve a posição da origem do sistema de coordenadas do mundo em relação à origem do sistema de coordenadas da câmera (o centro óptico).</li>
-</ul>
+      <p class="h4"><b>1.2. Parâmetros Extrínsecos (Matrizes R e t): A Posição da Câmera no Mundo</b></p>
 
-<p>A transformação de um ponto $P_{world}$ no sistema de coordenadas do mundo para um ponto $P_{camera}$ no sistema de coordenadas da câmera é dada por:</p>
-$$P_{camera} = [R|t] P_{world}$$
-<p>Onde $[R|t]$ é uma matriz 3x4 que concatena a matriz de rotação $R$ e o vetor de translação $t$.</p>
+      <p class="py-1">Enquanto os parâmetros intrínsecos descrevem <em>como</em> a câmera forma uma imagem, os
+        <strong>parâmetros extrínsecos</strong> descrevem <em>onde</em> a câmera está e <em>para onde</em> ela está
+        apontando no mundo. Eles definem a transformação de um sistema de coordenadas do mundo (um referencial fixo)
+        para o sistema de coordenadas da câmera. Esta transformação é uma transformação de corpo rígido, composta por
+        uma rotação e uma translação.
+      </p>
 
-<p>É fundamental entender que, para cada imagem de calibração que capturamos, os parâmetros intrínsecos ($K$ e coeficientes de distorção) permanecem os mesmos, pois são características da câmera. No entanto, os parâmetros extrínsecos ($R$ e $t$) serão <strong>diferentes para cada imagem</strong>. Isso ocorre porque, ao mover a câmera para capturar o tabuleiro de xadrez de diferentes ângulos e posições, estamos mudando a pose da câmera em relação ao mundo (o tabuleiro). O processo de calibração calcula um conjunto único de $R$ e $t$ para cada imagem fornecida, descrevendo a pose exata do tabuleiro em relação à câmera naquele instante específico.</p>
+      <ul>
+        <li><strong>Matriz de Rotação (R):</strong> Uma matriz de rotação 3x3 que alinha os eixos do sistema de
+          coordenadas do mundo com os eixos do sistema de coordenadas da câmera. Ela descreve a orientação da câmera
+          (suas inclinações, conhecidas como <em>roll</em>, <em>pitch</em> e <em>yaw</em>).</li>
+        <li><strong>Vetor de Translação (t):</strong> Um vetor de translação 3x1 que descreve a posição da origem do
+          sistema de coordenadas do mundo em relação à origem do sistema de coordenadas da câmera (o centro óptico).
+        </li>
+      </ul>
 
-<p>Essa relação é dual: descrever a câmera se movendo em relação a um mundo estacionário é matematicamente equivalente a descrever um objeto se movendo na frente de uma câmera estacionária. A matriz $[R|t]$ simplesmente captura essa transformação relativa, um conceito central em robótica e sistemas de localização e mapeamento simultâneo (SLAM).</p>
+      <p class="py-1">A transformação de um ponto $P_{world}$ no sistema de coordenadas do mundo para um ponto
+        $P_{camera}$ no sistema de coordenadas da câmera é dada por:</p>
+      $$P_{camera} = [R|t] P_{world}$$
+      <p class="py-1">Onde $[R|t]$ é uma matriz 3x4 que concatena a matriz de rotação $R$ e o vetor de translação $t$.
+      </p>
 
-<h3>2.4. A Realidade Imperfeita: Distorção de Lentes</h3>
+      <p class="py-1">É fundamental entender que, para cada imagem de calibração que capturamos, os parâmetros
+        intrínsecos ($K$ e coeficientes de distorção) permanecem os mesmos, pois são características da câmera. No
+        entanto, os parâmetros extrínsecos ($R$ e $t$) serão <strong>diferentes para cada imagem</strong>. Isso ocorre
+        porque, ao mover a câmera para capturar o tabuleiro de xadrez de diferentes ângulos e posições, estamos mudando
+        a pose da câmera em relação ao mundo (o tabuleiro). O processo de calibração calcula um conjunto único de $R$ e
+        $t$ para cada imagem fornecida, descrevendo a pose exata do tabuleiro em relação à câmera naquele instante
+        específico.</p>
 
-<p>O modelo pinhole, mesmo com parâmetros intrínsecos, ainda é uma idealização que assume uma lente perfeita. Na realidade, as lentes introduzem <strong>distorções não lineares</strong> que fazem com que linhas retas no mundo real pareçam curvas na imagem, especialmente perto das bordas. A calibração também deve modelar e corrigir essas imperfeições. Existem dois tipos principais de distorção:</p>
+      <p class="py-1">Essa relação é dual: descrever a câmera se movendo em relação a um mundo estacionário é
+        matematicamente equivalente a descrever um objeto se movendo na frente de uma câmera estacionária. A matriz
+        $[R|t]$ simplesmente captura essa transformação relativa, um conceito central em robótica e sistemas de
+        localização e mapeamento simultâneo (SLAM).
+      </p>
 
-<ul>
-    <li><p><strong>Distorção Radial:</strong> É a forma mais comum de distorção, causada pela curvatura da lente. Ela faz com que os pontos da imagem se desloquem radialmente para dentro ou para fora do centro da imagem.</p>
+      <p class="h4"><b>1.3. A Realidade Imperfeita: Distorção de Lentes</b></p>
+
+      <p class="py-1">O modelo pinhole, mesmo com parâmetros intrínsecos, ainda é uma idealização que assume uma lente
+        perfeita. Na realidade, as lentes introduzem <strong>distorções não lineares</strong> que fazem com que linhas
+        retas no mundo real pareçam curvas na imagem, especialmente perto das bordas. A calibração também deve modelar e
+        corrigir essas imperfeições. Existem dois tipos principais de distorção:</p>
+
+      <ul>
+        <li>
+          <p><strong>Distorção Radial:</strong> É a forma mais comum de distorção, causada pela curvatura da lente. Ela
+            faz com que os pontos da imagem se desloquem radialmente para dentro ou para fora do centro da imagem.</p>
+          <ul>
+            <li><strong>Distorção em Barril (Barrel Distortion):</strong> As linhas retas parecem se curvar para fora,
+              como as aduelas de um barril. Comum em lentes grande-angulares.</li>
+            <li><strong>Distorção em Almofada (Pincushion Distortion):</strong> As linhas retas parecem se curvar para
+              dentro, em direção ao centro. Comum em lentes teleobjetivas.</li>
+          </ul>
+
+          <p class="py-1">A distorção radial é modelada por uma série de polinômios, onde $(x_{ideal}, y_{ideal})$ são
+            as coordenadas do ponto sem distorção e $r^2 = x_{ideal}^2 + y_{ideal}^2$. A OpenCV usa os coeficientes
+            $k_1, k_2, k_3$ para modelá-la:</p>
+          $$\begin{align}
+          x_{distorcida} &= x_{ideal} (1 + k_1 r^2 + k_2 r^4 + k_3 r^6) \\
+          y_{distorcida} &= y_{ideal} (1 + k_1 r^2 + k_2 r^4 + k_3 r^6)
+          \end{align}$$
+        </li>
+        <li>
+          <p class="py-1"><strong>Distorção Tangencial:</strong> Ocorre quando a lente não está perfeitamente paralela
+            ao plano do sensor da câmera. Isso causa um efeito de inclinação ou estiramento na imagem. É modelada pelos
+            coeficientes $p_1$ e $p_2$:</p>
+          $$\begin{align}
+          x_{distorcida} &= x_{ideal} + [2 p_1 x_{ideal} y_{ideal} + p_2(r^2 + 2x_{ideal}^2)] \\
+          y_{distorcida} &= y_{ideal} + [p_1(r^2 + 2y_{ideal}^2) + 2 p_2 x_{ideal} y_{ideal}]
+          \end{align}$$
+        </li>
+      </ul>
+
+      <p class="py-1">O processo de calibração da OpenCV estima esses cinco coeficientes de distorção e os retorna como
+        um vetor: <strong>`dist`</strong> $= (k_1, k_2, p_1, p_2, k_3)$. Com esses coeficientes, podemos "desdistorcer"
+        matematicamente as imagens, fazendo com que elas se aproximem do modelo ideal da câmera pinhole.
+      </p>
+      <hr>
+    </section>
+    <section class="pb-4">
+      <p class="h3"><b>2. Procedimentos Experimentais: Um Guia Passo a Passo</b></p>
+
+      <p class="py-1">Esta seção é o coração do relatório, funcionando como um tutorial detalhado para replicar todos os
+        experimentos. Cada passo será explicado minuciosamente, com blocos de código comentados e dicas práticas para
+        garantir que mesmo um iniciante possa obter resultados bem-sucedidos.</p>
+
+      <p class="h4"><b>2.1. O Padrão de Calibração (Tabuleiro de Xadrez)</b></p>
+
+      <p class="py-1">A precisão da calibração digital depende diretamente da qualidade do padrão físico utilizado.
+        Usaremos um tabuleiro de xadrez por ser um padrão de alto contraste com cantos facilmente detectáveis.</p>
+
+      <ol>
+        <li><strong>Obtenha o Padrão:</strong> Baixe um padrão de tabuleiro de xadrez em formato PDF de alta resolução.
+          Um padrão com um número assimétrico de quadrados (por exemplo, 9x7 quadrados) é frequentemente recomendado
+          para evitar ambiguidades na orientação. Um bom recurso é este <a
+            href="https://www.mrpt.org/downloads/camera-calibration-checker-board_9x7.pdf"><strong>padrão A4 com 9x7
+              quadrados de 20mm</strong></a>.</li>
+        <li><strong>Meça o Tamanho do Quadrado:</strong> Após imprimir, use uma régua ou paquímetro de precisão para
+          medir o comprimento da lateral de um dos quadrados em milímetros. Anote este valor. Ele é o elo entre as
+          unidades de pixel da imagem e as unidades do mundo real, dando escala à nossa calibração.</li>
+      </ol>
+
+      <div class="best-practices">
+        <p class="h4">Boas Práticas para o Padrão de Calibração</p>
         <ul>
-            <li><strong>Distorção em Barril (Barrel Distortion):</strong> As linhas retas parecem se curvar para fora, como as aduelas de um barril. Comum em lentes grande-angulares.</li>
-            <li><strong>Distorção em Almofada (Pincushion Distortion):</strong> As linhas retas parecem se curvar para dentro, em direção ao centro. Comum em lentes teleobjetivas.</li>
+          <li><b>Impressão de Qualidade:</b> Use uma impressora a laser em papel fosco (matte) para evitar reflexos e
+            garantir bordas nítidas.</li>
+          <li><b>Sem Escalonamento:</b> Ao imprimir o PDF, certifique-se de que a opção "Ajustar à página" ou "Fit to
+            Page" esteja <strong>desmarcada</strong>. A impressão deve ser em escala de 100% para que a medida do
+            quadrado seja precisa.</li>
+          <li><b>Superfície Rígida e Plana:</b> Cole a folha impressa em uma superfície perfeitamente plana e rígida,
+            como uma placa de espuma, um pedaço de acrílico ou uma prancheta. Qualquer curvatura no papel introduzirá
+            erros significativos na calibração.</li>
         </ul>
+      </div>
 
-        <p>A distorção radial é modelada por uma série de polinômios, onde $(x_{ideal}, y_{ideal})$ são as coordenadas do ponto sem distorção e $r^2 = x_{ideal}^2 + y_{ideal}^2$. A OpenCV usa os coeficientes $k_1, k_2, k_3$ para modelá-la:</p>
-        $$\begin{align}
-        x_{distorcida} &= x_{ideal} (1 + k_1 r^2 + k_2 r^4 + k_3 r^6) \\
-        y_{distorcida} &= y_{ideal} (1 + k_1 r^2 + k_2 r^4 + k_3 r^6)
-        \end{align}$$
-    </li>
-    <li><p><strong>Distorção Tangencial:</strong> Ocorre quando a lente não está perfeitamente paralela ao plano do sensor da câmera. Isso causa um efeito de inclinação ou estiramento na imagem. É modelada pelos coeficientes $p_1$ e $p_2$:</p>
-        $$\begin{align}
-        x_{distorcida} &= x_{ideal} + [2 p_1 x_{ideal} y_{ideal} + p_2(r^2 + 2x_{ideal}^2)] \\
-        y_{distorcida} &= y_{ideal} + [p_1(r^2 + 2y_{ideal}^2) + 2 p_2 x_{ideal} y_{ideal}]
-        \end{align}$$
-    </li>
-</ul>
+      <p class="py-1">Com o ambiente e as ferramentas preparados, podemos iniciar os experimentos.</p>
 
-<p>O processo de calibração da OpenCV estima esses cinco coeficientes de distorção e os retorna como um vetor: <strong>`dist`</strong> $= (k_1, k_2, p_1, p_2, k_3)$. Com esses coeficientes, podemos "desdistorcer" matematicamente as imagens, fazendo com que elas se aproximem do modelo ideal da câmera pinhole.</p>
+      <p class="h4"><b>2.2. Experimento A: Calibração com Imagens de Exemplo</b></p>
 
-<h2>3. Procedimentos Experimentais: Um Guia Passo a Passo</h2>
+      <p class="py-1">Este primeiro experimento utiliza um conjunto de imagens fornecidas para familiarizar-se com o
+        processo de calibração e verificar se o script está funcionando corretamente. Assumimos que você possui o script
+        <code>L2_cal.py</code> e uma pasta com imagens de exemplo.
+      </p>
 
-<p>Esta seção é o coração do relatório, funcionando como um tutorial detalhado para replicar todos os experimentos. Cada passo será explicado minuciosamente, com blocos de código comentados e dicas práticas para garantir que mesmo um iniciante possa obter resultados bem-sucedidos.</p>
+      <p class="h4">2.2.1. Análise do Código <code>L2_cal.py</code></p>
 
-<h4>3.1.4. O Padrão de Calibração (Tabuleiro de Xadrez)</h4>
+      <p class="py-1">O script <code>L2_cal.py</code> realiza a calibração com base em um conjunto de imagens de um
+        tabuleiro de xadrez. Abaixo está uma versão comentada do código, explicando cada etapa fundamental.</p>
 
-<p>A precisão da calibração digital depende diretamente da qualidade do padrão físico utilizado. Usaremos um tabuleiro de xadrez por ser um padrão de alto contraste com cantos facilmente detectáveis.</p>
-
-<ol>
-    <li><strong>Obtenha o Padrão:</strong> Baixe um padrão de tabuleiro de xadrez em formato PDF de alta resolução. Um padrão com um número assimétrico de quadrados (por exemplo, 9x7 quadrados) é frequentemente recomendado para evitar ambiguidades na orientação. Um bom recurso é este <a href="https://www.mrpt.org/downloads/camera-calibration-checker-board_9x7.pdf"><strong>padrão A4 com 9x7 quadrados de 20mm</strong></a>.</li>
-    <li><strong>Meça o Tamanho do Quadrado:</strong> Após imprimir, use uma régua ou paquímetro de precisão para medir o comprimento da lateral de um dos quadrados em milímetros. Anote este valor. Ele é o elo entre as unidades de pixel da imagem e as unidades do mundo real, dando escala à nossa calibração.</li>
-</ol>
-
-<div class="best-practices">
-    <h4>Boas Práticas para o Padrão de Calibração</h4>
-    <ul>
-        <li><b>Impressão de Qualidade:</b> Use uma impressora a laser em papel fosco (matte) para evitar reflexos e garantir bordas nítidas.</li>
-        <li><b>Sem Escalonamento:</b> Ao imprimir o PDF, certifique-se de que a opção "Ajustar à página" ou "Fit to Page" esteja <strong>desmarcada</strong>. A impressão deve ser em escala de 100% para que a medida do quadrado seja precisa.</li>
-        <li><b>Superfície Rígida e Plana:</b> Cole a folha impressa em uma superfície perfeitamente plana e rígida, como uma placa de espuma, um pedaço de acrílico ou uma prancheta. Qualquer curvatura no papel introduzirá erros significativos na calibração.</li>
-    </ul>
-</div>
-
-<p>Com o ambiente e as ferramentas preparados, podemos iniciar os experimentos.</p>
-
-
-<h3>3.2. Experimento A: Calibração com Imagens de Exemplo</h3>
-
-<p>Este primeiro experimento utiliza um conjunto de imagens fornecidas para familiarizar-se com o processo de calibração e verificar se o script está funcionando corretamente. Assumimos que você possui o script <code>L2_cal.py</code> e uma pasta com imagens de exemplo.</p>
-
-<h4>3.2.1. Análise do Código <code>L2_cal.py</code></h4>
-
-<p>O script <code>L2_cal.py</code> realiza a calibração com base em um conjunto de imagens de um tabuleiro de xadrez. Abaixo está uma versão comentada do código, explicando cada etapa fundamental.</p>
-
-<pre><code class="language-python"># L2_cal.py - Script de Calibração de Câmera
+      <div class="d-flex justify-content-center">
+        <figure>
+          <pre><code class="language-python"># L2_cal.py - Script de Calibração de Câmera
 import numpy as np
 import cv2 as cv
 import glob
@@ -340,140 +436,189 @@ for i in range(len(objpoints)):
     mean_error += error
 
 print(f"\nErro total médio de reprojeção: {mean_error / len(objpoints)}")
-</code></pre>
+  </code></pre>
+          <figcaption class="text-center"><i>Código 1</i>: Código do arquivo <code class="text-black">L2_cal.py</code>
+          </figcaption>
+        </figure>
+      </div>
 
-<p>Em resumo, o código <code>L2_cal.py</code> realiza a calibração de uma câmera a partir de imagens de um padrão de tabuleiro de xadrez. Inicialmente, o código define o tamanho do tabuleiro (6x8 quadrados) e critérios de precisão para o refinamento dos cantos detectados. São criados vetores para armazenar os pontos 3D do mundo real e os pontos 2D detectados nas imagens.</p>
+      <p class="py-1">Em resumo, o código <code>L2_cal.py</code> realiza a calibração de uma câmera a partir de
+        imagens de um padrão de tabuleiro de xadrez. Inicialmente, o código define o tamanho do tabuleiro (6x8
+        quadrados) e critérios de precisão para o refinamento dos cantos detectados. São criados vetores para armazenar
+        os pontos 3D do mundo real e os pontos 2D detectados nas imagens.</p>
 
-<p>O padrão de pontos 3D (objpoints) é gerado assumindo que o tabuleiro está no plano Z=0. Em seguida, o programa lê todas as imagens <code>.jpg</code> do diretório atual e tenta localizar os cantos do tabuleiro de xadrez em cada uma delas usando a função <code>cv2.findChessboardCorners</code>. Caso os cantos sejam detectados com sucesso, suas coordenadas são refinadas com <code>cv2.cornerSubPix</code>, armazenadas e sobrepostas na imagem para visualização.</p>
+      <p class="py-1">O padrão de pontos 3D (objpoints) é gerado assumindo que o tabuleiro está no plano Z=0. Em
+        seguida, o programa lê todas as imagens <code>.jpg</code> do diretório atual e tenta localizar os cantos do
+        tabuleiro de xadrez em cada uma delas usando a função <code>cv2.findChessboardCorners</code>. Caso os cantos
+        sejam detectados com sucesso, suas coordenadas são refinadas com <code>cv2.cornerSubPix</code>, armazenadas e
+        sobrepostas na imagem para visualização.
+      </p>
 
-<p>Após processar todas as imagens, o código utiliza a função <code>cv2.calibrateCamera</code> para realizar a calibração, obtendo como resultado a matriz intrínseca da câmera (mtx), os coeficientes de distorção da lente (dist), e os vetores de rotação (rvecs) e translação (tvecs) para cada imagem utilizada. Por fim, os parâmetros calibrados são impressos no terminal.</p>
+      <p class="py-1">Após processar todas as imagens, o código utiliza a função <code>cv2.calibrateCamera</code>
+        para realizar a calibração, obtendo como resultado a matriz intrínseca da câmera (mtx), os coeficientes de
+        distorção da lente (dist), e os vetores de rotação (rvecs) e translação (tvecs) para cada imagem utilizada. Por
+        fim, os parâmetros calibrados são impressos no terminal.</p>
 
-<h4>3.2.2. Execução e Análise dos Resultados</h4>
+      <p class="h4">2.2.2. Execução e Análise dos Resultados</p>
 
-<ol>
-    <li><strong>Organize os arquivos:</strong> Crie uma pasta <code>images_example</code> dentro do seu diretório <code>lab2_calibracao</code> e coloque as imagens de exemplo nela. Certifique-se de que o script <code>L2_cal.py</code> esteja no diretório <code>lab2_calibracao</code>.</li>
-    <li><strong>Execute o script:</strong> Com o ambiente virtual ativado, execute o comando:
-        <pre><code class="language-bash">python3 L2_cal.py
-</code></pre>
-    </li>
-    <li><strong>Resultados:</strong> O script exibirá os parâmetros calculados no terminal. Os resultados devem ser semelhantes aos apresentados na Tabela 2 (os valores exatos podem variar ligeiramente dependendo da versão da OpenCV).</li>
-</ol>
+      <ol>
+        <li><strong>Organize os arquivos:</strong> Crie uma pasta <code>images_example</code> dentro do seu
+          diretório <code>lab2_calibracao</code> e coloque as imagens de exemplo nela. Certifique-se de que o script
+          <code>L2_cal.py</code> esteja no diretório <code>lab2_calibracao</code>.
+        </li>
+        <li><strong>Execute o script:</strong> Com o ambiente virtual ativado, execute o comando:
+          <pre><code class="language-bash">python3 L2_cal.py</code></pre>
+        </li>
+        <li><strong>Resultados:</strong> O script exibirá os parâmetros calculados no terminal. Os resultados devem
+          ser semelhantes aos apresentados na Tabela 2 (os valores exatos podem variar ligeiramente dependendo da versão
+          da OpenCV).</li>
+      </ol>
 
-<p>Segue abaixo as imagens utilizadas para o experimento:</p>
+      <p class="py-1">Segue abaixo as imagens utilizadas para o experimento:</p>
 
-<div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
-  
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/left01.jpg" alt="Imagem 1" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/left02.jpg" alt="Imagem 2" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/left01.jpg" alt="Imagem 1"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/left03.jpg" alt="Imagem 3" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/left02.jpg" alt="Imagem 2"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/left04.jpg" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/left03.jpg" alt="Imagem 3"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/left05.jpg" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/left04.jpg" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/left06.jpg" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/left05.jpg" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/left07.jpg" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/left06.jpg" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/left08.jpg" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/left07.jpg" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/left09.jpg" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/left08.jpg" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/left11.jpg" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/left09.jpg" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/left12.jpg" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/left11.jpg" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/left13.jpg" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/left12.jpg" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/left14.jpg" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/left13.jpg" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-</div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/left14.jpg" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-<figcaption>Os resultados se encontram mais a frente, no tópico <strong>Análise de Resultados</strong></figcaption>
+      </div>
 
-<table>
-    <thead>
-        <tr>
+      <figcaption>Os resultados se encontram mais a frente, no tópico <strong>Análise de Resultados</strong>
+      </figcaption>
+
+      <table>
+        <thead>
+          <tr>
             <th style="text-align: left;">Parâmetro</th>
             <th style="text-align: left;">Significado</th>
             <th style="text-align: left;">Valor Obtido (Exemplo)</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
             <td style="text-align: left;"><strong>Matriz K</strong></td>
             <td style="text-align: left;">Matriz intrínseca da câmera.</td>
-            <td style="text-align: left;">$$\begin{bmatrix} f_x & s & c_x \\ 0 & f_y & c_y \\ 0 & 0 & 1 \end{bmatrix} = \begin{bmatrix} 1000 & 0 & 640 \\ 0 & 1000 & 360 \\ 0 & 0 & 1 \end{bmatrix}$$</td>
-        </tr>
-        <tr>
+            <td style="text-align: left;">$$\begin{bmatrix} f_x & s & c_x \\ 0 & f_y & c_y \\ 0 & 0 & 1
+              \end{bmatrix} =
+              \begin{bmatrix} 1000 & 0 & 640 \\ 0 & 1000 & 360 \\ 0 & 0 & 1 \end{bmatrix}$$</td>
+          </tr>
+          <tr>
             <td style="text-align: left;"><strong>Vetor `dist`</strong></td>
             <td style="text-align: left;">Coeficientes de distorção $(k_1, k_2, p_1, p_2, k_3)$.</td>
             <td style="text-align: left;">$$\begin{bmatrix} -0.2 & 0.1 & 0 & 0 & 0 \end{bmatrix}$$</td>
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <td style="text-align: left;"><strong>Matrizes `R`</strong></td>
-            <td style="text-align: left;">Matrizes de rotação (uma para cada imagem). Convertidas a partir dos `rvecs`.</td>
+            <td style="text-align: left;">Matrizes de rotação (uma para cada imagem). Convertidas a partir dos
+              `rvecs`.
+            </td>
             <td style="text-align: left;">(Um conjunto de matrizes 3x3)</td>
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <td style="text-align: left;"><strong>Vetores `t`</strong></td>
             <td style="text-align: left;">Vetores de translação (um para cada imagem, `tvecs`).</td>
             <td style="text-align: left;">(Um conjunto de vetores 3x1)</td>
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <td style="text-align: left;"><strong>Erro de Reprojeção</strong></td>
-            <td style="text-align: left;">Média da distância (em pixels) entre os cantos detectados e os cantos reprojetados.</td>
+            <td style="text-align: left;">Média da distância (em pixels) entre os cantos detectados e os cantos
+              reprojetados.</td>
             <td style="text-align: left;"><code>~0.05</code> pixels</td>
-        </tr>
-    </tbody>
-</table>
-<figcaption>Tabela 1: Parâmetros da Calibração</figcaption>
+          </tr>
+        </tbody>
+      </table>
+      <figcaption>Tabela 1: Parâmetros da Calibração</figcaption>
 
-<p><strong>Análise dos Parâmetros:</strong></p>
-<ul>
-    <li><strong>Matriz K:</strong> Contém os parâmetros intrínsecos da câmera de exemplo, como as distâncias focais ($f_x, f_y$) e o ponto principal ($c_x, c_y$).</li>
-    <li><strong>Vetor `dist`:</strong> Modela as imperfeições da lente da câmera de exemplo.</li>
-    <li><strong>Vetores `R` e `t` (`rvecs` e `tvecs`):</strong> Representam a pose (posição e orientação) do tabuleiro de xadrez em relação à câmera para cada uma das imagens de exemplo. Como cada foto foi tirada de um ponto de vista diferente, há um par `(R, t)` único para cada uma.</li>
-    <li><strong>Erro de Reprojeção:</strong> Um valor baixo (tipicamente < 0.5 pixels) indica que o modelo matemático calculado se ajusta muito bem aos dados (pontos) das imagens de calibração.</li>
-</ul>
+      <p class="py-1"><strong>Análise dos Parâmetros:</strong></p>
+      <ul>
+        <li><strong>Matriz K:</strong> Contém os parâmetros intrínsecos da câmera de exemplo, como as distâncias
+          focais ($f_x, f_y$) e o ponto principal ($c_x, c_y$).</li>
+        <li><strong>Vetor `dist`:</strong> Modela as imperfeições da lente da câmera de exemplo.</li>
+        <li><strong>Vetores `R` e `t` (`rvecs` e `tvecs`):</strong> Representam a pose (posição e orientação) do
+          tabuleiro de xadrez em relação à câmera para cada uma das imagens de exemplo. Como cada foto foi tirada de um
+          ponto de vista diferente, há um par `(R, t)` único para cada uma.</li>
+        <li><strong>Erro de Reprojeção:</strong> Um valor baixo (tipicamente < 0.5 pixels) indica que o modelo
+            matemático calculado se ajusta muito bem aos dados (pontos) das imagens de calibração.</li>
+      </ul>
 
-<h3>3.3. Experimento B: Calibrando sua Própria Webcam</h3>
+      <p class="h4"><b>2.3. Experimento B: Calibrando sua Própria Webcam</b></p>
 
-<p>Agora, aplicaremos o mesmo processo para calibrar uma câmera pessoal, como a webcam do seu notebook. Isso envolve duas etapas: capturar as imagens de calibração e, em seguida, executar o script de calibração nelas. (É importante salientar que uma modificação no programa foi necessária, porque o tabuleiro utilizado nas imagens de amostra tem tamanho de 6x9, enquanto que o tabuleiro utilizado no laboratório tem tamanho 6x8)</p>
+      <p class="py-1">Agora, aplicaremos o mesmo processo para calibrar uma câmera pessoal, como a webcam do seu
+        notebook. Isso envolve duas etapas: capturar as imagens de calibração e, em seguida, executar o script de
+        calibração nelas. (É importante salientar que uma modificação no programa foi necessária, porque o tabuleiro
+        utilizado nas imagens de amostra tem tamanho de 6x9, enquanto que o tabuleiro utilizado no laboratório tem
+        tamanho 6x8)</p>
 
-<h4>3.3.1. Captura de Imagens com `L2_chess.py`</h4>
+      <p class="h4">2.3.1. Captura de Imagens com `L2_chess.py`</p>
 
-<p>O script a seguir (<code>L2_chess.py</code>) abre a webcam, exibe o vídeo em tempo real e permite salvar um quadro (uma imagem) pressionando a tecla ESPAÇO.</p>
+      <p class="py-1">O script a seguir (<code>L2_chess.py</code>) abre a webcam, exibe o vídeo em tempo real e permite
+        salvar um quadro (uma imagem) pressionando a tecla ESPAÇO.</p>
 
-<pre><code class="language-python"># L2_chess.py - Script para Captura de Imagens de Calibração
+      <div class="d-flex justify-content-center">
+        <figure>
+          <pre><code class="language-python"># L2_chess.py - Script para Captura de Imagens de Calibração
 import cv2 as cv
 import os
 
@@ -521,173 +666,229 @@ while True:
 # Libera a captura e fecha todas as janelas
 cap.release()
 cv.destroyAllWindows()
-</code></pre>
+          </code></pre>
+          <figcaption class="text-center"><i>Código 2</i>: Código do arquivo <code class="text-black">L2_chess.py</code>
+          </figcaption>
+        </figure>
+      </div>
 
-<div class="best-practices">
-    <h4>Guia de Boas Práticas para Captura de Imagens</h4>
-    <p>Para obter uma calibração de alta qualidade, a diversidade e a qualidade das imagens de entrada são fundamentais. Siga estas dicas ao capturar suas 10 a 15 imagens:</p>
-    <ol>
-        <li><strong>Cobertura Completa do Quadro:</strong> Certifique-se de que o tabuleiro de xadrez apareça em todas as áreas da visão da câmera. Posicione-o no centro, nos cantos superior esquerdo, superior direito, inferior esquerdo, inferior direito e nas bordas. A detecção de distorção depende fortemente das informações dos cantos da imagem.</li>
-        <li><strong>Variação de Ângulo e Perspectiva:</strong> Não fotografe o tabuleiro apenas de frente. Incline-o para cima, para baixo, para a esquerda e para a direita em ângulos de até 45 graus. Essa observação do padrão em perspectiva (foreshortening) é crucial para que o algoritmo estime corretamente a distância focal.</li>
-        <li><strong>Variação de Distância:</strong> Capture imagens com o tabuleiro mais perto e mais longe da câmera, preenchendo uma boa parte do campo de visão.</li>
-        <li><strong>Foco Fixo:</strong> Se o software da sua webcam permitir, desative o foco automático (autofocus). O foco deve permanecer constante durante toda a sessão de captura. Alterar o foco altera os parâmetros intrínsecos.</li>
-        <li><strong>Iluminação Uniforme:</strong> Use uma fonte de luz brilhante e difusa. Evite sombras fortes sobre o tabuleiro e reflexos de luz (brilho especular), pois eles podem impedir a detecção correta dos cantos.</li>
-        <li><strong>Estabilidade:</strong> Mantenha o tabuleiro perfeitamente imóvel no momento de cada captura. Pressionar a tecla ESPAÇO e mover o tabuleiro ao mesmo tempo resultará em imagens borradas e inúteis.</li>
-    </ol>
-</div>
+      <div class="best-practices">
+        <p class="h4">Guia de Boas Práticas para Captura de Imagens</p>
+        <p class="py-1">Para obter uma calibração de alta qualidade, a diversidade e a qualidade das imagens de entrada
+          são fundamentais. Siga estas dicas ao capturar suas 10 a 15 imagens:</p>
 
-<h4>3.3.2. Calibração da Webcam</h4>
+        <ol>
+          <li><strong>Cobertura Completa do Quadro:</strong> Certifique-se de que o tabuleiro de xadrez apareça em
+            todas as áreas da visão da câmera. Posicione-o no centro, nos cantos superior esquerdo, superior direito,
+            inferior esquerdo, inferior direito e nas bordas. A detecção de distorção depende fortemente das informações
+            dos cantos da imagem.</li>
+          <li><strong>Variação de Ângulo e Perspectiva:</strong> Não fotografe o tabuleiro apenas de frente.
+            Incline-o para cima, para baixo, para a esquerda e para a direita em ângulos de até 45 graus. Essa
+            observação do padrão em perspectiva (foreshortening) é crucial para que o algoritmo estime corretamente a
+            distância focal.</li>
+          <li><strong>Variação de Distância:</strong> Capture imagens com o tabuleiro mais perto e mais longe da
+            câmera, preenchendo uma boa parte do campo de visão.</li>
+          <li><strong>Foco Fixo:</strong> Se o software da sua webcam permitir, desative o foco automático
+            (autofocus). O foco deve permanecer constante durante toda a sessão de captura. Alterar o foco altera os
+            parâmetros intrínsecos.</li>
+          <li><strong>Iluminação Uniforme:</strong> Use uma fonte de luz brilhante e difusa. Evite sombras fortes
+            sobre o tabuleiro e reflexos de luz (brilho especular), pois eles podem impedir a detecção correta dos
+            cantos.
+          </li>
+          <li><strong>Estabilidade:</strong> Mantenha o tabuleiro perfeitamente imóvel no momento de cada captura.
+            Pressionar a tecla ESPAÇO e mover o tabuleiro ao mesmo tempo resultará em imagens borradas e inúteis.
+          </li>
+        </ol>
+      </div>
 
-<ol>
-    <li><strong>Execute a Captura:</strong> Rode <code>python3 L2_chess.py</code> e capture entre 10 e 15 imagens de alta qualidade seguindo as boas práticas acima.</li>
-</ol>
+      <p class="h4">2.3.2. Calibração da Webcam</p>
 
-<p>Segue abaixo as imagens utilizadas para o experimento:</p>
+      <ol>
+        <li><strong>Execute a Captura:</strong> Rode <code>python3 L2_chess.py</code> e capture entre 10 e 15
+          imagens de alta qualidade seguindo as boas práticas acima.</li>
+      </ol>
 
-<div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
-  
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/Sauron_camera_padrao_frm1.jpg" alt="Imagem 1" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+      <p class="py-1">Segue abaixo as imagens utilizadas para o experimento:</p>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/Sauron_camera_padrao_frm10.jpg" alt="Imagem 2" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/Sauron_camera_padrao_frm11.jpg" alt="Imagem 3" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/Sauron_camera_padrao_frm1.jpg" alt="Imagem 1"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/Sauron_camera_padrao_frm12.jpg" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/Sauron_camera_padrao_frm10.jpg" alt="Imagem 2"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/Sauron_camera_padrao_frm13.jpg" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/Sauron_camera_padrao_frm11.jpg" alt="Imagem 3"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/Sauron_camera_padrao_frm15.jpg" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/Sauron_camera_padrao_frm12.jpg" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/Sauron_camera_padrao_frm18.jpg" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/Sauron_camera_padrao_frm13.jpg" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/Sauron_camera_padrao_frm19.jpg" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/Sauron_camera_padrao_frm15.jpg" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/Sauron_camera_padrao_frm3.jpg" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/Sauron_camera_padrao_frm18.jpg" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/Sauron_camera_padrao_frm5.jpg" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/Sauron_camera_padrao_frm19.jpg" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/Sauron_camera_padrao_frm6.jpg" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/Sauron_camera_padrao_frm3.jpg" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/Sauron_camera_padrao_frm8.jpg" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/Sauron_camera_padrao_frm5.jpg" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/Sauron_camera_padrao_frm9.jpg" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/Sauron_camera_padrao_frm6.jpg" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-</div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/Sauron_camera_padrao_frm8.jpg" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-<figcaption>Os resultados se encontram mais a frente, no tópico <strong>Análise de Resultados</strong></figcaption>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/Sauron_camera_padrao_frm9.jpg" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-<p>Após capturar as imagens, rode novamente o programa <code>L2_cal.py</code> para calibrar a câmera novamente.
+      </div>
 
-<h3>3.4. Experimento C: Análise Comparativa com uma Segunda Câmera</h3>
+      <figcaption>Os resultados se encontram mais a frente, no tópico <strong>Análise de Resultados</strong>
+      </figcaption>
 
-<p>O objetivo deste experimento é reforçar a ideia de que os parâmetros de calibração são únicos para cada dispositivo físico.</p>
+      <p class="py-1">Após capturar as imagens, rode novamente o programa <code>L2_cal.py</code> para calibrar a câmera
+        novamente.</p>
 
-<ol>
-    <li><strong>Repita o Processo:</strong> Use uma segunda câmera (no experimento, foi utilizado uma outra câmera fornecida no laboratório, esta possui distorção de imagem superior do que a câmera utilizada nas partes A e B) e repita todo o processo do Experimento B:
-        <ul>
+      <p class="h4"><b>2.4. Experimento C: Análise Comparativa com uma Segunda Câmera</b></p>
+
+      <p class="py-1">O objetivo deste experimento é reforçar a ideia de que os parâmetros de calibração são únicos para
+        cada dispositivo físico.</p>
+
+      <ol>
+        <li><strong>Repita o Processo:</strong> Use uma segunda câmera (no experimento, foi utilizado uma outra
+          câmera fornecida no laboratório, esta possui distorção de imagem superior do que a câmera utilizada nas partes
+          A e B) e repita todo o processo do Experimento B:
+          <ul>
             <li>Capture de 10 a 15 imagens de alta qualidade do tabuleiro de xadrez.</li>
             <li>Execute o script de calibração nessas novas imagens.</li>
-        </ul>
-    </li>
-    <li><strong>Resultados:</strong> Anote os parâmetros obtidos para a segunda câmera.</li>
-</ol>
+          </ul>
+        </li>
+        <li><strong>Resultados:</strong> Anote os parâmetros obtidos para a segunda câmera.</li>
+      </ol>
 
-<div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
-  
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/Sauron_camera_pessoal_frm9.jpg" alt="Imagem 1" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/Sauron_camera_pessoal_frm5.jpg" alt="Imagem 2" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/Sauron_camera_pessoal_frm9.jpg" alt="Imagem 1"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/Sauron_camera_pessoal_frm1.jpg" alt="Imagem 3" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/Sauron_camera_pessoal_frm5.jpg" alt="Imagem 2"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/Sauron_camera_pessoal_frm10.jpg" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/Sauron_camera_pessoal_frm1.jpg" alt="Imagem 3"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/Sauron_camera_pessoal_frm11.jpg" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/Sauron_camera_pessoal_frm10.jpg" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/Sauron_camera_pessoal_frm12.jpg" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/Sauron_camera_pessoal_frm11.jpg" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/Sauron_camera_pessoal_frm13.jpg" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/Sauron_camera_pessoal_frm12.jpg" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/Sauron_camera_pessoal_frm14.jpg" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/Sauron_camera_pessoal_frm13.jpg" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/Sauron_camera_pessoal_frm2.jpg" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/Sauron_camera_pessoal_frm14.jpg" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/Sauron_camera_pessoal_frm3.jpg" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/Sauron_camera_pessoal_frm2.jpg" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/Sauron_camera_pessoal_frm6.jpg" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/Sauron_camera_pessoal_frm3.jpg" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/Sauron_camera_pessoal_frm4.jpg" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/Sauron_camera_pessoal_frm6.jpg" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/Sauron_camera_pessoal_frm8.jpg" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/Sauron_camera_pessoal_frm4.jpg" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-</div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/Sauron_camera_pessoal_frm8.jpg" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-<figcaption>Os resultados se encontram mais a frente, no tópico <strong>Análise de Resultados</strong></figcaption>
+      </div>
 
+      <figcaption>Os resultados se encontram mais a frente, no tópico <strong>Análise de Resultados</strong>
+      </figcaption>
 
+      <p class="h4"><b>2.5. Experimento D: Correção de Distorção</b></p>
 
+      <p class="py-1">Com as câmeras calibradas, agora podemos usar os parâmetros obtidos para o seu propósito mais
+        visível: corrigir a distorção em novas imagens. Para este experimento, capture algumas imagens coloridas (de
+        qualquer cena, não apenas do tabuleiro) com uma das suas câmeras calibradas.</p>
 
-<h3>3.5. Experimento D: Correção de Distorção</h3>
+      <p class="h4">2.5.1. Método 1: Correção Direta com <code>cv.undistort()</code></p>
 
-<p>Com as câmeras calibradas, agora podemos usar os parâmetros obtidos para o seu propósito mais visível: corrigir a distorção em novas imagens. Para este experimento, capture algumas imagens coloridas (de qualquer cena, não apenas do tabuleiro) com uma das suas câmeras calibradas.</p>
+      <p class="py-1">Para corrigir a imagem utilizando a função <code>cv.undistort()</code> foi elaborado o seguinte
+        programa:
+      </p>
 
-<h4>3.5.1. Método 1: Correção Direta com <code>cv.undistort()</code></h4>
-
-<p>Para corrigir a imagem utilizando a função <code>cv.undistort()</code> foi elaborado o seguinte programa:</p>
-
-<pre><code class="language-python">
+      <div class="d-flex justify-content-center">
+        <figure>
+          <pre><code class="language-python">
 import cv2  # Biblioteca OpenCV para processamento de imagem e visão computacional
 import numpy as np  # Biblioteca NumPy para manipulação de matrizes
 import os
@@ -778,22 +979,45 @@ for fname in images:
 
     # Salva a imagem corrigida com o prefixo 'undistort_'
     cv2.imwrite('unidstort_' + fname, dst)
-</code></pre>
+  </code></pre>
+          <figcaption class="text-center"><i>Código 3</i>: Correção Direta com <code>cv.undistort()</code>
+          </figcaption>
+        </figure>
+      </div>
 
-<p>A função <code>cv2.undistort()</code> serve para corrigir as deformações que aparecem nas fotos tiradas por uma câmera, principalmente aquelas causadas pelas lentes. Muitas vezes, quando usamos uma câmera, principalmente se ela for de lente grande-angular ou de qualidade mais simples, as fotos podem sair um pouco "tortas", com linhas retas aparecendo curvas, como acontece no famoso efeito olho de peixe.</p>
+      <p class="py-1">A função <code>cv2.undistort()</code> serve para corrigir as deformações que aparecem nas fotos
+        tiradas por uma câmera, principalmente aquelas causadas pelas lentes. Muitas vezes, quando usamos uma câmera,
+        principalmente se ela for de lente grande-angular ou de qualidade mais simples, as fotos podem sair um pouco
+        "tortas", com linhas retas aparecendo curvas, como acontece no famoso efeito olho de peixe.</p>
 
-<h4>3.5.2. Método 2: Correção por Remapeamento (<code>cv.remap()</code>)</h4>
+      <p class="h4">2.5.2. Método 2: Correção por Remapeamento (<code>cv.remap()</code>)</p>
 
-<p>Este método é mais complexo, mas revela o mecanismo por trás da correção de distorção. A função <code>cv2.undistort()</code> é, na verdade, um atalho conveniente para este processo de duas etapas.</p>
+      <p class="py-1">Este método é mais complexo, mas revela o mecanismo por trás da correção de distorção. A função
+        <code>cv2.undistort()</code> é, na verdade, um atalho conveniente para este processo de duas etapas.
+      </p>
 
-<p>O processo de remapeamento é uma operação de "puxar" (pull). Em vez de pegar cada pixel da imagem original e "empurrá-lo" para sua nova posição (o que poderia criar buracos), ele percorre cada pixel da imagem de <em>destino</em> (que inicialmente está em branco) e pergunta: "De qual pixel da imagem de <em>origem</em> eu devo puxar a cor?".</p>
+      <p class="py-1">O processo de remapeamento é uma operação de "puxar" (pull). Em vez de pegar cada pixel da imagem
+        original e "empurrá-lo" para sua nova posição (o que poderia criar buracos), ele percorre cada pixel da imagem
+        de <em>destino</em> (que inicialmente está em branco) e pergunta: "De qual pixel da imagem de <em>origem</em>
+        eu devo puxar a cor?".
+      </p>
 
-<ol>
-    <li><strong><code>cv2.initUndistortRectifyMap()</code></strong>: Esta função faz o trabalho pesado. Para cada coordenada <code>(u_dst, v_dst)</code> na imagem de destino (corrigida), ela calcula a coordenada correspondente <code>(u_src, v_src)</code> na imagem de origem (distorcida). Ela armazena esses mapeamentos em duas matrizes, <code>map1</code> (para as coordenadas x) e <code>map2</code> (para as coordenadas y).</li>
-    <li><strong><code>cv2.remap()</code></strong>: Esta função simplesmente usa os mapas <code>map1</code> e <code>map2</code> para construir a imagem de destino. Para cada pixel, ela olha as coordenadas nos mapas e busca (puxa) o valor do pixel correspondente na imagem de origem, realizando uma interpolação para lidar com coordenadas não inteiras.</li>
-</ol>
-
-<pre><code class="language-python">import cv2  # Biblioteca OpenCV para visão computacional
+      <ol>
+        <li><strong><code>cv2.initUndistortRectifyMap()</code></strong>: Esta função faz o trabalho pesado. Para
+          cada coordenada <code>(u_dst, v_dst)</code> na imagem de destino (corrigida), ela calcula a coordenada
+          correspondente <code>(u_src, v_src)</code> na imagem de origem (distorcida). Ela armazena esses mapeamentos em
+          duas
+          matrizes, <code>map1</code> (para as coordenadas x) e <code>map2</code> (para as coordenadas y).
+        </li>
+        <li><strong><code>cv2.remap()</code></strong>: Esta função simplesmente usa os mapas <code>map1</code> e
+          <code>map2</code> para construir a imagem de destino. Para cada pixel, ela olha as coordenadas nos mapas e
+          busca (puxa) o valor do pixel correspondente na imagem de origem, realizando uma interpolação para lidar com
+          coordenadas não inteiras.
+        </li>
+      </ol>
+      <div class="d-flex justify-content-center">
+        <figure>
+          <pre><code class="language-python">import cv2  # Biblioteca OpenCV para visão computacional
 import numpy as np  # Biblioteca para manipulação de arrays e matrizes
 import glob  # Biblioteca para buscar arquivos em diretórios
 
@@ -883,92 +1107,115 @@ for fname in images:
 
     # Salva a imagem corrigida com o prefixo "remapping_"
     cv2.imwrite('remapping_' + fname, dst)
-
 </code></pre>
+          <figcaption class="text-center"><i>Código 4</i>: Correção Direta com
+            <code>cv2.initUndistortRectifyMap()</code>
+          </figcaption>
+        </figure>
+      </div>
+      <p><small>Os resultados se encontram mais a frente, no tópico <strong>Análise de Resultados</strong></small></p>
+      <hr>
+    </section>
+    <section class="pb-4">
+      <p class="h3"><b>3. Análise de Resultados</b></p>
 
-<figcaption>Os resultados se encontram mais a frente, no tópico <strong>Análise de Resultados</strong></figcaption>
+      <p class="py-1">Após a conclusão dos experimentos, é hora de sintetizar os resultados e extrair conclusões
+        mais profundas sobre o processo de calibração.</p>
 
-<h2>4. Análise de Resultados</h2>
+      <p class="h4"><b>3.1. Item A</b></p>
 
-<p>Após a conclusão dos experimentos, é hora de sintetizar os resultados e extrair conclusões mais profundas sobre o processo de calibração.</p>
+      <p class="py-1">As figuras apresentadas abaixo são o produto do processamento realizado pelo programa
+        L2_cal.py. Elas exibem, na ordem, os resultados dos parâmetros que foram calculados, juntamente com as análises
+        pertinentes a cada um.
+      </p>
 
-<h3>4.1. Item A</h3>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
 
-<p>As figuras apresentadas abaixo são o produto do processamento realizado pelo programa L2_cal.py. Elas exibem, na ordem, os resultados dos parâmetros que foram calculados, juntamente com as análises pertinentes a cada um.</p>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img01.png" alt="Imagem 1"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-<div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
-  
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img01.png" alt="Imagem 1" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img02.png" alt="Imagem 2"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img02.png" alt="Imagem 2" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img03.png" alt="Imagem 3"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img03.png" alt="Imagem 3" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img04.png" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img04.png" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img05.png" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img05.png" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img06.png" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img06.png" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img07.png" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img07.png" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img08.png" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img08.png" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img09.png" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img09.png" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img11.png" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img11.png" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img12.png" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img12.png" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img13.png" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img13.png" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img14.png" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img14.png" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+      </div>
 
-</div>
+      <p class="py-1">Abaixo, os resultados obtidos da calibração:</p>
 
-<p>Abaixo, os resultados obtidos da calibração:</p>
-
-<div style="font-family: monospace; background: #f4f4f4; padding: 15px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 20px; color: black;">
-    <h3 style="margin-top: 0; color: black;">Camera matrix :</h3>
-    <pre style="background: #fff; padding: 10px; border-radius: 5px; overflow-x: auto; color: black;">
+      <div
+        style="font-family: monospace; background: #f4f4f4; padding: 15px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 20px; color: black;">
+        <p class="h4">Camera matrix :</p>
+        <pre style="background: #fff; padding: 10px; border-radius: 5px; overflow-x: auto; color: black;">
 [[536.07345295   0.         342.37047283]
  [  0.         536.01636331 235.53687701]
  [  0.           0.           1.        ]]
     </pre>
 
-    <h3 style="color: black;">Dist :</h3>
-    <pre style="background: #fff; padding: 10px; border-radius: 5px; overflow-x: auto; color: black;">
+        <p class="h4">Dist :</p>
+        <pre style="background: #fff; padding: 10px; border-radius: 5px; overflow-x: auto; color: black;">
 [[-0.26509044 -0.04674186  0.00183301 -0.00031469  0.25231154]]
     </pre>
 
-    <h3 style="color: black;">rvecs :</h3>
-    <pre style="background: #fff; padding: 10px; border-radius: 5px; overflow-x: auto; color: black;">
+        <p class="h4">rvecs :</p>
+        <pre style="background: #fff; padding: 10px; border-radius: 5px; overflow-x: auto; color: black;">
 (array([[-0.08398729],
        [ 0.34802798],
        [-1.54244125]]), 
@@ -1010,8 +1257,9 @@ for fname in images:
        [-1.40740327]]))
     </pre>
 
-    <h3 style="color: black;">tvecs :</h3>
-    <pre style="background: #fff; padding: 10px; border-radius: 5px; overflow-x: auto; color: black;">
+        <p class="h4">tvecs :</p>
+
+        <pre style="background: #fff; padding: 10px; border-radius: 5px; overflow-x: auto; color: black;">
 (array([[-2.96218417],
        [ 0.57158932],
        [16.83013775]]), 
@@ -1052,115 +1300,172 @@ for fname in images:
        [ 1.61595404],
        [11.97222152]]))
     </pre>
-</div>
+      </div>
 
-<p><strong>Liste todos os parametros obtidos, colocando-os nas formas de matrizes e vetores (Matriz K, matriz R, vetor t, e dist ). Explique o significado de K, R, t, e dist</strong></p>
+      <p class="py-1"><strong>Liste todos os parametros obtidos, colocando-os nas formas de matrizes e vetores (Matriz
+          K, matriz R, vetor t, e dist ). Explique o significado de K, R, t, e dist</strong></p>
 
-<div style="font-family: Arial, sans-serif; line-height: 1.6; font-size: 14px;">
+      <div>
+        <p class="py-1">Durante o processo de calibração de câmera, diversos parâmetros fundamentais são obtidos, que
+          descrevem tanto as características internas do sistema óptico quanto a relação espacial entre a câmera e os
+          objetos observados. Entre os parâmetros obtidos estão a <strong>matriz K</strong>, o <strong>vetor de
+            distorção (dist)</strong>, as <strong>matrizes de rotação (R)</strong> e os <strong>vetores de translação
+            (t)</strong>.
+        </p>
 
-    <p>Durante o processo de calibração de câmera, diversos parâmetros fundamentais são obtidos, que descrevem tanto as características internas do sistema óptico quanto a relação espacial entre a câmera e os objetos observados. Entre os parâmetros obtidos estão a <strong>matriz K</strong>, o <strong>vetor de distorção (dist)</strong>, as <strong>matrizes de rotação (R)</strong> e os <strong>vetores de translação (t)</strong>.</p>
+        <p class="py-1">A <strong>matriz K</strong>, também chamada de <strong>matriz intrínseca da câmera</strong>,
+          descreve as propriedades internas do sistema óptico e do sensor. Ela é uma matriz 3x3 que contém, em suas
+          componentes, as distâncias focais da câmera expressas em pixels e as coordenadas do ponto principal (centro
+          óptico da imagem). A matriz tem a seguinte forma geral:</p>
 
-    <p>A <strong>matriz K</strong>, também chamada de <strong>matriz intrínseca da câmera</strong>, descreve as propriedades internas do sistema óptico e do sensor. Ela é uma matriz 3x3 que contém, em suas componentes, as distâncias focais da câmera expressas em pixels e as coordenadas do ponto principal (centro óptico da imagem). A matriz tem a seguinte forma geral:</p>
-
-    <div style="text-align: center;"><pre style="background-color: #f5f5f5; padding: 10px; border: 1px solid #ccc; display: inline-block; color: black;">
+        <div style="text-align: center;">
+          <pre
+            style="background-color: #f5f5f5; padding: 10px; border: 1px solid #ccc; display: inline-block; color: black;">
 K = [ fx   0  cx ]
     [  0  fy  cy ]
     [  0   0   1 ]
-    </pre></div>
+    </pre>
+        </div>
 
-    <p>Onde <em>fx</em> e <em>fy</em> correspondem às distâncias focais na direção horizontal e vertical, respectivamente, levando em conta o fator de escala dos pixels. Já <em>cx</em> e <em>cy</em> representam as coordenadas do centro da imagem no sistema de coordenadas da câmera, conhecido como ponto principal. Esses valores são essenciais para mapear pontos 3D do espaço real para coordenadas 2D no plano da imagem.</p>
+        <p class="py-1">Onde <em>fx</em> e <em>fy</em> correspondem às distâncias focais na direção horizontal e
+          vertical, respectivamente, levando em conta o fator de escala dos pixels. Já <em>cx</em> e <em>cy</em>
+          representam as coordenadas do centro da imagem no sistema de coordenadas da câmera, conhecido como ponto
+          principal. Esses valores são essenciais para mapear pontos 3D do espaço real para coordenadas 2D no plano da
+          imagem.</p>
 
-    <p>Além da matriz K, o processo de calibração também estima o <strong>vetor de distorção</strong>, normalmente representado por um vetor de cinco coeficientes, embora modelos mais complexos possam incluir mais termos. Esse vetor, denotado como <code>dist</code>, compensa as imperfeições das lentes da câmera, como <strong>distorção radial</strong> (que faz com que linhas retas aparentem curvas, especialmente nas bordas da imagem) e <strong>distorção tangencial</strong> (resultante de desalinhamentos nos elementos da lente). Esses coeficientes garantem que o modelo da câmera represente de forma mais precisa a formação das imagens capturadas.</p>
+        <p class="py-1">Além da matriz K, o processo de calibração também estima o <strong>vetor de distorção</strong>,
+          normalmente representado por um vetor de cinco coeficientes, embora modelos mais complexos possam incluir mais
+          termos. Esse vetor, denotado como <code>dist</code>, compensa as imperfeições das lentes da câmera, como
+          <strong>distorção radial</strong> (que faz com que linhas retas aparentem curvas, especialmente nas bordas da
+          imagem) e <strong>distorção tangencial</strong> (resultante de desalinhamentos nos elementos da lente). Esses
+          coeficientes garantem que o modelo da câmera represente de forma mais precisa a formação das imagens
+          capturadas.
+        </p>
 
-    <p>Outro conjunto importante de parâmetros são as <strong>matrizes de rotação</strong> e os <strong>vetores de translação</strong>, obtidos a partir dos vetores de rotação (<code>rvecs</code>) e translação (<code>tvecs</code>) calculados para cada imagem utilizada no processo de calibração. Esses parâmetros descrevem a <strong>pose do objeto de calibração em relação à câmera</strong>, ou seja, como o tabuleiro de xadrez (ou outro padrão utilizado) está orientado e posicionado no espaço tridimensional em relação ao sistema de captura de imagens.</p>
+        <p class="py-1">Outro conjunto importante de parâmetros são as <strong>matrizes de rotação</strong> e os
+          <strong>vetores de translação</strong>, obtidos a partir dos vetores de rotação (<code>rvecs</code>) e
+          translação (<code>tvecs</code>) calculados para cada imagem utilizada no processo de calibração. Esses
+          parâmetros descrevem a <strong>pose do objeto de calibração em relação à câmera</strong>, ou seja, como o
+          tabuleiro de xadrez (ou outro padrão utilizado) está orientado e posicionado no espaço tridimensional em
+          relação ao sistema de captura de imagens.
+        </p>
 
-    <p>Os vetores de rotação (<code>rvecs</code>) são inicialmente expressos no formato de vetor de Rodrigues e, posteriormente, podem ser convertidos em <strong>matrizes de rotação 3x3</strong>, denotadas como <strong>R</strong>, que descrevem a orientação do objeto. Já os vetores de translação, <strong>t</strong>, são vetores 3x1 que indicam o deslocamento do objeto em relação à origem do sistema de coordenadas da câmera.</p>
+        <p class="py-1">Os vetores de rotação (<code>rvecs</code>) são inicialmente expressos no formato de vetor de
+          Rodrigues e, posteriormente, podem ser convertidos em <strong>matrizes de rotação 3x3</strong>, denotadas como
+          <strong>R</strong>, que descrevem a orientação do objeto. Já os vetores de translação, <strong>t</strong>,
+          são vetores 3x1 que indicam o deslocamento do objeto em relação à origem do sistema de coordenadas da câmera.
+        </p>
 
-    <p>Por fim, o <strong>erro de reprojeção</strong> é calculado como uma medida quantitativa da qualidade da calibração. Ele representa a média da distância, geralmente expressa em pixels, entre as posições reais dos pontos detectados nas imagens e as posições onde esses pontos seriam projetados de acordo com o modelo matemático da câmera. Um erro de reprojeção baixo, geralmente inferior a 0.5 pixels, indica que o modelo encontrado representa com boa precisão o comportamento óptico e geométrico da câmera, validando assim o processo de calibração.</p>
+        <p class="py-1">Por fim, o <strong>erro de reprojeção</strong> é calculado como uma medida quantitativa da
+          qualidade da calibração. Ele representa a média da distância, geralmente expressa em pixels, entre as posições
+          reais dos pontos detectados nas imagens e as posições onde esses pontos seriam projetados de acordo com o
+          modelo matemático da câmera. Um erro de reprojeção baixo, geralmente inferior a 0.5 pixels, indica que o
+          modelo encontrado representa com boa precisão o comportamento óptico e geométrico da câmera, validando assim o
+          processo de calibração.
+        </p>
 
-    <p>Portanto, resumidamente, a calibração fornece os seguintes parâmetros na forma de matrizes e vetores: a matriz intrínseca <strong>K</strong>, os coeficientes de distorção <strong>dist</strong>, as matrizes de rotação <strong>R</strong> (3x3) e os vetores de translação <strong>t</strong> (3x1) para cada imagem utilizada, todos essenciais para converter pontos 3D do mundo real em pontos 2D no plano da imagem de maneira precisa e corrigida quanto às distorções.</p>
+        <p class="py-1">Portanto, resumidamente, a calibração fornece os seguintes parâmetros na forma de matrizes e
+          vetores: a matriz intrínseca <strong>K</strong>, os coeficientes de distorção <strong>dist</strong>, as
+          matrizes de rotação <strong>R</strong> (3x3) e os vetores de translação <strong>t</strong> (3x1) para cada
+          imagem utilizada, todos essenciais para converter pontos 3D do mundo real em pontos 2D no plano da imagem de
+          maneira precisa e corrigida quanto às distorções.
+        </p>
+      </div>
 
-</div>
+      <p class="h4"><b>3.2. Item B</b></p>
 
+      <p class="py-1">As figuras abaixo foram obtidas ao aplicar o programa L2_cal.py sobre as imagens originalmente
+        geradas pelo grupo. Elas exibem, na ordem, os resultados dos parâmetros que foram calculados.</p>
 
-<h3>4.1. Item B</h3>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
 
-<p>As figuras abaixo foram obtidas ao aplicar o programa L2_cal.py sobre as imagens originalmente geradas pelo grupo. Elas exibem, na ordem, os resultados dos parâmetros que foram calculados.</p>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img01b.png" alt="Imagem 1"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-<div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
-  
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img01b.png" alt="Imagem 1" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img03b.png" alt="Imagem 2"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img03b.png" alt="Imagem 2" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img18b.png" alt="Imagem 3"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img18b.png" alt="Imagem 3" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img04b.png" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img04b.png" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img05b.png" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img05b.png" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img06b.png" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img06b.png" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img10b.png" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img10b.png" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img08b.png" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img08b.png" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img09b.png" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img09b.png" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img11b.png" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img11b.png" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img12b.png" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img12b.png" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img13b.png" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img13b.png" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img15b.png" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img15b.png" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+      </div>
 
-</div>
+      <p class="py-1">Abaixo, os resultados obtidos da calibração:</p>
 
-<p>Abaixo, os resultados obtidos da calibração:</p>
+      <div
+        style="font-family: monospace; background: #f4f4f4; padding: 15px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 20px; color: black;">
 
-<div style="font-family: monospace; background: #f4f4f4; padding: 15px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 20px; color: black;">
-    
-    <h3 style="margin-top: 0; color: black;">Camera matrix :</h3>
-    <pre style="background: #fff; padding: 10px; border-radius: 5px; overflow-x: auto; color: black;">
+        <p class="h4">Camera matrix :</p>
+
+        <pre style="background: #fff; padding: 10px; border-radius: 5px; overflow-x: auto; color: black;">
 [[689.78147168   0.         317.52987638]
  [  0.         691.31230813 211.54887143]
  [  0.           0.           1.        ]]
     </pre>
 
-    <h3 style="color: black;">Dist :</h3>
-    <pre style="background: #fff; padding: 10px; border-radius: 5px; overflow-x: auto; color: black;">
+        <p class="h4">Dist :</p>
+        <pre style="background: #fff; padding: 10px; border-radius: 5px; overflow-x: auto; color: black;">
 [[ 0.08654985 -0.37094322 -0.00862983  0.00283564  0.18734863]]
     </pre>
 
-    <h3 style="color: black;">rvecs :</h3>
-    <pre style="background: #fff; padding: 10px; border-radius: 5px; overflow-x: auto; color: black;">
+        <p class="h4">rvecs :</p>
+        <pre style="background: #fff; padding: 10px; border-radius: 5px; overflow-x: auto; color: black;">
 (array([[-0.59126044],
        [-0.161746  ],
        [-0.09755088]]), 
@@ -1205,8 +1510,8 @@ K = [ fx   0  cx ]
        [-1.33469726]]))
     </pre>
 
-    <h3 style="color: black;">tvecs :</h3>
-    <pre style="background: #fff; padding: 10px; border-radius: 5px; overflow-x: auto; color: black;">
+        <p class="h4">tvecs :</p>
+        <pre style="background: #fff; padding: 10px; border-radius: 5px; overflow-x: auto; color: black;">
 (array([[-2.30749233],
        [-2.88535314],
        [19.02508134]]), 
@@ -1251,154 +1556,206 @@ K = [ fx   0  cx ]
        [14.29929136]]))
     </pre>
 
-</div>
+      </div>
 
-<p><strong> Responda: liste todos os parametros obtidos, colocando-os nas formas de matrizes e vetores 
-(Matriz K, matriz R, vetor t, vetor dos coeficientes de distorção). Compare e analise as 
-diferenças com o obtido no item anterior.
- Apresente o valor númérico obtido pela calibração de sua câmera dos seguintes parâmetros: 
-focal length, aspect ratio, skew, principal point, e comente esse resultado obtido.
- Qual o motivo de resultar um conjunto R e t para cada imagem usada na calibração? O que estas 
-variáveis R e t significam perante os sistemas de coordenadas envolvidos</strong></p>
+      <p class="py-1"><strong> Responda: liste todos os parametros obtidos, colocando-os nas formas de matrizes e
+          vetores (Matriz K, matriz R, vetor t, vetor dos coeficientes de distorção). Compare e analise as
+          diferenças com o obtido no item anterior. Apresente o valor númérico obtido pela calibração de sua câmera dos
+          seguintes parâmetros: focal length, aspect ratio, skew, principal point, e comente esse resultado obtido.
+          Qual o motivo de resultar um conjunto R e t para cada imagem usada na calibração? O que estas
+          variáveis R e t significam perante os sistemas de coordenadas envolvidos</strong></p>
 
-<ul>
-    <li><p><strong>Comparação com o Experimento A:</strong> É esperado que a Matriz K e o vetor <code>dist</code> sejam <strong>diferentes</strong> dos obtidos no Experimento A. Isso ocorre porque eles descrevem as propriedades físicas de dois dispositivos ópticos distintos: a câmera de exemplo e a sua webcam. Cada câmera e lente possui suas próprias imperfeições e características de fabricação, resultando em parâmetros intrínsecos únicos.</p></li>
-    <li><p><strong>Análise dos Parâmetros da Webcam:</strong></p>
-        <ul>
+      <ul>
+        <li>
+          <p class="py-1"><strong>Comparação com o Experimento A:</strong> É esperado que a Matriz K e o vetor
+            <code>dist</code> sejam <strong>diferentes</strong> dos obtidos no Experimento A. Isso ocorre porque eles
+            descrevem as propriedades físicas de dois dispositivos ópticos distintos: a câmera de exemplo e a sua
+            webcam. Cada câmera e lente possui suas próprias imperfeições e características de fabricação, resultando em
+            parâmetros intrínsecos únicos.
+          </p>
+        </li>
+        <li>
+          <p class="py-1"><strong>Análise dos Parâmetros da Webcam:</strong></p>
+          <ul>
             <li><strong>Focal Length (Distância Focal):</strong> Os valores de $f_x$ e $f_y$ na sua matriz K.</li>
-            <li><strong>Principal Point (Ponto Principal):</strong> Os valores de $c_x$ e $c_y$. Compare-os com o centro geométrico da sua imagem (ex: se a resolução for 1280x720, o centro é (640, 360)). O quão distantes eles estão? Essa diferença representa o desalinhamento físico entre o centro da lente e o centro do sensor.</li>
-            <li><strong>Aspect Ratio (Proporção de Aspecto do Pixel):</strong> Calcule a razão $f_y / f_x$. Para a maioria das câmeras modernas, esse valor deve ser muito próximo de 1.0, indicando que os pixels são quadrados.</li>
+            <li><strong>Principal Point (Ponto Principal):</strong> Os valores de $c_x$ e $c_y$. Compare-os com o
+              centro geométrico da sua imagem (ex: se a resolução for 1280x720, o centro é (640, 360)). O quão distantes
+              eles estão? Essa diferença representa o desalinhamento físico entre o centro da lente e o centro do
+              sensor.
+            </li>
+            <li><strong>Aspect Ratio (Proporção de Aspecto do Pixel):</strong> Calcule a razão $f_y / f_x$. Para a
+              maioria das câmeras modernas, esse valor deve ser muito próximo de 1.0, indicando que os pixels são
+              quadrados.
+            </li>
             <li><strong>Skew (Inclinação):</strong> O valor $s$ na sua matriz K deve ser muito próximo de zero.</li>
-        </ul>
-    </li>
-    <li><p><strong>Por que há um conjunto (R, t) para cada imagem?</strong>
-    Como explicado na seção teórica, os parâmetros extrínsecos $R$ (rotação) e $t$ (translação) descrevem a <strong>pose</strong> do objeto (o tabuleiro) em relação à câmera. Como cada uma das 10-15 fotos foi tirada com o tabuleiro em uma posição e orientação diferente em relação à câmera, cada foto tem seu próprio conjunto único de parâmetros extrínsecos que define matematicamente essa pose específica. Eles não são uma propriedade da câmera, mas sim da relação câmera-objeto em um instante de captura.</p></li>
-    <li><p><strong>O que R e t significam em relação aos sistemas de coordenadas?</strong>
-    Eles representam a transformação de corpo rígido que mapeia as coordenadas 3D de um ponto do sistema de referência do <strong>mundo</strong> (que definimos como estando no plano do tabuleiro, com Z=0 e origem em um dos cantos) para o sistema de referência da <strong>câmera</strong> (com origem no centro óptico da câmera). Em outras palavras, se você tem as coordenadas de um canto no tabuleiro, aplicar a transformação $[R|t]$ correspondente àquela foto lhe dará as coordenadas daquele mesmo canto vistas pela câmera.</p></li>
-</ul>
+          </ul>
+        </li>
+        <li>
+          <p class="py-1"><strong>Por que há um conjunto (R, t) para cada imagem?</strong>
+            Como explicado na seção teórica, os parâmetros extrínsecos $R$ (rotação) e $t$ (translação) descrevem a
+            <strong>pose</strong> do objeto (o tabuleiro) em relação à câmera. Como cada uma das 10-15 fotos foi
+            tirada com o tabuleiro em uma posição e orientação diferente em relação à câmera, cada foto tem seu próprio
+            conjunto único de parâmetros extrínsecos que define matematicamente essa pose específica. Eles não são uma
+            propriedade da câmera, mas sim da relação câmera-objeto em um instante de captura.
+          </p>
+        </li>
+        <li>
+          <p class="py-1"><strong>O que R e t significam em relação aos sistemas de coordenadas?</strong>
+            Eles representam a transformação de corpo rígido que mapeia as coordenadas 3D de um ponto do sistema de
+            referência do <strong>mundo</strong> (que definimos como estando no plano do tabuleiro, com Z=0 e origem
+            em um dos cantos) para o sistema de referência da <strong>câmera</strong> (com origem no centro óptico da
+            câmera). Em outras palavras, se você tem as coordenadas de um canto no tabuleiro, aplicar a transformação
+            $[R|t]$ correspondente àquela foto lhe dará as coordenadas daquele mesmo canto vistas pela câmera.</p>
+        </li>
+      </ul>
 
-<div style="font-family: Arial, sans-serif; line-height: 1.6; max-width: 800px; margin: 20px auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9;">
-    
-    <h2 style="color: #2c3e50; text-align: center;">Valores numéricos obtidos na Calibração da Câmera</h2>
+      <div
+        style="font-family: Arial, sans-serif; line-height: 1.6; max-width: 800px; margin: 20px auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9;">
 
-    <h3 style="color: #34495e;">1. Matriz da Câmera (Camera Matrix)</h3>
-    <pre style="background-color: #fff; padding: 10px; border: 1px solid #ddd; color: black;">
+        <p class="h4" style="color: #2c3e50; text-align: center;">Valores numéricos obtidos na Calibração da Câmera</p>
+
+        <p class="h5">1. Matriz da Câmera (Camera Matrix)</p>
+        <pre style="background-color: #fff; padding: 10px; border: 1px solid #ddd; color: black;">
 [[689.78147168   0.         317.52987638]
  [  0.         691.31230813 211.54887143]
  [  0.           0.           1.        ]]
     </pre>
 
-    <h3 style="color: #34495e;">2. Comprimento Focal (Focal Length)</h3>
-    <p style="margin-left: 20px;">
-        fx = <b>689.78147168</b><br>
-        fy = <b>691.31230813</b>
-    </p>
+        <p class="h5">2. Comprimento Focal (Focal Length)</p>
+        <p style="margin-left: 20px;">
+          fx = <b>689.78147168</b><br>
+          fy = <b>691.31230813</b>
+        </p>
 
-    <h3 style="color: #34495e;">3. Razão de Aspecto (Aspect Ratio)</h3>
-    <p style="margin-left: 20px;">
-        Aspect Ratio = fy / fx ≈ <b>1.0022</b>
-    </p>
+        <p class="h5">3. Razão de Aspecto (Aspect Ratio)</p>
+        <p style="margin-left: 20px;">
+          Aspect Ratio = fy / fx ≈ <b>1.0022</b>
+        </p>
 
-    <h3 style="color: #34495e;">4. Skew (Inclinação entre os Eixos)</h3>
-    <p style="margin-left: 20px;">
-        Skew = <b>0</b>
-    </p>
+        <p class="h5">4. Skew (Inclinação entre os Eixos)</p>
+        <p style="margin-left: 20px;">
+          Skew = <b>0</b>
+        </p>
 
-    <h3 style="color: #34495e;">5. Ponto Principal (Principal Point)</h3>
-    <p style="margin-left: 20px;">
-        cx = <b>317.52987638</b><br>
-        cy = <b>211.54887143</b>
-    </p>
+        <p class="h5">5. Ponto Principal (Principal Point)</p>
+        <p style="margin-left: 20px;">
+          cx = <b>317.52987638</b><br>
+          cy = <b>211.54887143</b>
+        </p>
 
-    <h3 style="color: #34495e;">6. Comentários sobre os Resultados</h3>
-    <ul style="margin-left: 20px;">
-        <li>Os valores de <b>fx</b> e <b>fy</b> são muito próximos, indicando pixels quase quadrados e ausência de distorção significativa entre os eixos.</li>
-        <li>A <b>Razão de Aspecto</b> próxima de 1 confirma a uniformidade dos pixels do sensor.</li>
-        <li><b>Skew</b> igual a 0 demonstra que os eixos da câmera são ortogonais, ou seja, formam ângulos retos, o que é desejável.</li>
-        <li>O <b>Ponto Principal</b> está bem próximo ao centro da imagem, o que indica bom alinhamento óptico da câmera.</li>
-    </ul>
+        <p class="h5">6. Comentários sobre os Resultados</p>
+        <ul style="margin-left: 20px;">
+          <li>Os valores de <b>fx</b> e <b>fy</b> são muito próximos, indicando pixels quase quadrados e ausência de
+            distorção significativa entre os eixos.</li>
+          <li>A <b>Razão de Aspecto</b> próxima de 1 confirma a uniformidade dos pixels do sensor.</li>
+          <li><b>Skew</b> igual a 0 demonstra que os eixos da câmera são ortogonais, ou seja, formam ângulos retos,
+            o
+            que
+            é
+            desejável.</li>
+          <li>O <b>Ponto Principal</b> está bem próximo ao centro da imagem, o que indica bom alinhamento óptico da
+            câmera.
+          </li>
+        </ul>
 
-</div>
+      </div>
 
 
-<h3>4.3. Item C</h3>
+      <p class="h4"><b>3.3. Item C</b></p>
 
-<p>As figuras abaixo foram geradas pelo processamento das imagens que o grupo capturou com a câmera de maior distorção, utilizando o programa L2_cal.py. Elas exibem, em sequência, os resultados dos parâmetros calculados.</p>
+      <p class="py-1">As figuras abaixo foram geradas pelo processamento das imagens que o grupo capturou com a câmera
+        de maior distorção, utilizando o programa L2_cal.py. Elas exibem, em sequência, os resultados dos parâmetros
+        calculados.
+      </p>
 
-<div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
-  
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img01c.png" alt="Imagem 1" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img03c.png" alt="Imagem 2" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img01c.png" alt="Imagem 1"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img00c.png" alt="Imagem 3" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img03c.png" alt="Imagem 2"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img04c.png" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img00c.png" alt="Imagem 3"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img05c.png" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img04c.png" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img06c.png" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img05c.png" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img07c.png" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img06c.png" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img08c.png" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img07c.png" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img09c.png" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img08c.png" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img11c.png" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img09c.png" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img12c.png" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img11c.png" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img13c.png" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img12c.png" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-  <div style="flex: 1 0 200px; max-width: 200px;">
-    <img src="assets/img10c.png" alt="Imagem 4" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
-  </div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img13c.png" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-</div>
+        <div style="flex: 1 0 200px; max-width: 200px;">
+          <img src="assets/img10c.png" alt="Imagem 4"
+            style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+        </div>
 
-<p>Abaixo, os resultados obtidos da calibração:</p>
+      </div>
 
-<div style="font-family: monospace; background: #f4f4f4; padding: 15px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 20px; color: black;">
-    
-    <h3 style="margin-top: 0; color: black;">Camera matrix :</h3>
-    <pre style="background: #fff; padding: 10px; border-radius: 5px; overflow-x: auto; color: black;">
+      <p class="py-1">Abaixo, os resultados obtidos da calibração:</p>
+
+      <div
+        style="font-family: monospace; background: #f4f4f4; padding: 15px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 20px; color: black;">
+
+        <p class="h4">Camera matrix :</p>
+        <pre style="background: #fff; padding: 10px; border-radius: 5px; overflow-x: auto; color: black;">
 [[588.48658407   0.         326.93744945]
  [  0.         588.02755292 236.31514964]
  [  0.           0.           1.        ]]
     </pre>
 
-    <h3 style="color: black;">Dist :</h3>
-    <pre style="background: #fff; padding: 10px; border-radius: 5px; overflow-x: auto; color: black;">
+        <p class="h4">Dist :</p>
+        <pre style="background: #fff; padding: 10px; border-radius: 5px; overflow-x: auto; color: black;">
 [[-0.34952033  0.02618366  0.00060495  0.00103971  0.12263848]]
     </pre>
 
-    <h3 style="color: black;">rvecs :</h3>
-    <pre style="background: #fff; padding: 10px; border-radius: 5px; overflow-x: auto; color: black;">
+        <p class="h4">rvecs :</p>
+        <pre style="background: #fff; padding: 10px; border-radius: 5px; overflow-x: auto; color: black;">
 (array([[ 0.60743063],
        [-0.63402508],
        [ 1.44846864]]), 
@@ -1446,8 +1803,8 @@ variáveis R e t significam perante os sistemas de coordenadas envolvidos</stron
        [ 1.52670953]]))
     </pre>
 
-    <h3 style="color: black;">tvecs :</h3>
-    <pre style="background: #fff; padding: 10px; border-radius: 5px; overflow-x: auto; color: black;">
+        <p class="h4">tvecs :</p>
+        <pre style="background: #fff; padding: 10px; border-radius: 5px; overflow-x: auto; color: black;">
 (array([[ 2.86098598],
        [-0.25146172],
        [ 9.14753266]]), 
@@ -1495,197 +1852,258 @@ variáveis R e t significam perante os sistemas de coordenadas envolvidos</stron
        [11.58005723]]))
     </pre>
 
-</div>
+      </div>
 
-<p><strong>Responda: liste todos os parametros obtidos, colocando-os nas formas de matrizes e vetores. 
-Compare e analise as diferenças com o resultado anterior,  do item (B).</strong></p>
+      <p class="py-1"><strong>Responda: liste todos os parametros obtidos, colocando-os nas formas de matrizes e
+          vetores. Compare e analise as diferenças com o resultado anterior, do item (B).</strong></p>
 
-<div style="font-family: Arial, sans-serif; line-height: 1.6; max-width: 900px; margin: 20px auto;">
+      <div style="font-family: Arial, sans-serif; line-height: 1.6; max-width: 900px; margin: 20px auto;">
+        <p class="py-1">Na etapa (B), foi realizada a calibração da <strong>webcam do grupo</strong>, utilizando imagens
+          próprias capturadas do padrão de tabuleiro de xadrez. Já nesta etapa (C), foi realizada a calibração de uma
+          <strong>segunda câmera pessoal</strong>, também com base em imagens do mesmo padrão.
+        </p>
 
-    
-
-    <p>Na etapa (B), foi realizada a calibração da <strong>webcam do grupo</strong>, utilizando imagens próprias capturadas do padrão de tabuleiro de xadrez. Já nesta etapa (C), foi realizada a calibração de uma <strong>segunda câmera pessoal</strong>, também com base em imagens do mesmo padrão.</p>
-
-    <h3 style="color: #34495e;">1. Matriz Intrínseca (Camera Matrix - K)</h3>
-
-    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
-        <thead>
+        <p class="h4">1. Matriz Intrínseca (Camera Matrix - K)</p>
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+          <thead>
             <tr style="background-color: #ecf0f1;">
-                <th style="border: 1px solid #bdc3c7; padding: 8px;">Parâmetro</th>
-                <th style="border: 1px solid #bdc3c7; padding: 8px;">Câmera 1 (Webcam)</th>
-                <th style="border: 1px solid #bdc3c7; padding: 8px;">Câmera 2 (Outra Câmera)</th>
+              <th style="border: 1px solid #bdc3c7; padding: 8px;">Parâmetro</th>
+              <th style="border: 1px solid #bdc3c7; padding: 8px;">Câmera 1 (Webcam)</th>
+              <th style="border: 1px solid #bdc3c7; padding: 8px;">Câmera 2 (Outra Câmera)</th>
             </tr>
-        </thead>
-        <tbody>
+          </thead>
+          <tbody>
             <tr>
-                <td style="border: 1px solid #bdc3c7; padding: 8px;">Focal Length em x (fx)</td>
-                <td style="border: 1px solid #bdc3c7; padding: 8px;">689.78</td>
-                <td style="border: 1px solid #bdc3c7; padding: 8px;">588.49</td>
+              <td style="border: 1px solid #bdc3c7; padding: 8px;">Focal Length em x (fx)</td>
+              <td style="border: 1px solid #bdc3c7; padding: 8px;">689.78</td>
+              <td style="border: 1px solid #bdc3c7; padding: 8px;">588.49</td>
             </tr>
             <tr style="background-color: #f9f9f9;">
-                <td style="border: 1px solid #bdc3c7; padding: 8px;">Focal Length em y (fy)</td>
-                <td style="border: 1px solid #bdc3c7; padding: 8px;">691.31</td>
-                <td style="border: 1px solid #bdc3c7; padding: 8px;">588.03</td>
+              <td style="border: 1px solid #bdc3c7; padding: 8px;">Focal Length em y (fy)</td>
+              <td style="border: 1px solid #bdc3c7; padding: 8px;">691.31</td>
+              <td style="border: 1px solid #bdc3c7; padding: 8px;">588.03</td>
             </tr>
             <tr>
-                <td style="border: 1px solid #bdc3c7; padding: 8px;">Ponto Principal x (cx)</td>
-                <td style="border: 1px solid #bdc3c7; padding: 8px;">317.53</td>
-                <td style="border: 1px solid #bdc3c7; padding: 8px;">326.94</td>
+              <td style="border: 1px solid #bdc3c7; padding: 8px;">Ponto Principal x (cx)</td>
+              <td style="border: 1px solid #bdc3c7; padding: 8px;">317.53</td>
+              <td style="border: 1px solid #bdc3c7; padding: 8px;">326.94</td>
             </tr>
             <tr style="background-color: #f9f9f9;">
-                <td style="border: 1px solid #bdc3c7; padding: 8px;">Ponto Principal y (cy)</td>
-                <td style="border: 1px solid #bdc3c7; padding: 8px;">211.55</td>
-                <td style="border: 1px solid #bdc3c7; padding: 8px;">236.32</td>
+              <td style="border: 1px solid #bdc3c7; padding: 8px;">Ponto Principal y (cy)</td>
+              <td style="border: 1px solid #bdc3c7; padding: 8px;">211.55</td>
+              <td style="border: 1px solid #bdc3c7; padding: 8px;">236.32</td>
             </tr>
-        </tbody>
-    </table>
+          </tbody>
+        </table>
 
-    <p><strong>Análise:</strong> A Câmera 1 possui maior valor de distância focal, indicando que ela tende a aproximar mais os objetos em relação à segunda câmera. Além disso, nota-se uma diferença na posição do ponto principal, o que pode ser explicado por características físicas distintas dos sensores ou montagem das lentes.</p>
+        <p class="py-1"><strong>Análise:</strong> A Câmera 1 possui maior valor de distância focal, indicando que ela
+          tende a aproximar mais os objetos em relação à segunda câmera. Além disso, nota-se uma diferença na posição do
+          ponto principal, o que pode ser explicado por características físicas distintas dos sensores ou montagem das
+          lentes.
+        </p>
 
-    <h3 style="color: #34495e;">2. Coeficientes de Distorção (dist)</h3>
-
-    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
-        <thead>
+        <p class="h4">2. Coeficientes de Distorção (dist)</p>
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+          <thead>
             <tr style="background-color: #ecf0f1;">
-                <th style="border: 1px solid #bdc3c7; padding: 8px;">Coeficiente</th>
-                <th style="border: 1px solid #bdc3c7; padding: 8px;">Câmera 1</th>
-                <th style="border: 1px solid #bdc3c7; padding: 8px;">Câmera 2</th>
+              <th style="border: 1px solid #bdc3c7; padding: 8px;">Coeficiente</th>
+              <th style="border: 1px solid #bdc3c7; padding: 8px;">Câmera 1</th>
+              <th style="border: 1px solid #bdc3c7; padding: 8px;">Câmera 2</th>
             </tr>
-        </thead>
-        <tbody>
+          </thead>
+          <tbody>
             <tr>
-                <td style="border: 1px solid #bdc3c7; padding: 8px;">k1 (radial)</td>
-                <td style="border: 1px solid #bdc3c7; padding: 8px;">0.08655</td>
-                <td style="border: 1px solid #bdc3c7; padding: 8px;">-0.34952</td>
+              <td style="border: 1px solid #bdc3c7; padding: 8px;">k1 (radial)</td>
+              <td style="border: 1px solid #bdc3c7; padding: 8px;">0.08655</td>
+              <td style="border: 1px solid #bdc3c7; padding: 8px;">-0.34952</td>
             </tr>
             <tr style="background-color: #f9f9f9;">
-                <td style="border: 1px solid #bdc3c7; padding: 8px;">k2 (radial)</td>
-                <td style="border: 1px solid #bdc3c7; padding: 8px;">-0.37094</td>
-                <td style="border: 1px solid #bdc3c7; padding: 8px;">0.02618</td>
+              <td style="border: 1px solid #bdc3c7; padding: 8px;">k2 (radial)</td>
+              <td style="border: 1px solid #bdc3c7; padding: 8px;">-0.37094</td>
+              <td style="border: 1px solid #bdc3c7; padding: 8px;">0.02618</td>
             </tr>
             <tr>
-                <td style="border: 1px solid #bdc3c7; padding: 8px;">p1 (tangencial)</td>
-                <td style="border: 1px solid #bdc3c7; padding: 8px;">-0.00863</td>
-                <td style="border: 1px solid #bdc3c7; padding: 8px;">0.00060</td>
+              <td style="border: 1px solid #bdc3c7; padding: 8px;">p1 (tangencial)</td>
+              <td style="border: 1px solid #bdc3c7; padding: 8px;">-0.00863</td>
+              <td style="border: 1px solid #bdc3c7; padding: 8px;">0.00060</td>
             </tr>
             <tr style="background-color: #f9f9f9;">
-                <td style="border: 1px solid #bdc3c7; padding: 8px;">p2 (tangencial)</td>
-                <td style="border: 1px solid #bdc3c7; padding: 8px;">0.00284</td>
-                <td style="border: 1px solid #bdc3c7; padding: 8px;">0.00104</td>
+              <td style="border: 1px solid #bdc3c7; padding: 8px;">p2 (tangencial)</td>
+              <td style="border: 1px solid #bdc3c7; padding: 8px;">0.00284</td>
+              <td style="border: 1px solid #bdc3c7; padding: 8px;">0.00104</td>
             </tr>
             <tr>
-                <td style="border: 1px solid #bdc3c7; padding: 8px;">k3 (radial)</td>
-                <td style="border: 1px solid #bdc3c7; padding: 8px;">0.18735</td>
-                <td style="border: 1px solid #bdc3c7; padding: 8px;">0.12264</td>
+              <td style="border: 1px solid #bdc3c7; padding: 8px;">k3 (radial)</td>
+              <td style="border: 1px solid #bdc3c7; padding: 8px;">0.18735</td>
+              <td style="border: 1px solid #bdc3c7; padding: 8px;">0.12264</td>
             </tr>
-        </tbody>
-    </table>
+          </tbody>
+        </table>
 
-    <p><strong>Análise:</strong> A Câmera 1 apresenta uma leve distorção radial positiva, enquanto a Câmera 2 possui um coeficiente negativo mais significativo, indicando tendência a distorção de barril (imagem estufada para fora), comum em câmeras com lente grande-angular. Os coeficientes tangenciais são pequenos em ambas as câmeras, o que demonstra baixo desalinhamento da lente.</p>
+        <p class="py-1"><strong>Análise:</strong> A Câmera 1 apresenta uma leve distorção radial positiva, enquanto a
+          Câmera 2 possui um coeficiente negativo mais significativo, indicando tendência a distorção de barril (imagem
+          estufada para fora), comum em câmeras com lente grande-angular. Os coeficientes tangenciais são pequenos em
+          ambas as câmeras, o que demonstra baixo desalinhamento da lente.</p>
+
+        <p class="py-1">As duas câmeras apresentam diferentes vetores de rotação (<em>rvecs</em>) e translação
+          (<em>tvecs</em>) para cada imagem capturada. Essa variação é esperada, pois esses parâmetros descrevem a
+          posição e a orientação do tabuleiro de calibração em relação à câmera em cada foto. Portanto, as diferenças
+          não indicam falha, mas sim o posicionamento variável durante o experimento.</p>
+
+        <p class="py-1">O <strong>aspect ratio</strong> (relação entre <em>fx</em> e <em>fy</em>) é próximo de 1 em
+          ambas as câmeras, o que indica que os pixels possuem formato aproximadamente quadrado. O valor de
+          <strong>skew</strong> (desalinhamento dos eixos) é considerado nulo, pois o modelo utilizado assume
+          alinhamento ortogonal dos eixos da imagem, o que é padrão na maioria das câmeras modernas.
+        </p>
+
+        <p class="py-1">A análise dos parâmetros obtidos demonstra que as duas câmeras possuem características ópticas
+          distintas:
+        </p>
+
+        <ul style="margin-left: 20px;">
+          <li>A Câmera 1 possui maior distância focal e menor distorção radial, proporcionando uma imagem com menor
+            deformação nas bordas.</li>
+          <li>A Câmera 2 apresenta menor distância focal e maior distorção de barril, o que sugere uso de lente
+            grande-angular ou câmera com maior campo de visão.</li>
+        </ul>
+
+        <p class="py-1">Essas diferenças reforçam a necessidade de calibrar individualmente cada câmera para aplicações
+          que exigem precisão métrica, como reconstrução 3D e medição em Visão Computacional.</p>
+      </div>
+
+      <p class="h4"><b>3.4. Item D</b></p>
+
+      <p class="py-1">Abaixo as imagens corrigidas utilizando os programas mencionados no passo a passo:</p>
+
+      <div style="display: flex; flex-direction: row; justify-content: center; text-align: center; gap: 20px;">
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <img src="assets/jhow.png" alt="Imagem 1" style="width: 300px; height: auto;">
+          <span>
+            <figcaption>Imagem Original</figcaption>
+          </span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <img src="assets/undistort_jhow.png" alt="Imagem 2" style="width: 300px; height: auto;">
+          <span>
+            <figcaption>Corrigida – Undistort</figcaption>
+          </span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <img src="assets/remapping_jhow.png" alt="Imagem 3" style="width: 300px; height: auto;">
+          <span>
+            <figcaption>Corrigida – Remap</figcaption>
+          </span>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: row; justify-content: center; text-align: center; gap: 20px;">
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <img src="assets/igor.png" alt="Imagem 1" style="width: 300px; height: auto;">
+          <span>
+            <figcaption>Imagem Original</figcaption>
+          </span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <img src="assets/undistort_igor.png" alt="Imagem 2" style="width: 300px; height: auto;">
+          <span>
+            <figcaption>Corrigida – Undistort</figcaption>
+          </span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <img src="assets/remapping_igor.png" alt="Imagem 3" style="width: 300px; height: auto;">
+          <span>
+            <figcaption>Corrigida – Remap</figcaption>
+          </span>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: row; justify-content: center; text-align: center; gap: 20px;">
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <img src="assets/mikael.png" alt="Imagem 1" style="width: 300px; height: auto;">
+          <span>
+            <figcaption>Imagem Original</figcaption>
+          </span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <img src="assets/undistort_mikael.png" alt="Imagem 2" style="width: 300px; height: auto;">
+          <span>
+            <figcaption>Corrigida – Undistort</figcaption>
+          </span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <img src="assets/remapping_mikael.png" alt="Imagem 3" style="width: 300px; height: auto;">
+          <span>
+            <figcaption>Corrigida – Remap</figcaption>
+          </span>
+        </div>
+      </div>
+
+      <p class="h3"><b>4. Conclusão</b></p>
+
+      <p class="py-1">Ao longo deste laboratório, realizamos uma jornada completa pelo processo de calibração de
+        câmeras, desde os fundamentos teóricos até a aplicação prática e a análise crítica dos resultados. Os
+        experimentos demonstraram com sucesso a capacidade da biblioteca OpenCV, em conjunto com a linguagem Python, de
+        transformar uma câmera de um simples dispositivo de captura de imagens em um sensor metrológico preciso.</p>
+
+      <p class="py-1">As principais conclusões extraídas deste trabalho são:</p>
+
+      <ol>
+        <li><strong>A Calibração é Específica do Dispositivo:</strong> Os experimentos B e C comprovaram que os
+          parâmetros intrínsecos (matriz K e coeficientes de distorção) são uma "impressão digital" única de cada
+          conjunto câmera-lente. Mesmo dispositivos do mesmo modelo podem apresentar variações devido a tolerâncias de
+          fabricação, ressaltando a necessidade de calibrar individualmente cada câmera usada em uma aplicação de visão
+          computacional.
+        </li>
+        <li><strong>A Qualidade dos Dados de Entrada é Suprema:</strong> A análise do erro de reprojeção revelou
+          que, embora seja um indicador útil, ele mede apenas o quão bem o modelo se ajusta aos dados de calibração. A
+          verdadeira precisão e robustez da calibração dependem criticamente da qualidade e diversidade das imagens de
+          entrada. Seguir as boas práticas de captura, garantindo a cobertura total do quadro e uma ampla variação de
+          ângulos, é mais importante do que simplesmente minimizar o erro numérico.</li>
+        <li><strong>Correção de Distorção é Eficaz:</strong> O experimento D demonstrou visualmente o poder da
+          calibração. Utilizando os parâmetros calculados, fomos capazes de corrigir as distorções radiais e
+          tangenciais, transformando imagens com linhas visivelmente curvas em imagens geometricamente corretas, onde as
+          linhas retas do mundo real são representadas como linhas retas no plano 2D. Foram explorados com sucesso dois
+          métodos para essa correção, <code>cv.undistort()</code> e o remapeamento manual, compreendendo o mecanismo
+          subjacente deste último.
+        </li>
+      </ol>
+
+      <p class="py-1">Em suma, este laboratório cumpriu todos os seus objetivos. Os conceitos de parâmetros intrínsecos
+        e extrínsecos foram compreendidos, os procedimentos de calibração foram executados com sucesso para múltiplas
+        câmeras, e os resultados foram analisados de forma crítica. As habilidades adquiridas aqui são fundamentais e
+        servem como alicerce para incursões em áreas mais avançadas da visão computacional, como reconstrução 3D,
+        robótica e realidade aumentada, onde a compreensão precisa da geometria da câmera não é apenas útil, mas
+        absolutamente essencial.</p>
+
+      <p class="h3"><b>5. Referências</b></p>
+
+      <ol>
+        <li>LearnOpenCV. (2021). <em>Geometry of Image Formation</em>. Disponível em:
+          <code>https://learnopencv.com/geometry-of-image-formation/</code>
+        </li>
+        <li>LearnOpenCV. (2020). <em>Camera Calibration using OpenCV</em>. Disponível em:
+          <code>https://learnopencv.com/camera-calibration-using-opencv/</code>
+        </li>
+        <li>OpenCV Documentation. <em>Camera Calibration</em>. Disponível em:
+          <code>https://docs.opencv.org/4.x/dc/dbb/tutorial_py_calibration.html</code>
+        </li>
+
+      </ol>
 
 
+  </main>
 
-    <p>As duas câmeras apresentam diferentes vetores de rotação (<em>rvecs</em>) e translação (<em>tvecs</em>) para cada imagem capturada. Essa variação é esperada, pois esses parâmetros descrevem a posição e a orientação do tabuleiro de calibração em relação à câmera em cada foto. Portanto, as diferenças não indicam falha, mas sim o posicionamento variável durante o experimento.</p>
-
-
-
-    <p>O <strong>aspect ratio</strong> (relação entre <em>fx</em> e <em>fy</em>) é próximo de 1 em ambas as câmeras, o que indica que os pixels possuem formato aproximadamente quadrado. O valor de <strong>skew</strong> (desalinhamento dos eixos) é considerado nulo, pois o modelo utilizado assume alinhamento ortogonal dos eixos da imagem, o que é padrão na maioria das câmeras modernas.</p>
-
-
-
-    <p>A análise dos parâmetros obtidos demonstra que as duas câmeras possuem características ópticas distintas:</p>
-
-    <ul style="margin-left: 20px;">
-        <li>A Câmera 1 possui maior distância focal e menor distorção radial, proporcionando uma imagem com menor deformação nas bordas.</li>
-        <li>A Câmera 2 apresenta menor distância focal e maior distorção de barril, o que sugere uso de lente grande-angular ou câmera com maior campo de visão.</li>
-    </ul>
-
-    <p>Essas diferenças reforçam a necessidade de calibrar individualmente cada câmera para aplicações que exigem precisão métrica, como reconstrução 3D e medição em Visão Computacional.</p>
-
-</div>
-
-
-<h3>4.4. Item D</h3>
-
-<p>Abaixo as imagens corrigidas utilizando os programas mencionados no passo a passo:</p>
-
-<div style="display: flex; flex-direction: row; justify-content: center; text-align: center; gap: 20px;">
-  <div style="display: flex; flex-direction: column; align-items: center;">
-    <img src="assets/jhow.png" alt="Imagem 1" style="width: 300px; height: auto;">
-    <span><figcaption>Imagem Original</figcaption></span>
-  </div>
-  
-  <div style="display: flex; flex-direction: column; align-items: center;">
-    <img src="assets/undistort_jhow.png" alt="Imagem 2" style="width: 300px; height: auto;">
-    <span><figcaption>Corrigida – Undistort</figcaption></span>
-  </div>
-  
-  <div style="display: flex; flex-direction: column; align-items: center;">
-    <img src="assets/remapping_jhow.png" alt="Imagem 3" style="width: 300px; height: auto;">
-    <span><figcaption>Corrigida – Remap</figcaption></span>
-  </div>
-</div>
-
-<div style="display: flex; flex-direction: row; justify-content: center; text-align: center; gap: 20px;">
-  <div style="display: flex; flex-direction: column; align-items: center;">
-    <img src="assets/igor.png" alt="Imagem 1" style="width: 300px; height: auto;">
-    <span><figcaption>Imagem Original</figcaption></span>
-  </div>
-  
-  <div style="display: flex; flex-direction: column; align-items: center;">
-    <img src="assets/undistort_igor.png" alt="Imagem 2" style="width: 300px; height: auto;">
-    <span><figcaption>Corrigida – Undistort</figcaption></span>
-  </div>
-  
-  <div style="display: flex; flex-direction: column; align-items: center;">
-    <img src="assets/remapping_igor.png" alt="Imagem 3" style="width: 300px; height: auto;">
-    <span><figcaption>Corrigida – Remap</figcaption></span>
-  </div>
-</div>
-
-<div style="display: flex; flex-direction: row; justify-content: center; text-align: center; gap: 20px;">
-  <div style="display: flex; flex-direction: column; align-items: center;">
-    <img src="assets/mikael.png" alt="Imagem 1" style="width: 300px; height: auto;">
-    <span><figcaption>Imagem Original</figcaption></span>
-  </div>
-  
-  <div style="display: flex; flex-direction: column; align-items: center;">
-    <img src="assets/undistort_mikael.png" alt="Imagem 2" style="width: 300px; height: auto;">
-    <span><figcaption>Corrigida – Undistort</figcaption></span>
-  </div>
-  
-  <div style="display: flex; flex-direction: column; align-items: center;">
-    <img src="assets/remapping_mikael.png" alt="Imagem 3" style="width: 300px; height: auto;">
-    <span><figcaption>Corrigida – Remap</figcaption></span>
-  </div>
-</div>
-
-
-<h2>5. Conclusão</h2>
-
-<p>Ao longo deste laboratório, realizamos uma jornada completa pelo processo de calibração de câmeras, desde os fundamentos teóricos até a aplicação prática e a análise crítica dos resultados. Os experimentos demonstraram com sucesso a capacidade da biblioteca OpenCV, em conjunto com a linguagem Python, de transformar uma câmera de um simples dispositivo de captura de imagens em um sensor metrológico preciso.</p>
-
-<p>As principais conclusões extraídas deste trabalho são:</p>
-
-<ol>
-    <li><strong>A Calibração é Específica do Dispositivo:</strong> Os experimentos B e C comprovaram que os parâmetros intrínsecos (matriz K e coeficientes de distorção) são uma "impressão digital" única de cada conjunto câmera-lente. Mesmo dispositivos do mesmo modelo podem apresentar variações devido a tolerâncias de fabricação, ressaltando a necessidade de calibrar individualmente cada câmera usada em uma aplicação de visão computacional.</li>
-    <li><strong>A Qualidade dos Dados de Entrada é Suprema:</strong> A análise do erro de reprojeção revelou que, embora seja um indicador útil, ele mede apenas o quão bem o modelo se ajusta aos dados de calibração. A verdadeira precisão e robustez da calibração dependem criticamente da qualidade e diversidade das imagens de entrada. Seguir as boas práticas de captura, garantindo a cobertura total do quadro e uma ampla variação de ângulos, é mais importante do que simplesmente minimizar o erro numérico.</li>
-    <li><strong>Correção de Distorção é Eficaz:</strong> O experimento D demonstrou visualmente o poder da calibração. Utilizando os parâmetros calculados, fomos capazes de corrigir as distorções radiais e tangenciais, transformando imagens com linhas visivelmente curvas em imagens geometricamente corretas, onde as linhas retas do mundo real são representadas como linhas retas no plano 2D. Foram explorados com sucesso dois métodos para essa correção, <code>cv.undistort()</code> e o remapeamento manual, compreendendo o mecanismo subjacente deste último.</li>
-</ol>
-
-<p>Em suma, este laboratório cumpriu todos os seus objetivos. Os conceitos de parâmetros intrínsecos e extrínsecos foram compreendidos, os procedimentos de calibração foram executados com sucesso para múltiplas câmeras, e os resultados foram analisados de forma crítica. As habilidades adquiridas aqui são fundamentais e servem como alicerce para incursões em áreas mais avançadas da visão computacional, como reconstrução 3D, robótica e realidade aumentada, onde a compreensão precisa da geometria da câmera não é apenas útil, mas absolutamente essencial.</p>
-
-<h2>6. Referências</h2>
-
-<ol>
-    <li>LearnOpenCV. (2021). <em>Geometry of Image Formation</em>. Disponível em: <code>https://learnopencv.com/geometry-of-image-formation/</code></li>
-    <li>LearnOpenCV. (2020). <em>Camera Calibration using OpenCV</em>. Disponível em: <code>https://learnopencv.com/camera-calibration-using-opencv/</code></li>
-    <li>OpenCV Documentation. <em>Camera Calibration</em>. Disponível em: <code>https://docs.opencv.org/4.x/dc/dbb/tutorial_py_calibration.html</code></li>
-
-</ol>
-
-
-
+  <footer class="mt-5 p-3">
+    &copy; 2025 - Desenvolvido por Equipe Olhos de Sauron
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </body>
-</html>
 
+</html>
