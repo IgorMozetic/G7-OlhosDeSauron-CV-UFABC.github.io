@@ -1,14 +1,165 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+    <meta charset="UTF-8">
+    <title>Modelagem Funcional - Olhos de Sauron</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f7f7f7;
+            color: #333;
+            line-height: 1.6;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        .bloco {
+            background: #fff;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-left: 5px solid #3498db;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+        code {
+            background: #eee;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: Consolas, monospace;
+        }
+        .diagrama {
+            background: #fff;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            position: relative;
+            overflow-x: auto;
+        }
+        .etapa {
+            display: inline-block;
+            background: #3498db;
+            color: #fff;
+            padding: 10px 20px;
+            margin: 10px;
+            border-radius: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            font-weight: bold;
+        }
+        .seta {
+            display: inline-block;
+            margin: 0 10px;
+            font-size: 20px;
+            color: #3498db;
+            vertical-align: middle;
+        }
+        .tecnologias, .metricas {
+            background: #ecf0f1;
+            padding: 10px;
+            border-left: 3px solid #2980b9;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
-
 <body>
 
-</body>
+<h1>Modelagem Funcional do Sistema de Processamento da Visão (MF)</h1>
+<p><strong>Equipe:</strong> Olhos de Sauron – Visão Computacional UFABC – Q2.2025</p>
+<p><strong>Título do Trabalho:</strong> Sistema de Medição Inteligente para Ambientes de Móveis Planejados</p>
 
+<h2>Resumo do Cenário de Aplicação</h2>
+<p>
+    Profissionais de móveis planejados, arquitetos e decoradores frequentemente enfrentam dificuldades em coletar medidas precisas de ambientes, utilizando métodos tradicionais como trena, papel e caneta.
+    O sistema proposto resolve esse problema ao permitir que o usuário capture ou carregue uma foto do ambiente, detecte um objeto de referência conhecido (ex: um cartão padrão), e selecione dois pontos na imagem para obter automaticamente a distância real entre eles.
+</p>
+
+<h2>Arquitetura Funcional – Diagrama de Blocos</h2>
+<div class="diagrama">
+    <span class="etapa">1. Captura/Upload de Imagem</span>
+    <span class="seta">&#8594;</span>
+    <span class="etapa">2. Pré-processamento</span>
+    <span class="seta">&#8594;</span>
+    <span class="etapa">3. Detecção do Objeto</span>
+    <span class="seta">&#8594;</span>
+    <span class="etapa">4. Calibração de Escala</span>
+    <span class="seta">&#8594;</span>
+    <span class="etapa">5. Seleção de Pontos</span>
+    <span class="seta">&#8594;</span>
+    <span class="etapa">6. Cálculo da Distância</span>
+    <span class="seta">&#8594;</span>
+    <span class="etapa">7. Exibição dos Resultados</span>
+</div>
+
+<h2>Detalhamento dos Blocos</h2>
+
+<div class="bloco">
+<h3>Bloco 1: Captura/Upload de Imagem</h3>
+<p><strong>Entrada:</strong> Imagem capturada pela webcam ou carregada do dispositivo.</p>
+<p><strong>Saída:</strong> Imagem em matriz NumPy (BGR).</p>
+<p><strong>Processamento:</strong> Utiliza-se <code>cv2.VideoCapture</code> para captura ao vivo ou <code>cv2.imread</code> para upload. Exibe a imagem para confirmação do usuário. Trata possíveis erros de entrada e permite repetição caso necessário.</p>
+</div>
+
+<div class="bloco">
+<h3>Bloco 2: Pré-processamento da Imagem</h3>
+<p><strong>Entrada:</strong> Imagem BGR.</p>
+<p><strong>Saída:</strong> Imagem filtrada e/ou segmentada.</p>
+<p><strong>Processamento:</strong> Conversão para HSV, aplicação de <code>cv2.GaussianBlur</code> para redução de ruído, possíveis máscaras para destacar o objeto de referência e facilitar sua detecção.</p>
+</div>
+
+<div class="bloco">
+<h3>Bloco 3: Detecção do Objeto de Referência</h3>
+<p><strong>Entrada:</strong> Imagem pré-processada.</p>
+<p><strong>Saída:</strong> Coordenadas do contorno ou bounding box do objeto conhecido.</p>
+<p><strong>Processamento:</strong> Utiliza <code>cv2.findContours</code> para localizar contornos, <code>cv2.approxPolyDP</code> para aproximar a forma e valida as dimensões e proporções para confirmar se é o objeto esperado (ex: cartão padrão de 8,5 x 5,5 cm).</p>
+</div>
+
+<div class="bloco">
+<h3>Bloco 4: Calibração de Escala</h3>
+<p><strong>Entrada:</strong> Tamanho do objeto em pixels e tamanho real conhecido (cm).</p>
+<p><strong>Saída:</strong> Fator de conversão (pixels/cm).</p>
+<p><strong>Processamento:</strong> Cálculo da escala baseado no tamanho real do objeto de referência. Esse fator é armazenado e utilizado nas próximas etapas para conversão de pixels em centímetros.</p>
+</div>
+
+<div class="bloco">
+<h3>Bloco 5: Interface Interativa para Seleção de Pontos</h3>
+<p><strong>Entrada:</strong> Cliques do usuário na imagem.</p>
+<p><strong>Saída:</strong> Coordenadas dos dois pontos selecionados.</p>
+<p><strong>Processamento:</strong> Através de <code>cv2.setMouseCallback</code> registra os cliques, armazena as coordenadas e desenha visualmente os pontos e a linha entre eles na imagem.</p>
+</div>
+
+<div class="bloco">
+<h3>Bloco 6: Cálculo da Distância Real</h3>
+<p><strong>Entrada:</strong> Coordenadas dos pontos e fator de escala.</p>
+<p><strong>Saída:</strong> Distância real em centímetros.</p>
+<p><strong>Processamento:</strong> Calcula a distância Euclidiana entre os pontos em pixels e converte para centímetros usando o fator de escala previamente obtido.</p>
+</div>
+
+<div class="bloco">
+<h3>Bloco 7: Exibição dos Resultados ao Usuário</h3>
+<p><strong>Entrada:</strong> Distância real calculada.</p>
+<p><strong>Saída:</strong> Valor visível na tela, sobre a imagem ou em interface gráfica adicional.</p>
+<p><strong>Processamento:</strong> Utiliza <code>cv2.putText</code> para sobrepor o valor diretamente na imagem e opcionalmente apresenta o resultado em uma interface complementar com Tkinter ou PySimpleGUI.</p>
+</div>
+
+<h2>Conceitos da Disciplina Utilizados</h2>
+<div class="tecnologias">
+<ul>
+    <li>OpenCV para processamento visual</li>
+    <li>Filtragem de imagem (pré-processamento)</li>
+    <li>Transformações geométricas (detecção de contornos)</li>
+    <li>Calibração de câmera (escala com objeto de referência)</li>
+    <li>Reconhecimento básico de padrões (objeto de referência)</li>
+</ul>
+</div>
+
+<h2>Métricas de Desempenho Esperadas</h2>
+<div class="metricas">
+<ul>
+    <li>Precisão das medidas comparadas com régua física</li>
+    <li>Facilidade de uso avaliada em laboratório experimental</li>
+    <li>Robustez da detecção sob diferentes condições de iluminação</li>
+</ul>
+</div>
+
+</body>
 </html>
