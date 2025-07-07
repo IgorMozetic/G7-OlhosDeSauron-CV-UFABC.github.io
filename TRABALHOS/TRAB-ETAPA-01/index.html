@@ -25,8 +25,8 @@
             </ol>
         </nav>
         <div>
-            <p class="h3 w-100 text-center"><a href="#" class="text-decoration-none text-black">Sistema de Medição com
-                    Visão Computacional</a></p>
+            <p class="h3 w-100 text-center"><a href="#" class="text-decoration-none text-black">Etapa 1: Elaboração do
+                    Contexto e Cenário de Aplicação</a></p>
             <div class="details py-4">
                 <p><b>INTEGRANTES:</b></p>
                 <p>Igor Domingos da Silva Mozetic - 11202320802</p>
@@ -34,125 +34,101 @@
                 <p>Mikael Alves Monteiro - 21055813</p>
                 <p><b>Data de Realização do trabalho:</b> 11/06/2025</p>
                 <p><b>Data de Publicação do trabalho:</b> 18/06/2025</p>
+                <p><strong>Tema:</strong> Sistema de Contagem de Moedas Brasileiras com Visão Computacional</p>
                 <hr>
             </div>
-            <section class="pb-3">
-                <p class="h3"><b>CONTEXTO E CENÁRIO DE APLICAÇÃO</b></p>
-                <p>Realizar o planejamento de ambientes envolve muito mais do que criatividade e bom gosto, exige
-                    precisão e confiança nas informações coletadas em campo. Seja na criação de móveis planejados,
-                    projetos de arquitetura ou propostas de decoração, a etapa de medição é fundamental para garantir
-                    que tudo se encaixe perfeitamente no espaço do cliente. No entanto, essa atividade, que deveria ser
-                    simples, ainda gera atrasos e erros quando feita de forma manual, utilizando apenas trena, papel e
-                    caneta. Pensando nisso, este trabalho apresenta o desenvolvimento de um sistema prático e acessível,
-                    capaz de utilizar tecnologia de visão computacional para facilitar a obtenção de medidas a partir de
-                    fotos do ambiente. A proposta visa tornar esse processo mais rápido, confiável e intuitivo,
-                    oferecendo aos profissionais uma ferramenta moderna, sem exigir que abandonem completamente seus
-                    métodos tradicionais.</p>
-                <hr>
-            </section>
-
             <section class="pb-3">
 
                 <p class="h3"><b>PROBLEMA, CONTEXTO E JUSTIFICATIVA</b></p>
                 <p>
-                    O trabalho de profissionais da área de móveis planejados exige alta precisão na coleta de medidas
-                    dos ambientes dos clientes. Atualmente, muitos desses profissionais, principalmente aqueles mais
-                    acostumados com métodos tradicionais, ainda utilizam ferramentas simples como trena, papel e caneta
-                    para realizar medições em campo. Esse processo, além de ser totalmente manual, é demorado, sujeito a
-                    erros e pode gerar retrabalho, principalmente quando o cliente, que muitas vezes é indeciso,
-                    solicita
-                    ajustes ou modificações no projeto.
+                    Com a popularização de métodos digitais de pagamento, muitos profissionais autônomos e idosos ainda
+                    operam exclusivamente com dinheiro físico por falta de acesso ou familiaridade com tecnologia. A
+                    entrevista realizada com uma costureira de 73 anos revelou um cenário recorrente entre trabalhadores
+                    informais: a dificuldade de <strong>conferir e validar pagamentos em moedas</strong>, recebidos em
+                    pequenas quantias por serviços diários.
                 </p>
                 <p>
-                    A falta de recursos tecnológicos acessíveis e fáceis de usar para facilitar essa etapa acaba
-                    impactando diretamente a eficiência do serviço e a qualidade do atendimento ao cliente. Embora
-                    existam ferramentas tecnológicas no mercado, como trenas digitais ou aplicativos de medição, muitos
-                    profissionais ainda resistem ao uso dessas soluções, seja por falta de familiaridade ou por
-                    considerar os equipamentos sofisticados demais para a sua realidade de trabalho.
+                    No caso da entrevistada, a baixa escolaridade e a idade avançada dificultam a realização de
+                    operações matemáticas simples, como somar o valor total recebido em moedas. Além disso, a semelhança
+                    visual entre diferentes tipos de moedas (por exemplo, entre 50 centavos e 1 real) causa confusão,
+                    especialmente em ambientes com iluminação precária. Essa limitação a leva a depender de outras
+                    pessoas para verificar o pagamento — o que compromete sua autonomia — e já ocasionou perdas
+                    financeiras por falhas na conferência que só foram percebidas muito tempo depois.
                 </p>
                 <p>
-                    Além disso, o processo de explicar ao cliente o que pode ou não ser feito no ambiente também depende
-                    dessas medições precisas. Se as medidas estiverem erradas ou incompletas, o projeto final pode
-                    apresentar problemas, gerar insatisfação e, consequentemente, perda de tempo e recursos.
+                    Situações como essa se repetem em diversos lares e comércios pequenos, onde o atendimento é feito de
+                    forma simples, rápida e muitas vezes sem recursos adequados de controle. Ainda que existam balanças
+                    de precisão e caixas registradoras eletrônicas, esses dispositivos são inacessíveis financeiramente
+                    ou complexos demais para o público-alvo em questão. Portanto, há uma lacuna evidente para soluções
+                    de baixo custo e fácil utilização que empreguem <strong>tecnologia visual simples para resolver um
+                        problema cotidiano real</strong>.
                 </p>
                 <p>
-                    Dessa forma, há uma necessidade clara e prática de um sistema que torne o processo de medição mais
-                    ágil, prático e confiável, sem exigir conhecimentos técnicos avançados ou o uso de equipamentos
-                    complexos.
+                    Neste contexto, o uso de visão computacional se apresenta como uma solução acessível, escalável e de
+                    fácil operação. Ao permitir que uma câmera “entenda” e identifique automaticamente os tipos de
+                    moedas presentes em uma superfície, o sistema reduz drasticamente o esforço cognitivo do usuário e
+                    garante maior confiabilidade no recebimento. A proposta se baseia na observação de uma necessidade
+                    concreta e cotidiana, e pretende gerar impacto direto na rotina de trabalho de profissionais em
+                    situação de vulnerabilidade digital.
                 </p>
                 <hr>
             </section>
             <section class="pb-3">
                 <p class="h3"><b>OBJETIVO DO SISTEMA</b></p>
                 <p>
-                    O objetivo do sistema é desenvolver uma solução simples e acessível, baseada em visão computacional,
-                    capaz de identificar automaticamente a distância média entre dois pontos em uma imagem capturada
-                    pela webcam. Essa ferramenta visa auxiliar profissionais da área de móveis planejados, arquitetura
-                    ou decoração a obterem rapidamente medidas de ambientes, sem a necessidade do uso exclusivo de
-                    trenas ou métodos manuais.
+                    O objetivo do sistema é desenvolver uma aplicação prática, simples e funcional de visão
+                    computacional que permita a <strong>identificação automática e contagem de moedas brasileiras
+                        utilizando uma webcam comum</strong>. O sistema será capaz de reconhecer moedas de diferentes
+                    valores, exibir visualmente na tela o nome de cada moeda detectada, e somar automaticamente o valor
+                    total em tempo real.
                 </p>
                 <p>
-                    O resultado final para o usuário será uma aplicação prática e intuitiva, onde ele poderá tirar uma
-                    foto de um ambiente ou de uma parede e o sistema irá calcular e exibir a distância entre dois pontos
-                    selecionados na imagem.
+                    A proposta visa proporcionar uma ferramenta de fácil acesso a usuários leigos, como idosos ou
+                    pessoas com baixo grau de alfabetização digital, permitindo que realizem tarefas de conferência de
+                    pagamentos com maior autonomia, rapidez e precisão. O sistema deverá operar sem necessidade de
+                    instalação de dispositivos especiais ou conhecimento técnico por parte do usuário, funcionando
+                    apenas com uma câmera e um computador simples.
+                </p>
+                <p>
+                    Como diferencial, a aplicação valoriza a <strong>interface visual intuitiva</strong> e elimina a
+                    necessidade de interação textual ou numérica. Dessa forma, o sistema não apenas cumpre uma função
+                    prática, mas também atua como um exemplo concreto do poder da visão computacional para promover
+                    inclusão digital e acessibilidade em contextos cotidianos.
                 </p>
                 <hr>
             </section>
             <section class="pb-3">
                 <p class="h3"><b>COMO O SISTEMA SERÁ UTILIZADO (INTERATIVIDADE DO USUÁRIO)</b></p>
+                <p>
+                    O sistema será projetado para ser extremamente simples, acessível inclusive para pessoas com pouca
+                    familiaridade com tecnologia:
+                </p>
                 <ul>
-                    <li>
-                        O usuário utiliza uma câmera para tirar uma foto do ambiente que deseja obter medidas
-                        aproximadas.
-                    </li>
-                    <li>
-                        A foto é enviada para o sistema, que, por meio de algoritmos de visão computacional, reconhece o
-                        objeto de referência e utiliza sua dimensão conhecida como base para calibrar a escala da
-                        imagem.
-                    </li>
-                    <li>
-                        O usuário então seleciona dois pontos na imagem através de toques na tela ou cliques (caso o
-                        sistema seja utilizado em um computador).
-                    </li>
-                    <li>
-                        O sistema calcula automaticamente a distância entre esses pontos, apresentando o resultado de
-                        forma clara e prática, sem exigir conhecimento técnico do usuário.
-                    </li>
+                    <li>O usuário posiciona as moedas em frente à webcam.</li>
+                    <li>O sistema detecta as moedas automaticamente.</li>
+                    <li>Cada moeda identificada é rotulada na imagem com seu valor.</li>
+                    <li>O valor total acumulado das moedas detectadas é exibido em destaque na tela.</li>
                 </ul>
+                <p>Não será necessário digitar, clicar, nem usar comandos de teclado. A interação será
+                    <strong>totalmente visual e automatizada</strong>, focando no público leigo.
+                </p>
                 <hr>
             </section>
 
             <section class="pb-3">
                 <p class="h3"><b>BENEFÍCIOS DO SISTEMA AO USUÁRIO</b></p>
                 <ul>
-                    <li>
-                        <strong>Agilidade:</strong> O tempo gasto para realizar medições será drasticamente reduzido,
-                        permitindo maior produtividade nas visitas aos clientes.
-                    </li>
-                    <li>
-                        <strong>Precisão:</strong> Redução de erros humanos comuns nas medições manuais, aumentando a
-                        confiabilidade dos dados coletados.
-                    </li>
-                    <li>
-                        <strong>Facilidade de Uso:</strong> O sistema será pensado para ser simples e intuitivo,
-                        acessível a profissionais com pouca ou nenhuma familiaridade com tecnologias avançadas.
-                    </li>
-                    <li>
-                        <strong>Melhora na Comunicação com o Cliente:</strong> Com medições rápidas e precisas, o
-                        profissional poderá apresentar propostas e esboços mais realistas e assertivos, facilitando o
-                        entendimento do cliente sobre o que pode ser feito no ambiente.
-                    </li>
+                    <li><strong>Redução de erros</strong> no recebimento e conferência de moedas.</li>
+                    <li><strong>Aumento da autonomia</strong> de pessoas idosas ou com dificuldades de leitura e
+                        cálculo.</li>
+                    <li><strong>Simplicidade de uso</strong>, sem necessidade de conhecimento técnico.</li>
+                    <li><strong>Rapidez na conferência de valores</strong>, economizando tempo e esforço.</li>
+                    <li><strong>Baixo custo de implementação</strong>, utilizando apenas uma webcam e um computador
+                        simples.</li>
+                    <li><strong>Aplicação social e inclusiva</strong>, promovendo acessibilidade digital.</li>
                 </ul>
                 <hr>
             </section>
-
-            <p>
-                Em resumo, o sistema propõe modernizar um processo fundamental para profissionais de móveis planejados,
-                unindo tecnologia e praticidade, sem exigir que o usuário abandone completamente seus métodos
-                tradicionais, mas oferecendo uma alternativa eficiente e confiável para quem busca melhorar a qualidade
-                do serviço e a experiência do cliente.
-            </p>
-
         </div>
     </main>
 

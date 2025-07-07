@@ -1,165 +1,251 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Modelagem Funcional - Olhos de Sauron</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-            background-color: #f7f7f7;
-            color: #333;
-            line-height: 1.6;
-        }
-        h1, h2, h3 {
-            color: #2c3e50;
-        }
-        .bloco {
-            background: #fff;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-left: 5px solid #3498db;
-            box-shadow: 0 0 5px rgba(0,0,0,0.1);
-        }
-        code {
-            background: #eee;
-            padding: 2px 4px;
-            border-radius: 4px;
-            font-family: Consolas, monospace;
-        }
-        .diagrama {
-            background: #fff;
-            padding: 20px;
-            margin: 20px 0;
-            border: 2px solid #3498db;
-            border-radius: 8px;
-            position: relative;
-            overflow-x: auto;
-        }
-        .etapa {
-            display: inline-block;
-            background: #3498db;
-            color: #fff;
-            padding: 10px 20px;
-            margin: 10px;
-            border-radius: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-            font-weight: bold;
-        }
-        .seta {
-            display: inline-block;
-            margin: 0 10px;
-            font-size: 20px;
-            color: #3498db;
-            vertical-align: middle;
-        }
-        .tecnologias, .metricas {
-            background: #ecf0f1;
-            padding: 10px;
-            border-left: 3px solid #2980b9;
-            margin-bottom: 20px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Equipe Olhos de Sauron - CV - Q2.2025</title>
+  <link rel="stylesheet" href="../../assets/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+  <style>
+    .bloco {
+      background: #ffffff;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-left: 6px solid #0d3b66;
+      border-radius: 8px;
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    }
+
+    code {
+      background-color: #eee;
+      padding: 3px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+
+    .diagrama {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 25px;
+      border-radius: 8px;
+      margin: 30px 0;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+      max-width: 500px;
+    }
+
+    .diagrama .etapa {
+      background: #0d3b66;
+      color: white;
+      padding: 12px 25px;
+      border-radius: 25px;
+      font-weight: bold;
+      text-align: center;
+      min-width: 300px;
+    }
+
+    .seta {
+      font-size: 30px;
+      color: #0d3b66;
+    }
+
+    ul {
+      background: #ffffff;
+      padding: 15px 20px;
+      border-radius: 6px;
+      list-style: disc inside;
+      border: 1px solid #ddd;
+      margin-bottom: 40px;
+    }
+  </style>
 </head>
-<body>
 
-<h1>Modelagem Funcional do Sistema de Processamento da Visão (MF)</h1>
-<p><strong>Equipe:</strong> Olhos de Sauron – Visão Computacional UFABC – Q2.2025</p>
-<p><strong>Título do Trabalho:</strong> Sistema de Medição Inteligente para Ambientes de Móveis Planejados</p>
+<body class="d-flex justify-content-center flex-column align-items-center">
+  <header class="py-4 w-100 text-center text-white">
+    <h1 class="m-0">Grupo 07: Equipe Olhos de Sauron - CV - Q2.2025</h1>
+  </header>
+  <main class="py-5 w-100 container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a class="text-black"
+            href="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/">Home</a></li>
+        <li class="breadcrumb-item"><a class="text-black"
+            href="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/TRABALHOS/">Trabalhos</a>
+        </li>
+      </ol>
+    </nav>
 
-<h2>Resumo do Cenário de Aplicação</h2>
-<p>
-    Profissionais de móveis planejados, arquitetos e decoradores frequentemente enfrentam dificuldades em coletar medidas precisas de ambientes, utilizando métodos tradicionais como trena, papel e caneta.
-    O sistema proposto resolve esse problema ao permitir que o usuário capture ou carregue uma foto do ambiente, detecte um objeto de referência conhecido (ex: um cartão padrão), e selecione dois pontos na imagem para obter automaticamente a distância real entre eles.
-</p>
+    <p class="h3 w-100 text-center"><a href="#" class="text-decoration-none text-black">Etapa 2 – Modelagem Funcional do
+        Sistema</a></p>
+    <div class="details py-4">
+      <p><b>INTEGRANTES:</b></p>
+      <p>Igor Domingos da Silva Mozetic - 11202320802</p>
+      <p>Jhonattan Ferreira Machado - 11202320245</p>
+      <p>Mikael Alves Monteiro - 21055813</p>
+      <p><b>Data de Realização do trabalho:</b> 18/06/2025</p>
+      <p><b>Data de Publicação do trabalho:</b> 25/06/2025</p>
+      <p><strong>Tema:</strong> Sistema de Contagem de Moedas Brasileiras com Visão Computacional</p>
+      <hr>
+    </div>
+    <section class="pb-3">
+      <p class="h3"><b>INTRODUÇÃO</b></p>
+      <p>A modelagem funcional apresentada a seguir descreve, de forma estruturada e visual, o funcionamento interno do
+        sistema de contagem automática de moedas por visão computacional. Esta etapa tem como objetivo representar os
+        principais blocos de processamento do sistema, detalhando as entradas, saídas e operações realizadas em cada
+        parte do fluxo.
+      </p>
+      <p>Com base no problema identificado na etapa de contexto — a dificuldade de pessoas idosas ou com baixa
+        familiaridade com tecnologia em conferir valores recebidos em moedas — o sistema foi projetado para operar de
+        forma autônoma, utilizando uma câmera simples para capturar imagens, processá-las, reconhecer as moedas com o
+        auxílio de um modelo treinado e, por fim, exibir de forma clara o valor total das moedas detectadas.
+      </p>
+      <p>
+        A modelagem visa facilitar a compreensão do comportamento do sistema e servir como base para sua implementação e
+        validação prática.
+      </p>
+      <hr>
+    </section>
+    <section class="pb-3">
+      <p class="h3"><b>OBJETIVO</b></p>
 
-<h2>Arquitetura Funcional – Diagrama de Blocos</h2>
-<div class="diagrama">
-    <span class="etapa">1. Captura/Upload de Imagem</span>
-    <span class="seta">&#8594;</span>
-    <span class="etapa">2. Pré-processamento</span>
-    <span class="seta">&#8594;</span>
-    <span class="etapa">3. Detecção do Objeto</span>
-    <span class="seta">&#8594;</span>
-    <span class="etapa">4. Calibração de Escala</span>
-    <span class="seta">&#8594;</span>
-    <span class="etapa">5. Seleção de Pontos</span>
-    <span class="seta">&#8594;</span>
-    <span class="etapa">6. Cálculo da Distância</span>
-    <span class="seta">&#8594;</span>
-    <span class="etapa">7. Exibição dos Resultados</span>
-</div>
+      <p>Descrever os componentes funcionais do sistema que detecta e classifica moedas usando a webcam e exibe o valor
+        total ao usuário, de forma automática e em tempo real.</p>
+      <hr>
+    </section>
+    <section class="pb-3">
+      <p class="h3"><b>DIAGRAMA DE BLOCOS</b></p>
+      <div class="w-100 d-flex justify-content-center">
+        <div class=" w-100 diagrama">
+          <div class="etapa">Captura de Vídeo</div>
+          <div class="seta">↓</div>
+          <div class="etapa">Pré-processamento da Imagem</div>
+          <div class="seta">↓</div>
+          <div class="etapa">Detecção de Contornos</div>
+          <div class="seta">↓</div>
+          <div class="etapa">Recorte das Regiões de Interesse</div>
+          <div class="seta">↓</div>
+          <div class="etapa">Classificação com Rede Neural</div>
+          <div class="seta">↓</div>
+          <div class="etapa">Filtragem por Confiança</div>
+          <div class="seta">↓</div>
+          <div class="etapa">Atualização do Valor Total</div>
+          <div class="seta">↓</div>
+          <div class="etapa">Exibição de Resultados na Tela</div>
+        </div>
+      </div>
+      <hr>
+    </section>
 
-<h2>Detalhamento dos Blocos</h2>
+    <section class="pb-3">
+      <p class="h3 mb-4"><b>DESCRIÇÃO DETALHADA DOS BLOCOS FUNCIONAIS</b></p>
 
-<div class="bloco">
-<h3>Bloco 1: Captura/Upload de Imagem</h3>
-<p><strong>Entrada:</strong> Imagem capturada pela webcam ou carregada do dispositivo.</p>
-<p><strong>Saída:</strong> Imagem em matriz NumPy (BGR).</p>
-<p><strong>Processamento:</strong> Utiliza-se <code>cv2.VideoCapture</code> para captura ao vivo ou <code>cv2.imread</code> para upload. Exibe a imagem para confirmação do usuário. Trata possíveis erros de entrada e permite repetição caso necessário.</p>
-</div>
+      <div class="bloco mb-5">
+        <p class="h4 mb-3">1. Captura de Vídeo</p>
 
-<div class="bloco">
-<h3>Bloco 2: Pré-processamento da Imagem</h3>
-<p><strong>Entrada:</strong> Imagem BGR.</p>
-<p><strong>Saída:</strong> Imagem filtrada e/ou segmentada.</p>
-<p><strong>Processamento:</strong> Conversão para HSV, aplicação de <code>cv2.GaussianBlur</code> para redução de ruído, possíveis máscaras para destacar o objeto de referência e facilitar sua detecção.</p>
-</div>
+        <p><strong>Entrada:</strong> Webcam do dispositivo.</p>
+        <p><strong>Processamento:</strong> Inicializa a câmera usando <code>cv2.VideoCapture()</code> para capturar
+          imagens
+          em tempo real. Cada frame serve como entrada para o sistema.</p>
+        <p><strong>Saída:</strong> Imagem colorida no formato RGB, representada como uma matriz NumPy.</p>
+      </div>
 
-<div class="bloco">
-<h3>Bloco 3: Detecção do Objeto de Referência</h3>
-<p><strong>Entrada:</strong> Imagem pré-processada.</p>
-<p><strong>Saída:</strong> Coordenadas do contorno ou bounding box do objeto conhecido.</p>
-<p><strong>Processamento:</strong> Utiliza <code>cv2.findContours</code> para localizar contornos, <code>cv2.approxPolyDP</code> para aproximar a forma e valida as dimensões e proporções para confirmar se é o objeto esperado (ex: cartão padrão de 8,5 x 5,5 cm).</p>
-</div>
+      <div class="bloco mb-5">
+        <p class="h4 mb-3">2. Pré-processamento da Imagem</p>
 
-<div class="bloco">
-<h3>Bloco 4: Calibração de Escala</h3>
-<p><strong>Entrada:</strong> Tamanho do objeto em pixels e tamanho real conhecido (cm).</p>
-<p><strong>Saída:</strong> Fator de conversão (pixels/cm).</p>
-<p><strong>Processamento:</strong> Cálculo da escala baseado no tamanho real do objeto de referência. Esse fator é armazenado e utilizado nas próximas etapas para conversão de pixels em centímetros.</p>
-</div>
+        <p><strong>Entrada:</strong> Frame da webcam.</p>
+        <p><strong>Processamento:</strong>
+          Aplica um conjunto de operações para realçar as bordas das moedas, incluindo:
+        <ul>
+          <li>Suavização com <code>cv2.GaussianBlur</code></li>
+          <li>Detecção de bordas com <code>cv2.Canny</code></li>
+          <li>Dilatação para engrossar as bordas</li>
+          <li>Erosão para eliminar ruído</li>
+        </ul>
+        </p>
+        <p><strong>Saída:</strong> Imagem binária que destaca contornos e áreas de interesse.</p>
+      </div>
 
-<div class="bloco">
-<h3>Bloco 5: Interface Interativa para Seleção de Pontos</h3>
-<p><strong>Entrada:</strong> Cliques do usuário na imagem.</p>
-<p><strong>Saída:</strong> Coordenadas dos dois pontos selecionados.</p>
-<p><strong>Processamento:</strong> Através de <code>cv2.setMouseCallback</code> registra os cliques, armazena as coordenadas e desenha visualmente os pontos e a linha entre eles na imagem.</p>
-</div>
+      <div class="bloco mb-5">
+        <p class="h4 mb-3">3. Detecção de Contornos</p>
 
-<div class="bloco">
-<h3>Bloco 6: Cálculo da Distância Real</h3>
-<p><strong>Entrada:</strong> Coordenadas dos pontos e fator de escala.</p>
-<p><strong>Saída:</strong> Distância real em centímetros.</p>
-<p><strong>Processamento:</strong> Calcula a distância Euclidiana entre os pontos em pixels e converte para centímetros usando o fator de escala previamente obtido.</p>
-</div>
+        <p><strong>Entrada:</strong> Imagem binária processada.</p>
+        <p><strong>Processamento:</strong> Utiliza <code>cv2.findContours()</code> para encontrar regiões fechadas.
+          Essas
+          regiões indicam possíveis moedas na cena.</p>
+        <p><strong>Saída:</strong> Lista de contornos (arrays com coordenadas dos pontos).</p>
+      </div>
 
-<div class="bloco">
-<h3>Bloco 7: Exibição dos Resultados ao Usuário</h3>
-<p><strong>Entrada:</strong> Distância real calculada.</p>
-<p><strong>Saída:</strong> Valor visível na tela, sobre a imagem ou em interface gráfica adicional.</p>
-<p><strong>Processamento:</strong> Utiliza <code>cv2.putText</code> para sobrepor o valor diretamente na imagem e opcionalmente apresenta o resultado em uma interface complementar com Tkinter ou PySimpleGUI.</p>
-</div>
+      <div class="bloco mb-5">
+        <p class="h4 mb-3">4. Recorte das Regiões de Interesse</p>
 
-<h2>Conceitos da Disciplina Utilizados</h2>
-<div class="tecnologias">
-<ul>
-    <li>OpenCV para processamento visual</li>
-    <li>Filtragem de imagem (pré-processamento)</li>
-    <li>Transformações geométricas (detecção de contornos)</li>
-    <li>Calibração de câmera (escala com objeto de referência)</li>
-    <li>Reconhecimento básico de padrões (objeto de referência)</li>
-</ul>
-</div>
+        <p><strong>Entrada:</strong> Contornos filtrados por área (ex: área &gt; 2000).</p>
+        <p><strong>Processamento:</strong> Para cada contorno detectado, extrai uma subimagem correspondente à região
+          delimitada. Essa região é o provável local da moeda.</p>
+        <p><strong>Saída:</strong> Imagens recortadas (ROI – Region of Interest) de moedas individuais.</p>
+      </div>
 
-<h2>Métricas de Desempenho Esperadas</h2>
-<div class="metricas">
-<ul>
-    <li>Precisão das medidas comparadas com régua física</li>
-    <li>Facilidade de uso avaliada em laboratório experimental</li>
-    <li>Robustez da detecção sob diferentes condições de iluminação</li>
-</ul>
-</div>
+      <div class="bloco mb-5">
+        <p class="h4 mb-3">5. Classificação com Rede Neural</p>
 
+        <p><strong>Entrada:</strong> ROI de moeda recortada.</p>
+        <p><strong>Processamento:</strong>
+        <ul>
+          <li>Redimensionamento da imagem para 224x224 pixels</li>
+          <li>Normalização dos valores dos pixels</li>
+          <li>Classificação com modelo <code>keras_model.h5</code> previamente treinado</li>
+        </ul>
+        </p>
+        <p><strong>Saída:</strong> Rótulo da moeda (ex: “1 real”, “25 cent”) e probabilidade (confiança).</p>
+      </div>
+
+      <div class="bloco mb-5">
+        <p class="h4 mb-3">6. Filtragem por Confiança</p>
+
+        <p><strong>Entrada:</strong> Classe e probabilidade da predição.</p>
+        <p><strong>Processamento:</strong> Aceita a predição apenas se a confiança for superior a 70%, evitando
+          classificações equivocadas.</p>
+        <p><strong>Saída:</strong> Moeda validada para contagem ou descartada.</p>
+      </div>
+
+      <div class="bloco mb-5">
+        <p class="h4 mb-3">7. Atualização do Valor Total</p>
+
+        <p><strong>Entrada:</strong> Moeda validada.</p>
+        <p><strong>Processamento:</strong> Soma o valor da moeda ao total acumulado exibido ao usuário.</p>
+        <p><strong>Saída:</strong> Total monetário atualizado.</p>
+      </div>
+
+      <div class="bloco mb-5">
+        <p class="h4 mb-3">8. Exibição de Resultados na Tela</p>
+
+        <p><strong>Entrada:</strong> Frame com bounding boxes, rótulos e valor total.</p>
+        <p><strong>Processamento:</strong> Adiciona sobreposições gráficas usando <code>cv2.putText()</code> e
+          <code>cv2.rectangle()</code> para informar ao usuário os resultados em tempo real.
+        </p>
+        <p><strong>Saída:</strong> Interface visual interativa com os valores das moedas e o total acumulado.</p>
+      </div>
+      <hr>
+    </section>
+
+    <section class="pb-3">
+      <p class="h3 mb-4"><b>CONCEITOS DE VISÃO COMPUTACIONAL APLICADOS</b></p>
+
+      <ul>
+        <li><strong>Filtragem de Imagem:</strong> Blur, Canny, morfologia</li>
+        <li><strong>Transformações Geométricas:</strong> Recorte, redimensionamento</li>
+        <li><strong>Reconhecimento:</strong> Classificação de imagem com CNN</li>
+        <li><strong>Métrica de Desempenho:</strong> Acurácia visual e valor monetário exibido</li>
+      </ul>
+      <hr>
+    </section>
+  </main>
+  <footer class="mt-5 p-3 ">
+    &copy; 2025 - Desenvolvido por Equipe Olhos de Sauron
+  </footer>
 </body>
+
 </html>
