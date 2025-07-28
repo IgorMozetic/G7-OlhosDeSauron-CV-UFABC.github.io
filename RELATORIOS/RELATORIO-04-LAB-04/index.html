@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Equipe Olhos de Sauron - CV - Q2.2025</title>
+  <link rel="stylesheet" href="../../assets/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css" rel="stylesheet" />
+</head>
+
+<body class="d-flex justify-content-center flex-column align-items-center">
+  <header class="py-4 w-100 text-center text-white">
+    <h1 class="m-0">Grupo 07: Equipe Olhos de Sauron - CV - Q2.2025</h1>
+  </header>
+
+  <main class="py-5 w-100 container relatorio">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a class="text-black"
+            href="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/">Home</a></li>
+        <li class="breadcrumb-item"><a class="text-black"
+            href="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/RELATORIOS/">Relatórios</a></li>
+      </ol>
+    </nav>
+    <p class="h3 w-100 text-center"><a href="#" class="text-decoration-none text-black">LAB 4 - Relatório</a></p>
+    <div class="details py-3">
+      <p><b>INTEGRANTES:</b></p>
+      <p>Igor Domingos da Silva Mozetic - 11202320802</p>
+      <p>Jhonattan Ferreira Machado - 11202320245</p>
+      <p>Mikael Alves Monteiro - 21055813</p>
+      <p><b>Data de Realização do relatório:</b> 18/06/2025</p>
+      <p><b>Data de Publicação do relatório:</b> 25/06/2025</p>
+      <hr>
+    </div>
+    <section class="pb-4">
+      <p class="h3"><b>INTRODUÇÃO</b></p>
+      <p class="py-1">
+        A extração e detecção de características (<em>features</em>) é uma etapa fundamental no campo da Visão
+        Computacional, sendo amplamente utilizada em tarefas como reconhecimento de objetos, rastreamento de movimento,
+        reconstrução 3D e realidade aumentada.
+      </p>
+      <p class="py-1">
+        Neste laboratório, exploramos os conceitos teóricos e práticos relacionados a essa temática, com foco na
+        aplicação de algoritmos clássicos como Harris, Shi-Tomasi, SIFT e a Transformada de Hough.
+      </p>
+      <p class="py-1">
+        O objetivo principal deste experimento foi compreender como as características podem ser identificadas e
+        descritas em imagens, bem como aplicá-las para encontrar correspondências entre diferentes vistas de um mesmo
+        objeto ou cena. As atividades práticas envolveram a implementação de algoritmos utilizando a biblioteca OpenCV,
+        incluindo o uso de imagens previamente gravadas e capturas em tempo real com câmera estereoscópica.
+      </p>
+      <p class="py-1">
+        Este relatório apresenta os procedimentos realizados, os resultados obtidos, uma análise crítica sobre os
+        métodos empregados e uma breve discussão sobre as possíveis aplicações dessas técnicas em contextos reais, como
+        no desenvolvimento do trabalho T1 da disciplina.
+      </p>
+      <small class="py-1">
+        Para acessar o arquivo PDF com as instruções que foi utilizado para realização da prática, clique no <a
+          href="assets/esza019_2025.2__Lab5_features_.pdf" target="_blank" class="text-black"><b>Link</b></a>.
+      </small>
+      <hr>
+    </section>
+
+    <section class="pb-4">
+      <p class="h3"><b>PROCEDIMENTOS EXPERIMENTAIS</b></p>
+      <p class="py-1">Nessa seção serão abordados os procedimentos experimentais de cada parte do laboratório.</p>
+      <div class="py-3">
+        <div class="pb-3">
+          <p class="h4">PARTE 1: Processamento Básico nas Imagens e Vídeos.</p>
+        </div>
+        <p>
+          Nesta etapa, foi realizado um estudo detalhado dos principais conceitos relacionados à detecção e descrição de
+          características em imagens digitais. A base teórica utilizada está presente na documentação oficial do OpenCV,
+          conforme os links abaixo.
+        </p>
+
+        <p><b>Sumário Geral – Feature Detection and Description: </b>
+          <a class="text-black" href="https://docs.opencv.org/4.x/db/d27/tutorial_py_table_of_contents_feature2d.html"
+            target="_blank">
+            https://docs.opencv.org/4.x/db/d27/tutorial_py_table_of_contents_feature2d.html
+          </a>
+        </p>
+        <p>
+          Esta página serve como índice principal dos tutoriais da biblioteca OpenCV sobre detecção e descrição de
+          características. Nela, estão reunidos os diversos métodos disponíveis na biblioteca para detectar pontos-chave
+          em imagens e calcular seus descritores, além de apresentar técnicas de correspondência entre imagens.
+        </p>
+
+        <p><b>Entendendo sobre Features: </b>
+          <a class="text-black" href="https://docs.opencv.org/4.x/df/d54/tutorial_py_features_meaning.html"
+            target="_blank">
+            https://docs.opencv.org/4.x/df/d54/tutorial_py_features_meaning.html
+          </a>
+        </p>
+        <p>
+          Este tutorial aborda o conceito fundamental de "features", explicando o que são características locais em uma
+          imagem, como cantos, bordas e pontos salientes que são facilmente detectáveis e rastreáveis.
+          São elementos importantes porque permitem descrever e comparar partes de imagens diferentes, sendo essenciais
+          para algoritmos de reconhecimento e reconstrução.
+        </p>
+
+        <p><b>Detector de Harris: </b>
+          <a class="text-black" href="https://docs.opencv.org/4.x/dc/d0d/tutorial_py_features_harris.html"
+            target="_blank">
+            https://docs.opencv.org/4.x/dc/d0d/tutorial_py_features_harris.html
+          </a>
+        </p>
+        <p>
+          O detector de Harris é um dos algoritmos clássicos para detecção de cantos. Ele utiliza derivadas da imagem e
+          uma função de resposta para identificar regiões com variação de intensidade em múltiplas direções. O tutorial
+          apresenta o funcionamento do algoritmo e sua aplicação prática com a função <code>cv2.cornerHarris()</code>.
+        </p>
+
+        <p><b>Detector de Shi-Tomasi: </b>
+          <a class="text-black" href="https://docs.opencv.org/4.x/d4/d8c/tutorial_py_shi_tomasi.html" target="_blank">
+            https://docs.opencv.org/4.x/d4/d8c/tutorial_py_shi_tomasi.html
+          </a>
+        </p>
+        <p>
+          O algoritmo de Shi-Tomasi é uma melhoria do detector de Harris, que considera a menor resposta entre as
+          direções, garantindo detecção mais robusta de cantos. Ele é usado principalmente com a função
+          <code>cv2.goodFeaturesToTrack()</code>, sendo muito eficaz em sistemas de rastreamento de movimento e
+          aplicações
+          em vídeos.
+        </p>
+
+        <p><b>Introdução ao SIFT (Scale-Invariant Feature Transform): </b>
+          <a class="text-black" href="https://docs.opencv.org/4.x/da/df5/tutorial_py_sift_intro.html" target="_blank">
+            https://docs.opencv.org/4.x/da/df5/tutorial_py_sift_intro.html
+          </a>
+        </p>
+        <p>
+          O SIFT é um dos algoritmos mais poderosos e populares para detecção e descrição de características.
+          Ele é invariante a escala, rotação e mudanças de iluminação, tornando-se ideal para correspondência entre
+          imagens com diferentes pontos de vista. O tutorial apresenta a função <code>SIFT_create()</code> e como
+          utilizá-la para detectar <em>keypoints</em> e gerar <em>descriptors</em>.
+        </p>
+        <hr>
+      </div>
+
+      <div class="py-3">
+        <div class="pb-3">
+          <p class="h4">PARTE 2: SIFT.</p>
+        </div>
+        <p>
+          (A) Elaborar um programa OpenCV, que realize a operação <i>“Feature Matching + Homography to find
+            Objects”</i>, deste tutorial:
+          <a class="text-black"
+            href="https://docs.opencv.org/4.x/d1/de0/tutorial_py_feature_homography.html">https://docs.opencv.org/4.x/d1/de0/tutorial_py_feature_homography.html</a>
+        </p>
+        <p>
+          <small><i>- este programa deverá ler duas imagens previamente gravadas que contenham o mesmo objeto em
+              posições distintas. No final mostrar conforme o tutorial, as correspondências obtidas.</i></small>
+        </p>
+        <div class="analise">&emsp;
+          <p>Nessa alternativa do relatório, foi solicitado para elaborar um programa OpenCV que leia previamente duas
+            imagens e aplique o conhecimento adquirido nos estudos realizados na PARTE 1.</p>
+          <p>Para isso, foi realizado a captura das imagens a seguir:</p>
+          <div class="d-flex justify-content-center align-items-center py-2">
+            <figure class="text-center">
+              <img src="assets/parte-02/objeto.png" alt="Imagem">
+              <figcaption><i>Figura 1</i>: Imagem do objeto a ser identificado na imagem.</figcaption>
+            </figure>
+          </div>
+          <div class="d-flex justify-content-center align-items-center py-2">
+            <figure class="text-center">
+              <img src="assets/parte-02/objeto-na-cena.png" alt="Imagem">
+              <figcaption><i>Figura 2</i>: Imagem da cena onde o objeto deverá ser identificado.</figcaption>
+            </figure>
+          </div>
+          <p>Após realizar a captura, foi elaborado o seguinte código para que o objeto pudesse ser identificado na
+            imagem de cena:</p>
+          <div class="d-flex justify-content-center">
+            <figure>
+              <pre><code class="language-python">import numpy as np 
+import cv2 as cv
+  
+img = cv.imread('messi5.jpg',0)
+cv.imshow('image',img)
+k = cv.waitKey(0)
+if k == 27:         # wait for ESC key to exit
+    cv.destroyAllWindows()
+elif k == ord('s'): # wait for 's' key to save and exit
+    cv.imwrite('messigray.png',img)
+    cv.destroyAllWindows()
+  </code></pre>
+              <figcaption class="text-center"><i>Código 1</i>: Código para identificação do objeto na cena.</figcaption>
+            </figure>
+          </div>
+          <p>No código, as duas primeiras linhas estão sendo importadas as bibliotecas que serão utilizadas no restante
+            do código.</p>
+          <p>Na 3º linha <code>img = cv.imread('messi5.jpg',0)</code>, o código está carregando a imagem chamada
+            <strong>"messi5.jpg"</strong> em modo <i>grayscale</i> (tons de cinza), pois o segundo parâmetro é 0. A
+            imagem é armazenada na variável <code>img</code>.
+          </p>
+          <p>Na 4º linha <code>cv.imshow('image',img)</code>, o código está exibindo a imagem carregada em uma janela
+            com o nome <strong>"image"</strong>. Essa janela mostra o conteúdo da variável <code>img</code>.</p>
+          <p>Na 5ª linha <code>k = cv.waitKey(0)</code>, o programa fica aguardando indefinidamente até que o usuário
+            pressione alguma tecla. A tecla pressionada é armazenada na variável <code>k</code>.</p>
+          <p>Na 6ª linha <code>if k == 27:</code>, o código verifica se a tecla pressionada foi a tecla ESC
+            (representada pelo código 27). Se for, ele fecha todas as janelas abertas com
+            <code>cv.destroyAllWindows()</code>.
+          </p>
+          <p>Na 8ª linha <code>elif k == ord('s'):</code>, o código verifica se a tecla pressionada foi a tecla
+            <strong>'s'</strong>. Se for, ele salva a imagem carregada com o nome <strong>"messigray.png"</strong> e
+            também fecha todas as janelas.
+          </p>
+          <hr>
+        </div>
+        <div class="pt-3">
+          <p>
+            (B) Elaborar outro programa OpenCV, modificando o codigo acima, para fazer a leitura de duas webcams da
+            camera estereoscópica calibrada, mostrando o resultado em video.
+          </p>
+          <div class="analise">&emsp;
+            <p>
+              Nesta etapa do experimento, foi solicitada a modificação do código elaborado na Alternativa A da PARTE 2,
+              com o objetivo de permitir a captura de imagens em tempo real utilizando duas webcams. A proposta
+              consistiu
+              em identificar, a partir de uma imagem de referência, os pontos em comum detectados nas imagens capturadas
+              por ambas as câmeras, realizando a correspondência entre eles e traçando visualmente as correspondências
+              identificadas.
+            </p>
+            <p>Portanto, segue o código alterado para execução da alternativa B:</p>
+            <div class="d-flex justify-content-center">
+              <figure>
+                <pre><code class="language-python">import time
+import numpy as np
+import cv2 as cv
+
+cap = cv.VideoCapture('big_buck_bunny.mp4')
+
+while(cap.isOpened()):
+    ret, frame = cap.read()
+    
+    if ret==True:
+        # show the frame
+        cv.imshow('frame',frame)
+
+        #wait next frame by 40ms - 25fps
+        time.sleep(1/25.0) 
+        
+        if cv.waitKey(1) & 0xFF == ord('q'):
+            break
+    else:
+        break
+               
+cap.release()
+cv.destroyAllWindows()
+  </code></pre>
+                <figcaption class="text-center"><i>Código 2</i> Código para identificação do objeto no vídeo capturado
+                  pelas duas webcams.
+                </figcaption>
+              </figure>
+            </div>
+            <p>No código, as três primeiras linhas estão importando as bibliotecas necessárias para a execução:
+              <code>time</code> para controle de tempo, <code>numpy</code> para manipulação de arrays e <code>cv2</code>
+              para processamento de vídeo e imagem com OpenCV.
+            </p>
+
+            <p>Na 4ª linha <code>cap = cv.VideoCapture('big_buck_bunny.mp4')</code>, o código está carregando o vídeo
+              chamado <strong>"big_buck_bunny.mp4"</strong> para reprodução. A função <code>VideoCapture</code> cria um
+              objeto que será usado para capturar quadro a quadro do vídeo.</p>
+
+            <p>Na 6ª linha <code>while(cap.isOpened()):</code>, o código inicia um loop que continuará enquanto o vídeo
+              estiver aberto corretamente e houver quadros para ler.</p>
+
+            <p>Na 7ª linha <code>ret, frame = cap.read()</code>, o código tenta ler o próximo quadro do vídeo.
+              <code>ret</code> será <code>True</code> se o quadro for lido com sucesso, e <code>frame</code> contém a
+              imagem do quadro atual.
+            </p>
+
+            <p>Na 9ª linha <code>if ret==True:</code>, o código verifica se o quadro foi lido com sucesso. Se sim, o
+              bloco
+              de instruções dentro do <code>if</code> será executado.</p>
+
+            <p>Na 11ª linha <code>cv.imshow('frame',frame)</code>, o código exibe o quadro atual em uma janela chamada
+              <strong>"frame"</strong>.
+            </p>
+
+            <p>Na 13ª linha <code>time.sleep(1/25.0)</code>, o código pausa por 1/25 segundos (ou 40 milissegundos),
+              para
+              simular uma taxa de atualização de 25 quadros por segundo (fps), que é comum em vídeos.</p>
+
+            <p>Na 15ª linha <code>if cv.waitKey(1) & 0xFF == ord('q'):</code>, o código verifica se a tecla
+              <strong>'q'</strong> foi pressionada. Se sim, o loop será interrompido, encerrando a reprodução do vídeo.
+            </p>
+
+            <p>Na 17ª linha <code>else:</code>, caso <code>ret</code> seja <code>False</code> (por exemplo, se o vídeo
+              chegou ao fim), o loop também é encerrado.</p>
+
+            <p>Na 20ª linha <code>cap.release()</code>, o código libera o objeto de captura de vídeo, liberando os
+              recursos associados.</p>
+
+            <p>Na 21ª linha <code>cv.destroyAllWindows()</code>, o código fecha todas as janelas abertas do OpenCV.</p>
+
+            <hr>
+          </div>
+        </div>
+      </div>
+
+      <div class="py-3">
+        <div class="pb-3">
+          <p class="h4">PARTE 3: Hough Transform.</p>
+        </div>
+        <p>
+          (C) Elaborar um programa OpenCV, que realize a operação <i>“Hough Transform”</i>, deste tutorial:
+          <a class="text-black"
+            href="https://learnopencv.com/hough-transform-with-opencv-c-python/">https://learnopencv.com/hough-transform-with-opencv-c-python/</a>
+        </p>
+        <p>
+          <small><i>- este programa deverá várias imagens previamente gravadas que contenham linhas e circulos. No final
+              mostrar, conforme o tutorial, as linhas e circulos obtidas.</i></small>
+        </p>
+        <div class="analise">&emsp;
+          <p>Nessa alternativa do relatório, foi solicitado para elaborar um programa OpenCV que leia previamente
+            algumas imagens que contenham as formas de linhas e circulos e aplicar o conhecimento adquirido nos estudos
+            realizados na PARTE 1.</p>
+          <p>Para isso, foi escolhido as imagens a seguir:</p>
+          <div class="d-flex justify-content-center align-items-center py-2">
+            <figure class="text-center">
+              <img src="assets/parte-02/objeto.png" alt="Imagem">
+              <figcaption><i>Figura 4</i>: Imagem com supostas linhas em sua cena.</figcaption>
+            </figure>
+          </div>
+          <div class="d-flex justify-content-center align-items-center py-2">
+            <figure class="text-center">
+              <img src="assets/parte-02/objeto.png" alt="Imagem">
+              <figcaption><i>Figura 5</i>: Imagem com supostas linhas em sua cena.</figcaption>
+            </figure>
+          </div>
+          <div class="d-flex justify-content-center align-items-center py-2">
+            <figure class="text-center">
+              <img src="assets/parte-02/objeto.png" alt="Imagem">
+              <figcaption><i>Figura 6</i>: Imagem com supostos círculos em sua cena.</figcaption>
+            </figure>
+          </div>
+          <div class="d-flex justify-content-center align-items-center py-2">
+            <figure class="text-center">
+              <img src="assets/parte-02/objeto.png" alt="Imagem">
+              <figcaption><i>Figura 7</i>: Imagem com supostos círculos em sua cena.</figcaption>
+            </figure>
+          </div>
+          <p>Após a definição das imagens, foi elaborado o seguinte código para que as formas (linhas e círculos)
+            pudesse ser identificado nas imagens:</p>
+          <div class="d-flex justify-content-center">
+            <figure>
+              <pre><code class="language-python">import numpy as np 
+import cv2 as cv
+  
+img = cv.imread('messi5.jpg',0)
+cv.imshow('image',img)
+k = cv.waitKey(0)
+if k == 27:         # wait for ESC key to exit
+    cv.destroyAllWindows()
+elif k == ord('s'): # wait for 's' key to save and exit
+    cv.imwrite('messigray.png',img)
+    cv.destroyAllWindows()
+  </code></pre>
+              <figcaption class="text-center"><i>Código 3</i>: Código para identificação das formas (linhas e círculos)
+                na cena.</figcaption>
+            </figure>
+          </div>
+          <p>No código, as duas primeiras linhas estão sendo importadas as bibliotecas que serão utilizadas no restante
+            do código.</p>
+          <p>Na 3º linha <code>img = cv.imread('messi5.jpg',0)</code>, o código está carregando a imagem chamada
+            <strong>"messi5.jpg"</strong> em modo <i>grayscale</i> (tons de cinza), pois o segundo parâmetro é 0. A
+            imagem é armazenada na variável <code>img</code>.
+          </p>
+          <p>Na 4º linha <code>cv.imshow('image',img)</code>, o código está exibindo a imagem carregada em uma janela
+            com o nome <strong>"image"</strong>. Essa janela mostra o conteúdo da variável <code>img</code>.</p>
+          <p>Na 5ª linha <code>k = cv.waitKey(0)</code>, o programa fica aguardando indefinidamente até que o usuário
+            pressione alguma tecla. A tecla pressionada é armazenada na variável <code>k</code>.</p>
+          <p>Na 6ª linha <code>if k == 27:</code>, o código verifica se a tecla pressionada foi a tecla ESC
+            (representada pelo código 27). Se for, ele fecha todas as janelas abertas com
+            <code>cv.destroyAllWindows()</code>.
+          </p>
+          <p>Na 8ª linha <code>elif k == ord('s'):</code>, o código verifica se a tecla pressionada foi a tecla
+            <strong>'s'</strong>. Se for, ele salva a imagem carregada com o nome <strong>"messigray.png"</strong> e
+            também fecha todas as janelas.
+          </p>
+          <hr>
+        </div>
+
+        <div class="pt-3">
+          <p>
+            (D) Elaborar outro programa OpenCV, modificando o codigo acima, para fazer a leitura de duas webcams da
+            camera
+            estereoscópica calibrada, mostrando o resultado em video.
+          </p>
+          <div class="analise">&emsp;
+            <p>
+              Nesta etapa do experimento, foi solicitada a modificação do código elaborado na Alternativa B da PARTE 2,
+              com o objetivo de permitir a captura de imagens em tempo real utilizando duas webcams. A proposta
+              consistiu
+              em identificar, as formas (linhas e círculos), realizando a correspondência entre eles e traçando
+              visualmente as identificações.
+            </p>
+            <p>Portanto, segue o código alterado para execução da alternativa D:</p>
+            <div class="d-flex justify-content-center">
+              <figure>
+                <pre><code class="language-python">import time
+import numpy as np
+import cv2 as cv
+
+cap = cv.VideoCapture('big_buck_bunny.mp4')
+
+while(cap.isOpened()):
+    ret, frame = cap.read()
+    
+    if ret==True:
+        # show the frame
+        cv.imshow('frame',frame)
+
+        #wait next frame by 40ms - 25fps
+        time.sleep(1/25.0) 
+        
+        if cv.waitKey(1) & 0xFF == ord('q'):
+            break
+    else:
+        break
+               
+cap.release()
+cv.destroyAllWindows()
+  </code></pre>
+                <figcaption class="text-center"><i>Código 2</i> Código para identificação do objeto no vídeo capturado
+                  pelas duas webcams.
+                </figcaption>
+              </figure>
+            </div>
+            <p>No código, as duas primeiras linhas estão importando as bibliotecas necessárias: <code>numpy</code> para
+              manipulação de arrays e <code>cv2</code> para captura e manipulação de vídeos com OpenCV.</p>
+
+            <p>Na 3ª linha <code>cap = cv.VideoCapture(0)</code>, o código inicia a captura de vídeo da câmera padrão do
+              computador (geralmente a webcam). O número <code>0</code> indica que será usada a primeira câmera
+              disponível.</p>
+
+            <p>Nas linhas 5 e 7, o código obtém as dimensões atuais do vídeo capturado.
+              <code>width = cap.get(cv.CAP_PROP_FRAME_WIDTH)</code> retorna a largura dos quadros e
+              <code>height = cap.get(cv.CAP_PROP_FRAME_HEIGHT)</code> retorna a altura. Ambos os valores são
+              inicialmente
+              <code>float</code>.
+            </p>
+
+            <p>Na linha 9, <code>fps = 30.0</code> define que o vídeo será gravado a 30 quadros por segundo (frames por
+              segundo).</p>
+
+            <p>Na linha 12, <code>fourcc = cv.VideoWriter_fourcc(*'XVID')</code> define o codec de compressão de vídeo
+              que
+              será utilizado para salvar o arquivo. O codec 'XVID' é amplamente usado para arquivos AVI.</p>
+
+            <p>Na linha 13, <code>out = cv.VideoWriter('saida.avi', fourcc, fps, (int(width),int(height)))</code> cria
+              um
+              objeto <code>VideoWriter</code> que será responsável por salvar o vídeo com o nome
+              <strong>'saida.avi'</strong>, usando o codec definido, com a taxa de quadros especificada, e nas dimensões
+              capturadas da câmera.
+            </p>
+
+            <p>Na linha 15, o <code>while cap.isOpened():</code> inicia um loop que continuará enquanto a câmera estiver
+              funcionando corretamente.</p>
+
+            <p>Na linha 16, <code>ret, frame = cap.read()</code> captura um novo quadro da câmera. <code>ret</code>
+              indica
+              se a captura foi bem-sucedida, e <code>frame</code> contém o quadro capturado.</p>
+
+            <p>Na linha 17, <code>if not ret:</code> verifica se houve falha na captura do quadro. Se sim, é exibida uma
+              mensagem de erro e o loop é encerrado.</p>
+
+            <p>Na linha 19, <code>frame = cv.flip(frame, 0)</code> inverte verticalmente o quadro capturado (flip no
+              eixo
+              0).</p>
+
+            <p>Na linha 21, <code>out.write(frame)</code> salva o quadro invertido no arquivo de vídeo definido
+              anteriormente.</p>
+
+            <p>Na linha 22, <code>cv.imshow('frame', frame)</code> exibe o quadro atual (invertido) em uma janela
+              chamada
+              <strong>"frame"</strong>.
+            </p>
+
+            <p>Na linha 23, <code>if cv.waitKey(1) == ord('q'):</code> verifica se a tecla <strong>'q'</strong> foi
+              pressionada. Se for, o loop é encerrado.</p>
+
+            <p>Na linha 26, <code>cap.release()</code> libera a câmera, encerrando a captura de vídeo.</p>
+
+            <p>Na linha 27, <code>out.release()</code> finaliza o arquivo de vídeo e libera o objeto responsável por
+              gravá-lo.</p>
+
+            <p>Na linha 28, <code>cv.destroyAllWindows()</code> fecha todas as janelas abertas pelo OpenCV.</p>
+
+
+            <hr>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pb-4">
+      <p class="h3"><b>ANÁLISE E DISCUSSÃO DOS ESTUDADOS REALIZADOS</b></p>
+      <div class="py-3">
+        <div class="pb-3">
+          <p class="h4">PARTE 2: SIFT.</p>
+        </div>
+        <p>
+          (A) Elaborar um programa OpenCV, que realize a operação <i>“Feature Matching + Homography to find
+            Objects”</i>, deste tutorial:
+          <a class="text-black"
+            href="https://docs.opencv.org/4.x/d1/de0/tutorial_py_feature_homography.html">https://docs.opencv.org/4.x/d1/de0/tutorial_py_feature_homography.html</a>
+        </p>
+        <p>
+          <small><i>- este programa deverá ler duas imagens previamente gravadas que contenham o mesmo objeto em
+              posições distintas. No final mostrar conforme o tutorial, as correspondências obtidas.</i></small>
+        </p>
+
+        <div class="analise card p-4">
+
+          <p>No código apresentado, a imagem <strong>'messi5.jpg'</strong> não é exibida em cores porque está
+            sendo
+            carregada em <strong>escala de cinza</strong> (grayscale) devido ao segundo argumento da função
+            <code>cv.imread()</code>.
+          </p>
+
+          <p>Na linha <code>img = cv.imread('messi5.jpg', 0)</code>, o número <strong>0</strong> passado como segundo
+            parâmetro indica ao OpenCV que a imagem deve ser carregada no modo <strong>grayscale</strong>. Isso
+            significa que a imagem será convertida automaticamente para tons de cinza, perdendo as informações de cor
+            originais (RGB).</p>
+
+          <p>Segundo a <a class="text-black"
+              href="https://docs.opencv.org/4.x/d4/da8/group__imgcodecs.html#ga8c9cba4c07f10dfde5ed5b703eb56c7e"
+              target="_blank">documentação oficial do OpenCV</a>, os valores possíveis para o segundo parâmetro de
+            <code>cv.imread()</code> são:
+          </p>
+
+          <ul>
+            <li><strong>cv.IMREAD_COLOR (ou 1):</strong> Carrega a imagem em cores (modo padrão).</li>
+            <li><strong>cv.IMREAD_GRAYSCALE (ou 0):</strong> Carrega a imagem em tons de cinza.</li>
+            <li><strong>cv.IMREAD_UNCHANGED (-1):</strong> Carrega a imagem com o canal alfa, se houver (incluindo
+              transparência).</li>
+          </ul>
+          <ul style="list-style-type:none;">
+            <li>Link para a função <a class="text-black"
+                href="https://docs.opencv.org/4.x/d8/d6a/group__imgcodecs__flags.html#ga61d9b0126a3e57d9277ac48327799c80">ImreadModes.</a>
+            </li>
+            <li>Link para a <a class="text-black"
+                href="https://docs.opencv.org/4.x/d8/d6a/group__imgcodecs__flags.html#enum-members">Tabela com a
+                enumeração</a>.</li>
+          </ul>
+
+          <p>Portanto, para exibir a imagem em cores, o segundo argumento da função <code>cv.imread()</code> deve ser
+            alterado para <code>1</code> ou simplesmente omitido (pois <code>cv.IMREAD_COLOR</code> é o comportamento
+            padrão).
+          </p>
+
+          <p>Logo, o código ficaria dessa maneira:</p>
+
+          <div class="d-flex justify-content-center">
+            <figure>
+              <pre><code class="language-python">import numpy as np 
+import cv2 as cv
+  
+img = cv.imread('messi5.jpg')
+cv.imshow('image',img)
+k = cv.waitKey(0)
+if k == 27:         # wait for ESC key to exit
+    cv.destroyAllWindows()
+elif k == ord('s'): # wait for 's' key to save and exit
+    cv.imwrite('messigray.png',img)
+    cv.destroyAllWindows()
+  </code></pre>
+              <figcaption class="text-center"><i>Código 7</i>: Código modificado do arquivo <code
+                  class="text-black">L1_1_img.py</code></figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+      <div class="py-3">
+        <p>
+          (B) Elaborar outro programa OpenCV, modificando o codigo acima, para fazer a leitura de duas webcams da camera
+          estereoscópica calibrada, mostrando o resultado em video.
+        </p>
+        <div class="analise card p-4">
+
+          <p>O programa apresentado lê um vídeo e exibe seus quadros um a um usando o OpenCV, controlando a velocidade
+            de exibição pela função <code>time.sleep()</code>, que pausa o programa por um intervalo de tempo entre os
+            quadros.</p>
+
+          <p>Atualmente, a linha <code>time.sleep(1/25.0)</code> faz o programa aguardar 1/25 segundos (40
+            milissegundos) antes de exibir o próximo quadro, o que corresponde a uma taxa de <strong>25 quadros por
+              segundo (fps)</strong>. Essa pausa é responsável por sincronizar a exibição dos quadros para que o vídeo
+            seja mostrado em velocidade natural.</p>
+
+          <p>Para exibir os quadros mais rapidamente:</p>
+          <ul>
+            <li>Reduza o tempo de pausa na função <code>time.sleep()</code> para um valor menor que 1/25 (menos de 40
+              ms).</li>
+            <li>Exemplo: para aproximadamente 100 fps, utilize <code>time.sleep(1/100.0)</code>, ou seja, 10 ms de
+              pausa.
+            </li>
+          </ul>
+
+          <p>Exemplo de código modificado para mais rápido (100 fps):</p>
+
+          <div class="d-flex justify-content-center">
+            <figure>
+              <pre><code class="language-python">import time
+import numpy as np
+import cv2 as cv
+
+cap = cv.VideoCapture('big_buck_bunny.mp4')
+
+while(cap.isOpened()):
+    ret, frame = cap.read()
+    
+    if ret==True:
+        # show the frame
+        cv.imshow('frame',frame)
+
+        #wait next frame by 10ms - 100fps
+        time.sleep(1/100.0) 
+        
+        if cv.waitKey(1) & 0xFF == ord('q'):
+            break
+    else:
+        break
+               
+cap.release()
+cv.destroyAllWindows()
+  </code></pre>
+              <figcaption class="text-center"><i>Código 8</i>: Código modificado do arquivo <code
+                  class="text-black">L1_2_video.py</code></figcaption>
+            </figure>
+          </div>
+
+          <p>O método <code>time.sleep()</code> pausa a execução do programa pelo número de segundos especificado. Ao
+            diminuir o tempo de pausa, os quadros são exibidos com maior frequência, resultando em uma reprodução mais
+            rápida do vídeo. Por outro lado, aumentar o tempo de pausa faz com que cada quadro permaneça na tela por
+            mais tempo, diminuindo a velocidade de reprodução.</p>
+
+          <p>Além disso, é importante que o valor passado para <code>time.sleep()</code> esteja alinhado à taxa de
+            quadros natural do vídeo para evitar reprodução acelerada ou muito lenta que possa prejudicar a experiência
+            visual.</p>
+
+          <ul style="list-style-type:none;">
+            <li><a class="text-black" href="https://docs.python.org/3/library/time.html#time.sleep" target="_blank">
+                Link para Documentação
+                oficial
+                Python - time.sleep()</a></li>
+            <li><a class="text-black"
+                href="https://docs.opencv.org/4.x/d7/dfc/group__highgui.html#ga5870d8a0eacb8fbd30b5b3eab805f658"
+                target="_blank">Link para Documentação OpenCV - cv.waitKey()</a></li>
+            <li><a class="text-black"
+                href="https://learnopencv.com/read-write-and-display-a-video-using-opencv-cpp-python/"
+                target="_blank">Link para Tutorial OpenCV - Leitura e exibição de vídeo</a></li>
+          </ul>
+
+        </div>
+      </div>
+      <div class="py-3">
+        <div class="pb-3">
+          <p class="h4">PARTE 3: Hough Transform.</p>
+        </div>
+        <p>
+          (C) Elaborar um programa OpenCV, que realize a operação <i>“Hough Transform”</i>, deste tutorial:
+          <a class="text-black"
+            href="https://learnopencv.com/hough-transform-with-opencv-c-python/">https://learnopencv.com/hough-transform-with-opencv-c-python/</a>
+        </p>
+        <p>
+          <small><i>- este programa deverá várias imagens previamente gravadas que contenham linhas e circulos. No final
+              mostrar, conforme o tutorial, as linhas e circulos obtidas.</i></small>
+        </p>
+        <div class="analise card p-4">
+          <p>O código original realiza a captura de vídeo da câmera e exibe os quadros em tempo real. A modificação
+            solicitada consiste em adicionar uma funcionalidade que permita salvar o quadro atual em um arquivo chamado
+            <strong>"foto1.png"</strong> ao pressionar a tecla <strong>'x'</strong>.
+          </p>
+          <p>Para isso, adicionamos uma verificação dentro do loop para detectar se a tecla <strong>'x'</strong> foi
+            pressionada.
+            Se for, utilizamos a função <code>cv.imwrite()</code> para salvar o conteúdo atual da variável
+            <code>frame</code> (que representa o quadro capturado da câmera) no arquivo desejado.
+          </p>
+          <div class="d-flex justify-content-center">
+            <figure>
+              <pre><code class="language-python">import numpy as np
+import cv2 as cv
+
+cap = cv.VideoCapture(0)
+
+if not cap.isOpened():
+    print("Cannot open camera")
+    exit()
+    
+while True:
+    # Capture frame-by-frame
+    ret, frame = cap.read()
+    if not ret:
+        print("Can't receive frame (stream end?). Exiting ...")
+        break
+
+    # Display the resulting frame
+    cv.imshow('frame', frame)
+    
+    key = cv.waitKey(1)
+    if key == ord('q'):
+        break
+    elif key == ord('x'):
+        cv.imwrite('foto1.png', frame)
+        print("Foto salva como 'foto1.png'")
+
+# When everything done, release the capture
+cap.release()
+cv.destroyAllWindows()
+  </code></pre>
+              <figcaption class="text-center"><i>Código 9</i>: Código modificado do arquivo <code
+                  class="text-black">L1_3_webcam.py</code></figcaption>
+            </figure>
+          </div>
+          <p>O que foi alterado no código:</p>
+          <ul>
+            <li><code>key = cv.waitKey(1)</code>: armazena a tecla pressionada pelo usuário.</li>
+            <li><code>elif key == ord('x')</code>: verifica se a tecla pressionada foi a letra <strong>'x'</strong>.
+            </li>
+            <li><code>cv.imwrite('foto1.png', frame)</code>: salva o quadro atual da câmera em um arquivo de imagem com
+              o nome <strong>foto1.png</strong>.</li>
+            <li><code>print("Foto salva como 'foto1.png'")</code>: fornece uma confirmação no console para o usuário.
+            </li>
+          </ul>
+          <p>Ao executar o programa, a janela mostrará a imagem da câmera em tempo real. Quando o usuário pressionar a
+            tecla <strong>'x'</strong>, o quadro atual será salvo como <strong>foto1.png</strong> no mesmo diretório
+            onde o script está sendo executado. A tecla <strong>'q'</strong> ainda funciona como comando para encerrar a
+            aplicação.</p>
+          <ul style="list-style-type:none;">
+            <li><a class="text-black"
+                href="https://docs.opencv.org/4.x/d8/d6a/group__imgcodecs__save.html#ga61f7f9b02c5d92b7370d87725a28eab0"
+                target="_blank">Link para OpenCV Docs – cv.imwrite()</a></li>
+            <li><a class="text-black"
+                href="https://docs.opencv.org/4.x/d7/dfc/group__highgui.html#ga5870d8a0eacb8fbd30b5b3eab805f658"
+                target="_blank">Link para Documentação OpenCV - cv.waitKey()</a></li>
+          </ul>
+        </div>
+
+      </div>
+      <div class="py-3">
+        <p>
+          (D) Elaborar outro programa OpenCV, modificando o codigo acima, para fazer a leitura de duas webcams da
+          camera
+          estereoscópica calibrada, mostrando o resultado em video.
+        </p>
+
+        <div class="analise card p-4">
+
+          <p>O código está fazendo com que o vídeo salvo está sendo gravado <strong>de cabeça para baixo</strong> por
+            causa da função <code>cv.flip(frame, 0)</code>, e pode apresentar velocidade incorreta se o valor de
+            <code>fps</code> não estiver bem ajustado ao hardware da câmera.
+          </p>
+
+          <p>O fato da imagem estar "de cabeça para baixo" é causado pela linha
+            <code>frame = cv.flip(frame, 0)</code> invertendo o quadro capturado verticalmente (eixo 0). Para
+            manter o vídeo salvo em sua orientação normal, basta <strong>remover ou comentar essa linha</strong>.
+          </p>
+
+          <p>A taxa de quadros por segundo (<code>fps</code>) usada na criação do <code>VideoWriter</code> deve refletir
+            a taxa real de captura da câmera para evitar que o vídeo seja reproduzido muito rápido ou muito devagar.</p>
+
+          <p>Para um bom resultado, mantenha <code>fps = 30.0</code> se sua câmera suporta 30 fps. Você também pode
+            consultar a taxa real com <code>cap.get(cv.CAP_PROP_FPS)</code>.</p>
+
+          <p>Aplicando as correções necessárias no código, obtemos:</p>
+          <div class="d-flex justify-content-center">
+            <figure>
+              <pre><code class="language-python">import numpy as np
+import cv2 as cv
+
+cap = cv.VideoCapture(0)
+
+# Get current width and height of frame
+width = cap.get(cv.CAP_PROP_FRAME_WIDTH)
+height = cap.get(cv.CAP_PROP_FRAME_HEIGHT)
+fps = 30.0  # Ajuste conforme necessário
+
+# Define codec and create VideoWriter object
+fourcc = cv.VideoWriter_fourcc(*'XVID')
+out = cv.VideoWriter('saida.avi', fourcc, fps, (int(width), int(height)))
+
+while cap.isOpened():
+    ret, frame = cap.read()
+    if not ret:
+        print("Can't receive frame (stream end?). Exiting ...")
+        break
+
+    # write the normal (não invertido) frame
+    out.write(frame)
+
+    # Show frame in real time
+    cv.imshow('frame', frame)
+
+    if cv.waitKey(1) == ord('q'):
+        break
+
+cap.release()
+out.release()
+cv.destroyAllWindows()
+  </code></pre>
+              <figcaption class="text-center"><i>Código 10</i>: Código modificado do arquivo <code
+                  class="text-black">L1_4_webcap.py</code></figcaption>
+            </figure>
+          </div>
+
+          <p>A partir das correções, temos os seguintes resultados:</p>
+          <ul>
+            <li>O vídeo exibido na janela continua aparecendo normalmente em tempo real.</li>
+            <li>O arquivo <code>saida.avi</code> será salvo com os quadros <strong>sem inversão</strong>.</li>
+            <li>A reprodução do vídeo ocorrerá com uma <strong>velocidade natural</strong>, condizente com os 30 fps
+              definidos.</li>
+          </ul>
+
+          <ul style="list-style-type:none;">
+            <li><a class="text-black" href="https://docs.opencv.org/4.x/dd/d43/tutorial_py_video_display.html"
+                target="_blank">Link para OpenCV Docs – Display Video</a></li>
+            <li><a class="text-black" href="https://docs.opencv.org/4.x/dd/d9e/classcv_1_1VideoCapture.html"
+                target="_blank">Link para OpenCV – VideoCapture Class Reference</a></li>
+            <li><a class="text-black" href="https://docs.opencv.org/4.x/dd/d9e/classcv_1_1VideoWriter.html"
+                target="_blank">Link para OpenCV – VideoWriter Class Reference</a></li>
+          </ul>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="analise-aplicacoes-features">
+      <p class="h3 pb-3"><b>ANÁLISE: APLICAÇÕES DA DETECÇÃO DE FEATURES E RELEVÂNCIA PARA O TRABALHO T1</b></p>
+      <h4>Aplicações Relevantes da Detecção de Features</h4>
+      <ul>
+        <li><b>Reconhecimento e correspondência de objetos</b>: Algoritmos como SIFT, SURF e Harris são usados para
+          identificar e comparar objetos em diferentes imagens ou pontos de vista, mesmo sob variações de escala,
+          rotação e iluminação. Por exemplo, o SIFT aplica correspondência de pontos-chave seguida de filtragem por
+          razão de distâncias para evitar falsos positivos.</li>
+        <li><b>Visão estéreo e reconstrução 3D</b>: A combinação de detectores de características com correspondência em
+          pares de imagens permite gerar mapas de profundidade, essenciais para estimativa de distância, navegação
+          autônoma e reconstrução de cenários tridimensionais.</li>
+        <li><b>Robótica e percepção ambiental</b>: Robôs utilizam detecção de *features* para evitar obstáculos,
+          reconhecer objetos manipuláveis e realizar mapeamento do ambiente. A detecção de features robustas melhora a
+          precisão em contextos de efeito sensorial ou variação de iluminação.</li>
+        <li><b>Indexação de imagens e recuperação baseada em conteúdo</b>: Detectores como Harris e suas variantes
+          (ex.: Harris-affine) são aplicados em sistemas de recuperação de imagens, permitindo a indexação de
+          objetos-chave e situações repetíveis em vídeos ou bases multimídia.</li>
+      </ul>
+      <h4>Aplicação no Trabalho T1</h4>
+      <ul>
+        <li><b>Detecção inicial de pontos-chave</b> na imagem de referência utilizando SIFT ou Shi‑Tomasi,
+          permitindo
+          identificar regiões distintas que serão buscadas em ambas câmeras. </li>
+        <li><b>Correspondência entre imagens estéreo</b>, aplicando um matcher como Brute‑Force ou FLANN para
+          encontrar
+          pares de *keypoints* entre os dois streams, e filtragem com RANSAC para garantir correspondência geométrica
+          robusta.</li>
+        <li><b>Estimativa de profundidade e paralaxe</b>, permitindo traçar os mesmos pontos detectados nas duas
+          webcams
+          para calcular disparidade e inferir distância ou pose relativa do objeto. </li>
+        <li><b>Visualização de correspondências</b>: destacar graficamente os pares encontrados entre câmeras,
+          ilustrando
+          os pontos comuns e validando a precisão da calibração. </li>
+      </ul>
+      <h4>Contribuições esperadas para o projeto</h4>
+      <p>A utilização dessas técnicas trará benefícios ao T1, como: </p>
+      <ul>
+        <li>Robustez contra alterações de escala, rotação ou iluminação.</li>
+        <li>Precisão na correspondência entre câmeras, essencial para reconstrução geométrica estéreo.</li>
+        <li>Capacidade de aplicar homografia ou triangulação a partir dos pontos comuns detectados.</li>
+        <li>Documentação didática que mistura teoria e prática, facilitando a validação do método científico empregado.
+        </li>
+      </ul>
+    </section>
+
+    <section class="pb-4">
+      <p class="h3 pb-3"><b>CONCLUSÕES</b></p>
+      <p>
+        A realização deste laboratório permitiu compreender, de forma teórica e prática, os principais conceitos
+        envolvidos na detecção e descrição de características em imagens, etapa fundamental em diversos sistemas de
+        visão computacional. Foi possível explorar e comparar diferentes algoritmos como Harris, Shi-Tomasi, SIFT e a
+        Transformada de Hough, observando suas vantagens, limitações e aplicações.
+      </p>
+      <p>
+        A implementação de correspondência de características com homografia demonstrou como é possível reconhecer
+        objetos em diferentes imagens, mesmo quando sujeitos a variações de escala, rotação e perspectiva. A extensão
+        para uso com webcams estereoscópicas destacou a aplicabilidade desses métodos em tempo real, reforçando sua
+        utilidade em sistemas de monitoramento, rastreamento e robótica.
+      </p>
+      <p>
+        Este laboratório contribuiu significativamente para o desenvolvimento de habilidades técnicas com OpenCV e
+        aprofundamento conceitual, sendo uma base sólida para a continuidade do projeto T1 e demais desafios que
+        envolvem visão computacional.
+      </p>
+    </section>
+
+    <section class="pb-4">
+      <p class="h3"><b>REFERÊNCIAS</b></p>
+      <ul>
+        <li>
+          OpenCV. <a class="text-black"
+            href="https://docs.opencv.org/4.x/db/d27/tutorial_py_table_of_contents_feature2d.html" target="_blank">
+            Feature Detection and Description – Documentação Oficial
+          </a>. Acesso em: 27 jul. 2025.
+        </li>
+
+        <li>
+          OpenCV. <a class="text-black" href="https://docs.opencv.org/4.x/df/d54/tutorial_py_features_meaning.html"
+            target="_blank">
+            Understanding Features
+          </a>. Acesso em: 27 jul. 2025.
+        </li>
+        <li>
+          OpenCV. <a class="text-black" href="https://docs.opencv.org/4.x/dc/d0d/tutorial_py_features_harris.html"
+            target="_blank">
+            Harris Corner Detector
+          </a>. Acesso em: 27 jul. 2025.
+        </li>
+        <li>
+          OpenCV. <a class="text-black" href="https://docs.opencv.org/4.x/d4/d8c/tutorial_py_shi_tomasi.html"
+            target="_blank">
+            Shi-Tomasi Corner Detector
+          </a>. Acesso em: 27 jul. 2025.
+        </li>
+        <li>
+          OpenCV. <a class="text-black" href="https://docs.opencv.org/4.x/da/df5/tutorial_py_sift_intro.html"
+            target="_blank">
+            Introduction to SIFT
+          </a>. Acesso em: 27 jul. 2025.
+        </li>
+        <li>
+          LearnOpenCV. <a class="text-black" href="https://learnopencv.com/hough-transform-with-opencv-c-python/"
+            target="_blank">
+            Hough Transform with OpenCV
+          </a>. Acesso em: 27 jul. 2025.
+        </li>
+      </ul>
+
+    </section>
+  </main>
+
+  <footer class="mt-5 p-3">
+    &copy; 2025 - Desenvolvido por Equipe Olhos de Sauron
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+
+</html>
