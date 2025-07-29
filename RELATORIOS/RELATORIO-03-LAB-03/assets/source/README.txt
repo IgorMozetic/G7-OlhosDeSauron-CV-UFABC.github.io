@@ -1,0 +1,1 @@
+Observar a necessidade de adicionar os arquivos fora do PC da CMSP (por conta dos bloqueadores).

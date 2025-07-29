@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Relatório de Laboratório 3: Câmera Estéreo</title>
+  <title>Equipe Olho de Sauron - CV - Q2.2025</title>
   <script>
     window.MathJax = {
       tex: {
@@ -21,7 +21,7 @@
   </script>
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-  <link rel="stylesheet" href="../../assets/style.css">
+  <link rel="stylesheet" href="assets/css/style.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
   <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css" rel="stylesheet" />
@@ -108,11 +108,36 @@
       margin: 0.5em 0 !important;
     }
   </style>
+  <!-- Mikael -->
+  <style>
+    .gallery-container {
+        display: flex;
+        flex-wrap: wrap; /* Permite que os itens quebrem para a próxima linha */
+        justify-content: flex-start; /* Alinha as imagens ao início de cada linha */
+        gap: 10px; /* Espaçamento entre as imagens */
+        max-width: 1080px; /* Largura máxima para acomodar 5 imagens de 200px + espaçamento */
+        margin: 0 auto; /* Centraliza o contêiner */
+        padding: 10px;
+    }
+    .gallery-item {
+        flex: 0 0 auto; /* Não cresce, não encolhe, base automática */
+        width: 100px; /* Largura fixa para cada imagem */
+        height: auto; /* Altura ajustada automaticamente para manter a proporção */
+        box-sizing: border-box; /* Inclui padding e borda na largura total */
+    }
+    .gallery-item img {
+        width: 100%; /* Faz a imagem preencher a largura do seu contêiner */
+        height: auto; /* Mantém a proporção da imagem */
+        display: block; /* Remove o espaço extra abaixo da imagem */
+        border: 1px solid #ddd; /* Borda leve para destacar a imagem */
+        border-radius: 4px; /* Cantos arredondados */
+    }
+  </style>
 </head>
 
 <body class="d-flex justify-content-center flex-column align-items-center">
   <header class="py-4 w-100 text-center text-white">
-    <h1 class="m-0">Grupo 07: Equipe Olhos de Sauron - CV - Q2.2025</h1>
+    <h1 class="m-0">Grupo 07: Equipe Olho de Sauron - CV - Q2.2025</h1>
   </header>
 
   <main class="py-5 w-100 container relatorio">
@@ -125,59 +150,125 @@
       </ol>
     </nav>
 
-    <p class="h3 w-100 text-center"><a href="#" class="text-decoration-none text-black">Relatório de Laboratório 3:
-        Câmera Estéreo</a></p>
+    <p class="h3 w-100 text-center"><a href="#" class="text-decoration-none text-black">LAB 3 - Relatório</a></p>
 
     <div class="details py-3">
       <p><b>INTEGRANTES:</b></p>
       <p>Igor Domingos da Silva Mozetic - 11202320802</p>
       <p>Jhonattan Ferreira Machado - 11202320245</p>
       <p>Mikael Alves Monteiro - 21055813</p>
-      <p><b>Data de Realização do relatório:</b> 14/07/2025</p>
-      <p><b>Data de Publicação do relatório:</b> 16/07/2025</p>
+      <p><b>Data de Realização do relatório:</b> 21/07/2025</p>
+      <p><b>Data de Publicação do relatório:</b> 28/07/2025</p>
+      <hr>
+      <a class="text-black" href="#intro">INTRODUÇÃO</a><br>
+      <a class="text-black" href="#exp-proc">PROCEDIMENTOS EXPERIMENTAIS</a><br>
+      <a class="text-black" href="#analysis">ANÁLISE DOS RESULTADOS</a><br>
+      <a class="text-black" href="#conc">CONCLUSÕES</a><br>
+      <a class="text-black" href="#refs">REFERÊNCIAS</a><br>
       <hr>
     </div>
 
 
+
+
+
+
+
     <section class="pb-4">
-      <p class="h2"><b>INTRODUÇÃO</b></p>
+      <p class="h3" id="intro"><b>INTRODUÇÃO</b></p>
 
       <p class="py-1">
-	  A visão do ser humano é originalmente composta por dois olhos, o que possibilita a paralaxe: diferença na posição aparente de um item com relação a um plano de fundo.
-	  É a paralaxe que permite obter a sensação de profundidade, a tridimensionalidade. 
-	  Embora a visão monocular até permita um nível de percepção rudimentar de profundidade valendo-se de características específicas do olho e principalmente do ambiente, ela não é equiparável com a visão binocular.
-	  Nesse laboratório, são realizadas atividades que exploram a possibilidade computacional de capturar, processar e reproduzir imagens de forma a oferecer a capacidade de sentir a profundidade de itens do cenário.
+      A visão do ser humano é originalmente composta por dois olhos, o que possibilita a paralaxe: diferença na posição aparente de um item com relação a um plano de fundo.
+      É a paralaxe que permite obter a sensação de profundidade, a tridimensionalidade. 
+      Embora a visão monocular até permita um nível de percepção rudimentar de profundidade valendo-se de características específicas do olho e principalmente do ambiente, ela não é equiparável com a visão binocular.
+      Nesse laboratório, são realizadas atividades que exploram a possibilidade computacional de capturar, processar e reproduzir imagens de forma a oferecer a capacidade de sentir a profundidade de itens do cenário.
+        </p>
+      
+      <p class="py-1">
+      As atividades foram organizadas em três partes:<br><br>
+      Na primeira, estudar os conceitos de geometria epipolar e visão estéreo;<br>
+      Na segunda, foram testados programas previamente fornecidos, com intuito de realizar calibração (com base em imagens previamente fornecidas), além de analisar o <i>stream</i> ao vivo usando kit de câmeras preparado no laboratório;<br>
+      Na terceira, as atividades envolveram o mesmo conjunto de tarefas da etapa anterior, mas considerando imagens de autoria do grupo e contando com alterações nos programas conforme necessário. Além disso, uma revisão de código foi necessária para salvar vídeo do <i>stream</i>.
       </p>
+      
+      <p class="py-1">
+      Este relatório apresenta uma descrição detalhada dos procedimentos adotados, os resultados obtidos, as alterações implementadas nos programas, bem como análises e discussões pertinentes. 
+      O conteúdo foi estruturado com caráter didático, de modo a permitir que outros estudantes consigam reproduzir os experimentos de forma autônoma. 
+      </p>
+      
+      <p class="py-1">
+      Para acessar o arquivo PDF com as instruções para para realização da prática, <b>consulte o material da disciplina</b> no Moodle UFABC.
+      </p>
+      <hr>
+    </section>
 	  
-	  <p class="h3"><b>1. Introdução à teoria da Estereoscopia</b></p>
+  <section class="pb-4">
+	  <p class="h3" id="exp-proc"><b>PROCEDIMENTOS EXPERIMENTAIS</b></p>
+	  
+	  <p class="py-1">
+	  Para a realização da prática foi necessário baixar um diretório do GitHub contando com códigos-fonte, bem como imagens e vídeos de exemplo:<br>
+	  <a class="text-black" href=https://github.com/spmallick/learnopencv/tree/master/stereo-camera target="_blank">
+	  https://github.com/spmallick/learnopencv/tree/master/stereo-camera</a>
+	  </p>
+	  
+	  <p class="py-1">
+	  O conteúdo do projeto no GitHub consiste em arquivos Python (e suas contrapartes em C++), bem como o diretório <b>data</b>, com imagens e vídeos. Os arquivos mais relevantes são:
+	  
+	  <ul class="archives-list">
+        <li><a class="text-black text-decoration-none" href="assets/source/calibrate.py.txt">calibrate.py</a></li>
+		<li><a class="text-black text-decoration-none" href="assets/source/capture_images.py.txt">capture_images.py</a></li>
+        <li><a class="text-black text-decoration-none" href="assets/source/movie3d.py.txt">movie3d.py</a></li>
+      </ul>
+	  </p>
+
+	  <p class="h4">
+	  PARTE 1: Estudo da teoria sobre estereoscopia e parâmetros conjuntos de duas câmeras
+	  </p>
+
+    Foram fornecidos links de conteúdos relacionados a geometria epipolar e câmera 3D com OpenCV (primeiro e segundo itens na seção Referências, no final da página). Nos itens a seguir, serão apresentadas as principais ideias de cada texto.
+    <br>
+    <br>
+	  
+	  <!--<p class="h4"><b>1. Introdução à teoria da Estereoscopia</b></p>-->
 	  
 	  <p class="py-1">
 	  Serão apresentados, nos próximos parágrafos, conceitos introdutórios de estereoscopia e estratégias de geração de conteúdo tridimensional.
 	  </p>
 	  
-      <p class="h4"><b>1.1. Introdução à Geometria Epipolar e Visão Estéreo</b></p>
+      <p class="h5"><b>1.1. Introdução à Geometria Epipolar e Visão Estéreo</b></p>
 
       <p class="py-1">
-	  Uma imagem bidimensional é uma projeção plana que, por ter apenas duas dimensões, não apresenta um vetor que permita inferir qualquer distância de qualquer item da foto.
+	  Uma imagem bidimensional é uma projeção plana que, por ter apenas duas dimensões, não apresenta um vetor que permita inferir qualquer distância de qualquer objeto da foto.
 	  Se um observador olhar para essa imagem, ao focar em um objeto dela, não terá recebido nenhuma informação de profundidade, mesmo que imprecisa e rudimentar, junto ao feixe individual de luz que entra no olho.
 	  Para oferecer a possibilidade de sensação de profundidade em uma imagem, se faz necessário ter mais de uma captura daquele ambiente.</p>
 
-      <p class="py-1">
-	  Ao adicionar, num determinado cenário de observação, uma segunda captura devidamente feita em um ângulo ligeiramente diferente no cenário, percebe-se que é possível encontrar um <b>único ponto</b> onde os feixes de luz se cruzam, apresentando um único ponto de convergência.
-	  Com os devidos cuidados, podemos aproveitar esse ponto como uma <b>referência de profundidade</b>.</p><!-- Trabalhando aqui-->
-	  
-	  <p class="py-1"><b><i>Falta: inserir alguma imagem de dois planos com dois raios de luz passando e se encontrando</i></b>
-	  </p>
+    <p class="py-1">
+	    Ao adicionar, num determinado cenário de observação, uma segunda captura devidamente feita em um ângulo ligeiramente diferente no cenário, percebe-se que é possível encontrar um <b>único ponto</b> onde os feixes de luz se cruzam, apresentando um único ponto de convergência.
+	    Com os devidos cuidados, podemos aproveitar esse ponto como uma <b>referência de profundidade</b>.</p>
+    <figure style="text-align: center;">
+      <img src="assets/pictures/vision3d.png" alt="Imagem de Exemplo" style="width: 480px; display: block; margin: 0 auto;">
+    </figure>
+    <figcaption style="font-style: italic; color: #7f8c8d; margin-top: 10px;"><i>Figura 1</i>: Triangulação: Podemos descobrir a posição de um ponto 3D (X) no espaço se soubermos onde as câmeras C1 e C2 estão, e onde esse ponto aparece em cada foto.</figcaption>
+    
 	  
 	  <p class="py-1">
 	  Essa estratégia de usar duas imagens, onde os raios de luz de cada imagem se cruzam gerando uma intersecção num determinado ponto, é chamada de triangulação.
+    <br>
+    Para realizar a triangulação é necessário saber as posições das câmeras no espaço, bem como obter uma correspodência de pontos entre as duas imagens.
+    <br>
+    Quanto à correspondência de pontos, é possível utilizar uma estratégia chamada geometria epipolar.
+    A geometria epipolar simplifica bastante o processo de correspondência de pontos entre duas imagens.
+    <br>
+    Em vez de procurar um ponto correspondente em toda a imagem complementar, a geometria epipolar restringe a busca a uma linha específica, conhecida como linha epipolar.
+    Essa restrição reduz significativamente o espaço de busca, tornando a correspondência de pontos mais rápida.
+    <br>
+    Para usar a estratégia de geometria epipolar, é possível criar uma matriz chamada de Fundamental. Ela é usada até em situações onde não se conhece os parâmetros intrínsecos das câmeras.
 	  </p>
 	  
-	  <p class="py-1">
-	  <b><i>Continua...</i></b>
+	  <p class="py-1"><b><i></i></b>
 	  </p>
 	  
-	  <p class="h4"><b>1.2. Câmera 3D com OpenCV</b></p>
+	  <p class="h5"><b>1.2. Câmera 3D com OpenCV</b></p>
 	  
 	  <p class="py-1">De forma geral, os passos para criar um conjunto de câmera estéreo são os seguintes:<br><br>
 	  1 - Configuração física das câmeras;<br>
@@ -185,54 +276,65 @@
 	  3 - Calibração das câmeras (como um conjunto) com parâmetros intrínsecos;<br>
 	  4 - Etapas adicionais de correção de distorção.<br>
 	  </p>
-	  
-	  <p class="py-1">
-	  <b><i>Continua...</i></b>
-	  </p>
-	  
-	  <!-- Ref de p -->
-	  <p class="py-1">
-	  </p>
-	  
-	  <p class="h3"><b>2. Procedimentos experimentais</b></p>
-	  <br>
-	  
-	  <p class="h4"><b>2.1. Construção de câmera estereoscópica simples</b></p>
-	  <br>
-	  
-	  <p class="py-1">
-	  Para a parte física do laboratório, será necessário:<br><br>
-	  Duas câmeras idênticas;<br>
-	  Fita adesiva;<br>
-	  Base.<br>
+
+	  <hr>
+	  <p class="h4">
+	  PARTE 2: Executar a construção de uma câmera estereoscópica simples
 	  </p>
 	  
 	  <p class="py-1">
-	  Instruções adicionais:<br><br>
-	  As câmeras devem manter distância de aproximadamente 5cm entre si;<br>
+	  
+	  Para a parte física do laboratório 3, é necessário:
+	  <ul>
+	  <li>Duas câmeras idênticas;</li>
+	  <li>Fita adesiva;</li>
+	  <li>Base.</li>
+	  </ul>
+	  </p>
+	  
+	  <p class="py-1">
+	  Instruções adicionais:<br>
+	  As câmeras devem manter distância de aproximadamente 5-7cm entre si (considerando distância interpupilar de um ser humano adulto);<br>
 	  Precisam estar bem fixadas (principalmente por conta das etapas após calibração).<br>
 	  </p>
 	  
 	  <p class="py-1">
-	  Dica: usar fita dupla-face nas bases das câmeras.<br>
-	  Dica: usar um papel marcado, com o propósito de guia, apresentando as posições das bases das câmeras (caso seja necessário refazer o procedimento de <i>setup</i>).
+	  Dica: recomendável usar fita dupla-face nas bases das câmeras.<br>
+	  Dica: recomendável usar um papel marcado, com o propósito de guia, apresentando as posições das bases das câmeras (caso seja necessário refazer o procedimento de fixação).
+	  </p>
+
+    <p>
+      Para facilitar o processo, imagens do setup montado pela equipe:<br>
+
+      <div style="display: flex; justify-content: center; align-items: flex-start; gap: 20px;">
+        <figure style="width: 480px; margin: 0;">
+          <img src="assets/pictures/cam_setup_front.jpg" alt="Imagem">
+          <figcaption style="text-align: center; font-style: italic; color: #7f8c8d; margin-top: 10px;"><i>Figura 2</i>: Setup de câmera da equipe (frente)</figcaption>
+        </figure>
+        <figure style="width: 480px; margin: 0;">
+          <img src="assets/pictures/cam_setup_rear.jpg" alt="Outra Imagem">
+          <figcaption style="text-align: center; font-style: italic; color: #7f8c8d; margin-top: 10px;"><i>Figura 3</i>: Setup de câmera da equipe (verso)</figcaption>
+        </figure>
+      </div>
+    </p>
+	  
+    <hr>
+	  <p class="h4">
+	  PARTE 3: Executar passo a passo as etapas do exemplo de calibração de uma câmera estereoscópica e geração de imagem 3D
 	  </p>
 	  
-	  <p class="h4"><b>2.2. a) Obtenção dos códigos do exemplo da câmera estéreo com OpenCV</b></p>
-	  <br>
-	  
-	  <p class="py-1"> Para o desenvolvimento desse laboratório, foi utilizado o conteúdo do endereço
-	  <a href=https://github.com/spmallick/learnopencv/tree/master/stereo-camera>
-	  https://github.com/spmallick/learnopencv/tree/master/stereo-camera</a>
+	  <p class="py-1 h5">
+	  (A) Obtenção dos códigos do exemplo da câmera estéreo com OpenCV
 	  </p>
-	  
-	  <p class="py-1">
-	  Tal pasta já contém um conjunto de imagens para fornecer um exemplo de procedimento de calibração e geração de vídeo 3D (para a etapa b).
-	  </p>
-	  
-	  <p class="h5"><b>2.2.1. Código utilizado para calibração - <code>calibrate.py</code></b></p>
-	  <br>
-	  
+
+    <p class="py-1">
+      Os códigos (<code>calibrate.py</code>, <code>movie3d.py</code>, <code>capture_images.py</code>) e demais arquivos podem ser obtidos em:<br>
+      <a class="text-black" href=https://github.com/spmallick/learnopencv/tree/master/stereo-camera target="_blank">
+      https://github.com/spmallick/learnopencv/tree/master/stereo-camera</a>
+    </p>
+
+    <summary><p class="h5"><b>Código utilizado para calibração - <code>calibrate.py</code></b></p></summary>
+    <details open>
 	  <div class="d-flex justify-content-center">
         <figure>
           <pre><code class="language-python">
@@ -347,10 +449,18 @@ cv_file.release()
           </figcaption>
         </figure>
       </div>
+    </details>
+      <p>O código ajusta duas câmeras para que elas possam trabalhar em um conjunto para 3D.
+        Ele usa a estratégia de receber um conjunto de fotos (uma pasta para cada câmera) de um tabuleiro de xadrez para calibração.
+        Primeiro, ele calibra cada câmera sozinha. Depois, com ajuda de geometria epipolar, faz calibração estereoscópica.
+        Ele também realiza alinhamento das câmeras.
+        Por fim ele guarda, em um arquivo xml, os conjuntos de valores para que as câmeras possam ser usadas em programas posteriores.<br><br>
+        Para utilizar esse código, basta ajustar os caminhos de pasta onde estão as imagens das câmeras esquerda e direita.
+      </p>
 	  
-	  <p class="h5"><b>2.2.2. Código utilizado para geração e apresentação de conteúdo 3D - <code>movie3d.py</code></b></p>
-	  <br>
+      <summary><p class="h5"><b>Código utilizado para geração e apresentação de conteúdo 3D - <code>movie3d.py</code></b></p></summary>
 	  
+	  <details open>
 	  <div class="d-flex justify-content-center">
         <figure>
           <pre><code class="language-python">
@@ -407,92 +517,716 @@ while True:
           </figcaption>
         </figure>
       </div>
-		  
-	  <p class="py-1">
-	  <b><i>Continua...</i></b>
-	  </p>
-	  
-	  <p class="h4"><b>2.3. b) Execução dos exemplos com as imagens fornecidas</b></p>
-	  <br>
-	  
-	  <p class="py-1">
-	  O diretório indicado no GitHub contém imagens que servem como exemplo para execução dos códigos fornecidos (em <i>/data</i>).
-	  São algumas imagens a utilizar com o código <code>calibrate.py</code> e vídeos para uso com <code>movie3d.py</code>
-	  </p>
-	  
-	  <p class="py-1">
-	  1) Executar calibração estéreo - <code>calibrate.py</code><br>
-	  2) Executar geração e apresentação de imagem 3D - <code>movie3d.py</code>
-	  </p>
-	  
-	  <p class="py-1"><i><h2>Responda:</h2>Consulte a teoria da calibração e correção de distorção e o exemplo
-	  executado, e com isso descreva todos os parametros necessários para a camera estéreo.</i>
-	  </p>
-	  
-	  <p class="h4"><b>2.4. c) Calibração do conjunto próprio de câmeras</b></p>
-	  <br>
-	  
-	  <p class="py-1">
-	  Com base no laboratório anterior:<br>
+    </details>
+      <p>
+        Este código processa dois streams de vídeo ao vivo (um da câmera esquerda e outro da direita) para gerar uma visualização 3D em tempo real.
+        Primeiro, ele usa um xml (com parâmetros de calibração) anteriormente gerado para eliminar distorções nas duas imagens.
+        Em seguida, as imagens corrigidas são combinadas, sobrepondo as informações de cor e exibindo na tela.
+        O resultado proporciona uma visualização tridimensional (desde que com óculos anáglifo adequado).<br><br>
+        Para utilizar esse código, ajuste a referência de arquivo xml e, caso necessário, ajuste também o índice de cada câmera em <code>cv2.VideoCapture(cam_id)</code>.
+      </p>
+	  <p class="py-1 h5">
+	  (B) Execução dos exemplos com as imagens fornecidas
 	  </p>
 	  
 	  <p class="py-1">
-	  Modificar o código <code>capture_images_abc.py</code> (com base na captura de imagem do laboratório anterior) para obter entre 10 e 15 imagens do padrão do tabuleiro.<br>
-	  <i>Observação: usar o nome de um dos integrantes da equipe no nome de cada arquivo a ser gravado.</i>
+	  Na primeira etapa, executamos o código calibrate.py para rodar com imagens que já estavam disponíveis na solução baixada do GitHub.<br>
+
+    <div class="gallery-container">
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img1.png" alt="Imagem 1"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img2.png" alt="Imagem 2"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img3.png" alt="Imagem 3"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img4.png" alt="Imagem 4"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img5.png" alt="Imagem 5"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img6.png" alt="Imagem 6"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img7.png" alt="Imagem 7"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img8.png" alt="Imagem 8"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img9.png" alt="Imagem 9"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img10.png" alt="Imagem 10"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img11.png" alt="Imagem 11"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img12.png" alt="Imagem 12"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img13.png" alt="Imagem 13"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img14.png" alt="Imagem 14"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img15.png" alt="Imagem 15"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img16.png" alt="Imagem 16"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img17.png" alt="Imagem 17"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img18.png" alt="Imagem 18"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img19.png" alt="Imagem 19"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img20.png" alt="Imagem 20"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img21.png" alt="Imagem 21"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img22.png" alt="Imagem 22"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img23.png" alt="Imagem 23"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img24.png" alt="Imagem 24"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img25.png" alt="Imagem 25"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img26.png" alt="Imagem 26"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img27.png" alt="Imagem 27"></div>
+    </div>
+  <figcaption class="text-center">Imagens de exemplo: lado esquerdo</figcaption>
+  <div class="gallery-container">
+    <div class="gallery-item"><img src="assets/pictures/data/stereoR/img1.png" alt="Imagem 1"></div>
+    <div class="gallery-item"><img src="assets/pictures/data/stereoR/img2.png" alt="Imagem 2"></div>
+    <div class="gallery-item"><img src="assets/pictures/data/stereoR/img3.png" alt="Imagem 3"></div>
+    <div class="gallery-item"><img src="assets/pictures/data/stereoR/img4.png" alt="Imagem 4"></div>
+    <div class="gallery-item"><img src="assets/pictures/data/stereoR/img5.png" alt="Imagem 5"></div>
+    <div class="gallery-item"><img src="assets/pictures/data/stereoR/img6.png" alt="Imagem 6"></div>
+    <div class="gallery-item"><img src="assets/pictures/data/stereoR/img7.png" alt="Imagem 7"></div>
+    <div class="gallery-item"><img src="assets/pictures/data/stereoR/img8.png" alt="Imagem 8"></div>
+    <div class="gallery-item"><img src="assets/pictures/data/stereoR/img9.png" alt="Imagem 9"></div>
+    <div class="gallery-item"><img src="assets/pictures/data/stereoR/img10.png" alt="Imagem 10"></div>
+    <div class="gallery-item"><img src="assets/pictures/data/stereoR/img11.png" alt="Imagem 11"></div>
+    <div class="gallery-item"><img src="assets/pictures/data/stereoR/img12.png" alt="Imagem 12"></div>
+    <div class="gallery-item"><img src="assets/pictures/data/stereoR/img13.png" alt="Imagem 13"></div>
+    <div class="gallery-item"><img src="assets/pictures/data/stereoR/img14.png" alt="Imagem 14"></div>
+    <div class="gallery-item"><img src="assets/pictures/data/stereoR/img15.png" alt="Imagem 15"></div>
+    <div class="gallery-item"><img src="assets/pictures/data/stereoR/img16.png" alt="Imagem 16"></div>
+    <div class="gallery-item"><img src="assets/pictures/data/stereoR/img17.png" alt="Imagem 17"></div>
+    <div class="gallery-item"><img src="assets/pictures/data/stereoR/img18.png" alt="Imagem 18"></div>
+    <div class="gallery-item"><img src="assets/pictures/data/stereoR/img19.png" alt="Imagem 19"></div>
+    <div class="gallery-item"><img src="assets/pictures/data/stereoR/img20.png" alt="Imagem 20"></div>
+    <div class="gallery-item"><img src="assets/pictures/data/stereoR/img21.png" alt="Imagem 21"></div>
+    <div class="gallery-item"><img src="assets/pictures/data/stereoR/img22.png" alt="Imagem 22"></div>
+    <div class="gallery-item"><img src="assets/pictures/data/stereoR/img23.png" alt="Imagem 23"></div>
+    <div class="gallery-item"><img src="assets/pictures/data/stereoR/img24.png" alt="Imagem 24"></div>
+    <div class="gallery-item"><img src="assets/pictures/data/stereoR/img25.png" alt="Imagem 25"></div>
+    <div class="gallery-item"><img src="assets/pictures/data/stereoR/img26.png" alt="Imagem 26"></div>
+    <div class="gallery-item"><img src="assets/pictures/data/stereoR/img27.png" alt="Imagem 27"></div>
+  </div>
+<figcaption class="text-center">Imagens de exemplo: lado direito</figcaption>
+
+	  Depois, executamos o código movie3d.py para reconhecer o que aparece no conjunto de câmeras montado no laboratório e apresentar em forma de vídeo.
+	  <ul>
+	  <li>1) Executar calibração estéreo - <code>calibrate.py</code><br></li>
+	  <li>2) Executar geração e apresentação de imagem 3D - <code>movie3d.py</code></li>
+	  </ul>
 	  </p>
 	  
+	  <p class="py-1">É importante lembrar que devem ser seguidos os passos de preparação de ambiente para Python (vide laboratórios anteriores).</p>
+	  
+	  <p class="py-1 h5">
+      (C) Execução da calibração da sua câmera estéreo (construída com as webcams) pela captura de suas próprias imagens de calibração e imagens de teste
+    </p>
+	  
+	  
+	  <summary><p class="h5"><b>Código utilizado para salvamento de imagens em sequência - <code>capture_images.py</code></b></p></summary>
+	  <details open>
+	  <div class="d-flex justify-content-center">
+        <figure>
+          <pre><code class="language-python">
+#Código-fonte de capture_images.py, obtido em https://github.com/spmallick/learnopencv/tree/master/stereo-camera
+import numpy as np
+import cv2
+import time
+
+print("Checking the right and left camera IDs:")
+print("Press (y) if IDs are correct and (n) to swap the IDs")
+print("Press enter to start the process >> ")
+input()
+
+# Check for left and right camera IDs
+CamL_id = 1
+CamR_id = 2
+
+CamL= cv2.VideoCapture(CamL_id)
+CamR= cv2.VideoCapture(CamR_id)
+
+for i in range(100):
+    retL, frameL= CamL.read()
+    retR, frameR= CamR.read()
+
+cv2.imshow('imgL',frameL)
+cv2.imshow('imgR',frameR)
+
+if cv2.waitKey(0) & 0xFF == ord('y') or cv2.waitKey(0) & 0xFF == ord('Y'):
+    CamL_id = 1
+    CamR_id = 2
+    print("Camera IDs maintained")
+
+elif cv2.waitKey(0) & 0xFF == ord('n') or cv2.waitKey(0) & 0xFF == ord('N'):
+    CamL_id = 2
+    CamR_id = 1
+    print("Camera IDs swapped")
+else:
+    print("Wrong input response")
+    exit(-1)
+CamR.release()
+CamL.release()
+
+CamL= cv2.VideoCapture(CamL_id)
+CamR= cv2.VideoCapture(CamR_id)
+output_path = "./data/"
+
+start = time.time()
+T = 10
+count = 0
+
+while True:
+    timer = T - int(time.time() - start)
+    retR, frameR= CamR.read()
+    retL, frameL= CamL.read()
+    
+    img1_temp = frameL.copy()
+    cv2.putText(img1_temp,"%r"%timer,(50,50),1,5,(55,0,0),5)
+    cv2.imshow('imgR',frameR)
+    cv2.imshow('imgL',img1_temp)
+
+    grayR= cv2.cvtColor(frameR,cv2.COLOR_BGR2GRAY)
+    grayL= cv2.cvtColor(frameL,cv2.COLOR_BGR2GRAY)
+
+    # Find the chess board corners
+    retR, cornersR = cv2.findChessboardCorners(grayR,(9,6),None)
+    retL, cornersL = cv2.findChessboardCorners(grayL,(9,6),None)
+
+    # If corners are detected in left and right image then we save it.
+    if (retR == True) and (retL == True) and timer <=0:
+        count+=1
+        cv2.imwrite(output_path+'stereoR/img%d.png'%count,frameR)
+        cv2.imwrite(output_path+'stereoL/img%d.png'%count,frameL)
+    
+    if timer <=0:
+        start = time.time()
+    
+    # Press esc to exit
+    if cv2.waitKey(1) & 0xFF == 27:
+        print("Closing the cameras!")
+        break
+
+# Release the Cameras
+CamR.release()
+CamL.release()
+cv2.destroyAllWindows()
+		  </code></pre>
+          <figcaption class="text-center"><i>Código 3</i>: Código do arquivo <code class="text-black">capture_images.py</code>
+          </figcaption>
+        </figure>
+      </div>
+      </details>
+      <p>
+        O código acima simplifica a captura de imagens de padrão de calibração (tabuleiro de xadrez) para o projeto, salvando as imagens para cada uma das câmeras.<br><br>
+        Para utilizar esse código, ajuste as pastas de destino e prefixo de imagens conforme necessário.
+      </p>
+	<!-- </section> -->
+  <hr>
+
+  <p class="py-1 h5">
+    (D) Realização de gravação de um video 3D com a câmera estéreo
+  </p>
+
+  <p class="py-1">
+    Para realizar gravação de vídeos com o código, é necessário ajustar a fonte de imagem (trocar de vídeo para entrada das câmeras, no OpenCV), usar <code>cv2.VideoWriter()</code> e, preferencialmente, usar AVI durante o processo de salvamento.
+    Trata-se de um formato mais resistente a corrupção e paradas não intencionais, como as geradas em algumas situações de uso do OpenCV.
+    Também é importante converter o vídeo para MP4, assim atendendo ao pedido do PDF do próprio experimento.
+    Uma forma recomendada é usar ffmpeg, chamando pelo próprio programa. Esse tópico está desenvolvido de forma mais aprofundada em <i>Análise dos Resultados</i>.
+  </p>
+
+	<section class="pb-4">
+	  <p class="h3" id="analysis"><b>ANÁLISE DOS RESULTADOS</b></p>
+	
+    <p class="py-1 h5">
+      (A) Obtenção dos códigos do exemplo da câmera estéreo com OpenCV
+    </p>
+
+    <p class="py-1">
+      <i>Tópico concluído acima, em Procedimentos Experimentais.</i>
+    </p>
+    <hr>
+
+
+	  <p class="py-1 h5">
+	  (B) Execução dos exemplos com as imagens fornecidas
+	  </p>
+
 	  <p class="py-1">
-	  Executar a calibração da câmera estéreo com <code>calibrate_abc.py</code> (novo programa com base no código do GitHub para este laboratório).<br>
+	  Foi possível perceber uma discrepância na forma que as imagens que formam o anáglifo se sobrepõem: as imagens complementares não mantinham a mesma distância conforme algum item se movia diante das câmeras.
+	  Isso se deve ao fato de que os parâmetros dos setups de câmeras são diferentes, então os parâmetros intrínsecos e outras características tendem a apresentar diferenças substanciais, gerando essa variação.<br>
+    Isso deixa bem claro a necessidade de uma calibração própria.
 	  </p>
 	  
+	  <p class="py-1">"<i><b>Responda:</b> Consulte a teoria da calibração e correção de distorção e o exemplo
+	  executado, e com isso descreva todos os parametros necessários para a camera estéreo."</i>
+    </p>
+    <p class="py-1">
+      <b>Resposta</b>:<br>
+      Parâmetros internos da câmera:
+      <ul>
+        <li>Matriz de calibração da câmera (com distância focal e ponto principal);</li>
+        <li>Coeficientes de distorção, que corrigem as imperfeições da lente (principalmente aquelas que fazem uma reta parecer uma curva em alguns casos).</li>
+      </ul>
+      Parâmetros externos entre as câmeras: rotação e a translação entre si;<br><br>
+      Matrizes Derivadas:<br><br>
+      <ul>
+        <li>Matriz essencial (relaciona ponto visto em uma câmera com a vista do mesmo na outra, considerando um cenário onde as câmeras já foram devidamente calibradas);</li>
+        <li>Matriz fundamental (derivada dos parâmetros internos + externos das câmeras, até sem calibração).</li>
+      </ul>
+      Mapas de Retificação: São dados pré-calculados que, aplicados às imagens, eliminam distorções e as alinham de forma paralela, tornando a visualização 3D mais precisa.<br>
+    </p>
+    <hr>
+
+    <p class="py-1 h5">
+      (C) Execução da calibração da sua câmera estéreo (construída com as webcams) pela captura de suas próprias imagens de calibração e imagens de teste
+    </p>
+
+    <p class="py-1">
+      O código <code>calibrate.py</code> foi ajustado para ler imagens com outro prefixo (img_testeX.jpg, onde X é o número da imagem) nas pastas stereoL e stereoR.<br>
+      Para a geração das imagens, foi usado o código <code>capture_images.py</code>, com os devidos ajustes de caminho de pasta.
+    </p>
+
+    <div class="gallery-container">
+      <div class="gallery-item"><img src="assets/pictures/data/stereoR/img_teste1.png" alt="Imagem 1"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoR/img_teste2.png" alt="Imagem 2"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img_teste3.png" alt="Imagem 3"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img_teste4.png" alt="Imagem 4"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img_teste5.png" alt="Imagem 5"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img_teste6.png" alt="Imagem 6"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img_teste7.png" alt="Imagem 7"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img_teste8.png" alt="Imagem 8"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img_teste9.png" alt="Imagem 9"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img_teste10.png" alt="Imagem 10"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img_teste11.png" alt="Imagem 11"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img_teste12.png" alt="Imagem 12"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img_teste13.png" alt="Imagem 13"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img_teste14.png" alt="Imagem 14"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img_teste15.png" alt="Imagem 15"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img_teste16.png" alt="Imagem 16"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img_teste17.png" alt="Imagem 17"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img_teste18.png" alt="Imagem 18"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img_teste19.png" alt="Imagem 19"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img_teste20.png" alt="Imagem 20"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img_teste21.png" alt="Imagem 21"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img_teste22.png" alt="Imagem 22"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img_teste23.png" alt="Imagem 23"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img_teste24.png" alt="Imagem 24"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img_teste25.png" alt="Imagem 25"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img_teste26.png" alt="Imagem 26"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoL/img_teste27.png" alt="Imagem 27"></div>
+    </div>
+
+    <figcaption class="text-center">Imagens próprias: lado esquerdo</figcaption>
+
+    <div class="gallery-container">
+      <div class="gallery-item"><img src="assets/pictures/data/stereoR/img_teste1.png" alt="Imagem 1"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoR/img_teste2.png" alt="Imagem 2"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoR/img_teste3.png" alt="Imagem 3"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoR/img_teste4.png" alt="Imagem 4"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoR/img_teste5.png" alt="Imagem 5"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoR/img_teste6.png" alt="Imagem 6"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoR/img_teste7.png" alt="Imagem 7"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoR/img_teste8.png" alt="Imagem 8"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoR/img_teste9.png" alt="Imagem 9"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoR/img_teste10.png" alt="Imagem 10"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoR/img_teste11.png" alt="Imagem 11"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoR/img_teste12.png" alt="Imagem 12"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoR/img_teste13.png" alt="Imagem 13"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoR/img_teste14.png" alt="Imagem 14"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoR/img_teste15.png" alt="Imagem 15"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoR/img_teste16.png" alt="Imagem 16"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoR/img_teste17.png" alt="Imagem 17"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoR/img_teste18.png" alt="Imagem 18"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoR/img_teste19.png" alt="Imagem 19"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoR/img_teste20.png" alt="Imagem 20"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoR/img_teste21.png" alt="Imagem 21"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoR/img_teste22.png" alt="Imagem 22"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoR/img_teste23.png" alt="Imagem 23"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoR/img_teste24.png" alt="Imagem 24"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoR/img_teste25.png" alt="Imagem 25"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoR/img_teste26.png" alt="Imagem 26"></div>
+      <div class="gallery-item"><img src="assets/pictures/data/stereoR/img_teste27.png" alt="Imagem 27"></div>
+    </div>
+
+    <figcaption class="text-center">Imagens próprias: lado direito</figcaption>
+
+
+
+    <p class="py-1">"<i><b>Responda:</b> Liste todos os parâmetros e valores obtidos para sua câmera estéreo, colocando-os na forma de matrizes e vetores.
+    Quais destes parâmetros foram salvos no arquivo de parâmetros de calibração (xml)?"</i></p>
+    <p class="py-1">
+      <b>Resposta</b>:<br>
+      A seguir, parâmetros e seus respectivos valores obtidos a partir do processo de calibração da câmera estéreo:<br><br>
+
+      1. Parâmetros da Câmera Esquerda:<br><br>
+
+      Matriz Intrínseca ($mtxL$):<br>
+        Descreve as propriedades internas da câmera, como distância focal e centro óptico.
+        $$
+        mtxL = \begin{bmatrix}
+        fx_L & 0 & cx_L \\
+        0 & fy_L & cy_L \\
+        0 & 0 & 1
+        \end{bmatrix}
+        $$
+
+      Coeficientes de Distorção ($distL$):<br>
+        Corrigem as distorções da lente (radiais e tangenciais).
+        $$
+        distL = \begin{bmatrix} k_{1L} & k_{2L} & p_{1L} & p_{2L} & k_{3L} \end{bmatrix}
+        $$
+
+        Vetores de Rotação ($rvecsL$):<br>
+        Representam a rotação da câmera em relação ao padrão de tabuleiro de xadrez para cada imagem. Haverá um vetor para cada imagem onde os cantos foram detectados com sucesso.
+        $$
+        rvecsL = \begin{bmatrix} r_{x1L} & r_{y1L} & r_{z1L} \\ \vdots \end{bmatrix}
+        $$
+
+        Vetores de Translação ($tvecsL$):<br>
+        Representam a translação da câmera em relação ao padrão de tabuleiro de xadrez para cada imagem. Haverá um vetor para cada imagem onde os cantos foram detectados com sucesso.
+        $$
+        tvecsL = \begin{bmatrix} t_{x1L} & t_{y1L} & t_{z1L} \\ \vdots \end{bmatrix}
+        $$
+
+        Nova Matriz Ótima da Câmera ($new\_mtxL$):<br>
+        Geralmente usada para a correção, que pode ser escalonada para reter todos os pixels originais ou cortar os inválidos.
+        $$
+        new\_mtxL = \begin{bmatrix}
+        fx'_{L} & 0 & cx'_{L} \\
+        0 & fy'_{L} & cy'_{L} \\
+        0 & 0 & 1
+        \end{bmatrix}
+        $$
+
+        Região de Interesse ($roiL$):<br>
+        Caixa delimitadora `(x, y, w, h)` que especifica a região válida da imagem após a correção e retificação.
+        $$
+        roiL = [x_L, y_L, w_L, h_L]
+        $$
+
+      <br><br>
+      2. Parâmetros da Câmera Direita:<br><br>
+
+        Matriz Intrínseca ($mtxR$):<br>
+        $$
+        mtxR = \begin{bmatrix}
+        fx_R & 0 & cx_R \\
+        0 & fy_R & cy_R \\
+        0 & 0 & 1
+        \end{bmatrix}
+        $$
+
+        Coeficientes de Distorção ($distR$):<br>
+        $$
+        distR = \begin{bmatrix} k_{1R} & k_{2R} & p_{1R} & p_{2R} & k_{3R} \end{bmatrix}
+        $$
+
+        Vetores de Rotação ($rvecsR$):<br>
+        $$
+        rvecsR = \begin{bmatrix} r_{x1R} & r_{y1R} & r_{z1R} \\ \vdots \end{bmatrix}
+        $$
+
+        Vetores de Translação ($tvecsR$):<br>
+        $$
+        tvecsR = \begin{bmatrix} t_{x1R} & t_{y1R} & t_{z1R} \\ \vdots \end{bmatrix}
+        $$
+
+        Nova Matriz Ótima da Câmera ($new\_mtxR$):<br>
+        $$
+        new\_mtxR = \begin{bmatrix}
+        fx'_{R} & 0 & cx'_{R} \\
+        0 & fy'_{R} & cy'_{R} \\
+        0 & 0 & 1
+        \end{bmatrix}
+        $$
+
+        Região de Interesse ($roiR$):<br>
+        $$
+        roiR = [x_R, y_R, w_R, h_R]
+        $$
+
+      3. Parâmetros de Calibração Estéreo:<br><br>
+
+        Definem a transformação rígida entre as duas câmeras.
+
+        Matriz de Rotação ($Rot$):<br>
+        Descreve a rotação do sistema de coordenadas da primeira câmera para o sistema de coordenadas da segunda câmera.
+        $$
+        Rot = \begin{bmatrix}
+        r_{11} & r_{12} & r_{13} \\
+        r_{21} & r_{22} & r_{23} \\
+        r_{31} & r_{32} & r_{33}
+        \end{bmatrix}
+        $$
+
+        Vetor de Translação ($Trns$):<br>
+        Descreve a translação do sistema de coordenadas da primeira câmera para o sistema de coordenadas da segunda câmera.
+        $$
+        Trns = \begin{bmatrix} t_x \\ t_y \\ t_z \end{bmatrix}
+        $$
+
+        Matriz Essencial ($Emat$):<br>
+        Descreve a geometria epipolar entre as duas câmeras para um par estéreo calibrado.
+        $$
+        Emat = \begin{bmatrix}
+        e_{11} & e_{12} & e_{13} \\
+        e_{21} & e_{22} & e_{23} \\
+        e_{31} & e_{32} & e_{33}
+        \end{bmatrix}
+        $$
+
+        Matriz Fundamental ($Fmat$):<br>
+        Descreve a geometria epipolar entre as duas câmeras para um par estéreo não calibrado.
+        $$
+        Fmat = \begin{bmatrix}
+        f_{11} & f_{12} & f_{13} \\
+        f_{21} & f_{22} & f_{23} \\
+        f_{31} & f_{32} & f_{33}
+        \end{bmatrix}
+        $$
+
+      4. Parâmetros de Retificação Estéreo:<br><br>
+
+        Transformação de Retificação para Câmera Esquerda ($rect\_l$):<br>
+        Transforma o sistema de coordenadas da câmera esquerda para o sistema de coordenadas retificado.
+        $$
+        rect\_l = \begin{bmatrix}
+        r'_{11} & r'_{12} & r'_{13} \\
+        r'_{21} & r'_{22} & r'_{23} \\
+        r'_{31} & r'_{32} & r'_{33}
+        \end{bmatrix}
+        $$
+
+        Transformação de Retificação para Câmera Direita ($rect\_r$):<br>
+        Transforma o sistema de coordenadas da câmera direita para o sistema de coordenadas retificado.
+        $$
+        rect\_r = \begin{bmatrix}
+        r''_{11} & r''_{12} & r''_{13} \\
+        r''_{21} & r''_{22} & r''_{23} \\
+        r''_{31} & r''_{32} & r''_{33}
+        \end{bmatrix}
+        $$
+
+        Matriz de Projeção para Câmera Esquerda ($proj\_mat\_l$):<br>
+        Combina a matriz intrínseca e a pose da câmera esquerda no sistema estéreo retificado, permitindo a projeção de pontos 3D.
+        $$
+        proj\_mat\_l = \begin{bmatrix}
+        fx''_{L} & 0 & cx''_{L} & T_{xL} \\
+        0 & fy''_{L} & cy''_{L} & T_{yL} \\
+        0 & 0 & 1 & T_{zL}
+        \end{bmatrix}
+        $$
+
+        Matriz de Projeção para Câmera Direita ($proj\_mat\_r$):<br>
+        Combina a matriz intrínseca e a pose da câmera direita no sistema estéreo retificado.
+        $$
+        proj\_mat\_r = \begin{bmatrix}
+        fx''_{R} & 0 & cx''_{R} & T_{xR} \\
+        0 & fy''_{R} & cy''_{R} & T_{yR} \\
+        0 & 0 & 1 & T_{zR}
+        \end{bmatrix}
+        $$
+
+        Matriz de Mapeamento de Disparidade para Profundidade ($Q$):<br>
+        É usada para converter valores de disparidade 2D de imagens retificadas em coordenadas 3D.
+        $$
+        Q = \begin{bmatrix}
+        q_{11} & q_{12} & q_{13} & q_{14} \\
+        q_{21} & q_{22} & q_{23} & q_{24} \\
+        q_{31} & q_{32} & q_{33} & q_{34} \\
+        q_{41} & q_{42} & q_{43} & q_{44}
+        \end{bmatrix}
+        $$
+
+        Mapa Estéreo Esquerdo ($Left\_Stereo\_Map$):<br>
+        Par de matrizes de mapeamento usadas por <code>cv2.remap</code> para corrigir e retificar as imagens da câmera esquerda.
+        $$
+        Left\_Stereo\_Map = [MapX_L, MapY_L]
+        $$
+        Onde $MapX_L$ e $MapY_L$ são matrizes do mesmo tamanho da imagem, contendo as coordenadas x e y, respectivamente, do pixel na imagem original que corresponde a cada pixel na imagem de destino (retificada).
+
+        Mapa Estéreo Direito ($Right\_Stereo\_Map$):<br>
+        Semelhante ao mapa esquerdo, este par faz mapeamento para as imagens da câmera direita.
+        $$
+        Right\_Stereo\_Map = [MapX_R, MapY_R]
+        $$
+
+<br><br>
+Parâmetros Salvos no Arquivo XML:<br><br>
+
+Os seguintes parâmetros são efetivamente salvos no arquivo "data/params_py.xml":<br>
+
+    <code>Left_Stereo_Map_x</code>: O mapeamento das coordenadas X para a correção e retificação da câmera esquerda.<br>
+    <code>Left_Stereo_Map_y</code>: O mapeamento das coordenadas Y para a correção e retificação da câmera esquerda.<br>
+    <code>Right_Stereo_Map_x</code>: O mapeamento das coordenadas X para a correção e retificação da câmera direita.<br>
+    <code>Right_Stereo_Map_y</code>: O mapeamento das coordenadas Y para a correção e retificação da câmera direita.<br>
+    </p>
+    <hr>
+
+    <p class="py-1 h5">
+      (D) Realização de gravação de um video 3D com a câmera estéreo
+    </p>
+
+    <p>
+      O código <code>movie3.py</code> recebeu alterações para poder operar com os novos requisitos:
+      <ul>
+        <li>Passou a receber fonte diretamente das câmeras (antes era de arquivos pronto);</li>
+        <li>Configura um tempo fixo para preparar uma gravação;</li>
+        <li>Salva a visualização (usando ffmpeg para converter AVI para MP4).</li>
+      </ul>
+      
+      Código alterado abaixo (<code>movie3d_alterado.py</code>):
+      
+    </p>
+
+
+    <summary><p class="h5"><b>Código utilizado para geração, apresentação e salvamento de vídeo 3D - <code>movie3d_alterado.py</code></b></p></summary>
+	  
+	  <details open>
+	  <div class="d-flex justify-content-center">
+        <figure>
+          <pre><code class="language-python">
+#Código-fonte de movie3d_alterado.py, feito com base em movie3d.py
+import numpy as np 
+import cv2
+import time
+import subprocess  # para converter o vídeo
+
+# IDs das câmeras
+CamL_id = 0
+CamR_id = 2
+
+# Inicializa captura
+CamL = cv2.VideoCapture(CamL_id)
+CamR = cv2.VideoCapture(CamR_id)
+
+# Define tamanho do vídeo de saída
+frame_width = 640
+frame_height = 640
+fps = 24  # Frames por segundo
+duration = 20  # segundos
+max_frames = fps * duration
+
+# Define o codec e cria o VideoWriter (.avi)
+fourcc = cv2.VideoWriter_fourcc(*'XVID')
+output_filename = "saida_3d.avi"
+out = cv2.VideoWriter(output_filename, fourcc, fps, (frame_width, frame_height))
+
+# Lê os parâmetros de calibração
+print("Lendo parâmetros de calibração...")
+cv_file = cv2.FileStorage("data/params_py_alterado.xml", cv2.FILE_STORAGE_READ)
+Left_Stereo_Map_x = cv_file.getNode("Left_Stereo_Map_x").mat()
+Left_Stereo_Map_y = cv_file.getNode("Left_Stereo_Map_y").mat()
+Right_Stereo_Map_x = cv_file.getNode("Right_Stereo_Map_x").mat()
+Right_Stereo_Map_y = cv_file.getNode("Right_Stereo_Map_y").mat()
+cv_file.release()
+
+# Loop principal por tempo fixo
+print(f"Iniciando gravação de {duration} segundos...")
+frame_count = 0
+start_time = time.time()
+
+while frame_count < max_frames:
+	retR, imgR = CamR.read()
+	retL, imgL = CamL.read()
+
+	if retL and retR:
+		# Converte para tons de cinza
+		imgR_gray = cv2.cvtColor(imgR, cv2.COLOR_BGR2GRAY)
+		imgL_gray = cv2.cvtColor(imgL, cv2.COLOR_BGR2GRAY)
+
+		# Corrige distorção (retificação)
+		Left_nice = cv2.remap(imgL, Left_Stereo_Map_x, Left_Stereo_Map_y, cv2.INTER_LANCZOS4, cv2.BORDER_CONSTANT, 0)
+		Right_nice = cv2.remap(imgR, Right_Stereo_Map_x, Right_Stereo_Map_y, cv2.INTER_LANCZOS4, cv2.BORDER_CONSTANT, 0)
+
+		# Cria imagem anáglifa 3D
+		output = Right_nice.copy()
+		output[:, :, 0] = Right_nice[:, :, 0]  # Canal azul
+		output[:, :, 1] = Right_nice[:, :, 1]  # Canal verde
+		output[:, :, 2] = Left_nice[:, :, 2]   # Canal vermelho
+
+		# Redimensiona e exibe
+		output_resized = cv2.resize(output, (frame_width, frame_height))
+		cv2.imshow("3D movie", output_resized)
+
+		# Escreve no arquivo
+		out.write(output_resized)
+		frame_count += 1
+
+		# Tecla de interrupção manual (opcional)
+		if cv2.waitKey(1) & 0xFF == ord('q'):
+			break
+	else:
+		print("Erro ao capturar imagem das câmeras.")
+		break
+
+# Libera recursos
+CamL.release()
+CamR.release()
+out.release()
+cv2.destroyAllWindows()
+
+print("Gravação concluída.")
+
+# Converte para MP4 com ffmpeg (requer ffmpeg instalado no sistema)
+mp4_output = "saida_3d.mp4"
+try:
+	subprocess.run([
+		"ffmpeg", "-y", "-i", output_filename,
+		"-vcodec", "libx264", "-crf", "23", mp4_output
+	])
+	print(f"Vídeo convertido para MP4: {mp4_output}")
+except Exception as e:
+	print("Erro ao converter para MP4:", e)
+		  </code></pre>
+          <figcaption class="text-center"><i>Código 4</i>: Código do arquivo <code class="text-black">movie3d_alterado.py</code>
+          </figcaption>
+        </figure>
+      </div>
+    </details>
+
+    <p class="py-1">
+      O resultado final está disponível no vídeo abaixo:<br>
+      <div class="d-flex justify-content-center">
+        <video autoplay muted loop>
+          <source src="assets/videos/saida_3d.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <br>
+      <figcaption class="text-center"><i>Vídeo 1</i>: Vídeo final gerado com o programa <code class="text-black">movie3d_alterado.py</code></figcaption>
+    </p>
+    
+
+    <p class="py-1">"<i><b>Responda:</b> A percepção individual de todos integrantes da equipe. Compare e analise as diferenças com os resultados ao vivo e gravado"</i>
+    <p class="py-1">
+      <b>Resposta</b>:<br>
+      <p class="py-1">
+        [Igor] Ao usar os óculos anáglifos, o efeito de profundidade é bastante claro e natural, embora seja necessário um ajuste inicial na visão. No vídeo gravado em MP4, o efeito 3D ainda é visível, mas com menos intensidade, apresentando ligeira perda de contraste e pequenas variações de cor entre os canais. A qualidade do efeito também depende do monitor e das câmeras utilizadas, sendo melhor em telas e câmeras bem calibradas. Isso mostra que tanto a captura quanto o display afetam a experiência visual.
+      </p>
+      <p class="py-1">
+        [Jhonattan] É possível notar que, ao assistir ao vídeo, há um leve descompasso entre as imagens do anáglifo, algo que não era tão evidente durante a visualização ao vivo. Além disso, há um tipo de distorção no fundo da gravação, como se as imagens não estivessem completamente alinhadas, provavelmente devido a pequenas variações na rotação e no movimento das câmeras durante a captura.
+      </p>
+      <p class="py-1">
+        [Mikael] É possível perceber que o vídeo apresenta um certo <i>delay</i> de uma das imagens do anáglifo com relação à outra, e isso não era tão perceptível no caso a visualização ao vivo, no código original.<br>
+        Também existe um resíduo de imagem no fundo do vídeo, um tipo de desenquadre (deve ser resíduo das diferenças de rotação e translação das câmeras).
+      </p>
+    </p>
+
+	</section>
+	<hr>
+	<section class="pb-4">
+	  <p class="h3" id="conc"><b>CONCLUSÕES</b></p>
 	  <p class="py-1">
-	  Gerar visualização, ao vivo, com base na câmera estéreo da equipe, usando <code>movie3d_abc.py</code> (novo programa com base no código do GitHub para este laboratório).<br>
+	    O objetivo deste trabalho foi explorar o conceito de visão estéreo, utilizando câmeras e técnicas de calibração para criar imagens tridimensionais e simular a sensação de profundidade. Durante as atividades, tivemos a oportunidade de entender melhor conceitos como geometria epipolar, calibração de câmeras e triangulação, que são essenciais para reconstruir a profundidade em imagens.
+<br>
+A experiência nos ajudou a perceber a importância de uma calibração bem executada. Ao garantir que as câmeras estejam devidamente ajustadas, conseguimos fazer uma correspondência precisa entre os pontos das imagens, o que é fundamental para uma reconstrução 3D correta. Durante os testes, observamos as diferenças entre a visualização ao vivo e a reprodução dos vídeos gravados, o que nos mostrou como fatores como a calibração das câmeras, o monitor usado e a qualidade do vídeo afetam a intensidade e a precisão do efeito 3D.
+<br>
+Embora o efeito de profundidade tenha sido bem nítido ao vivo, ao gravar as imagens, encontramos alguns desafios, como pequenos atrasos de sincronização e distorções no fundo. Essas questões ocorreram por conta das pequenas variações na rotação e translação das câmeras durante a captura. Além disso, a qualidade do monitor e a calibração das câmeras influenciaram diretamente a experiência visual, destacando a importância de um controle mais rigoroso tanto no momento da captura quanto na exibição do conteúdo.
+<br>
+Em resumo, a prática mostrou que, mesmo com os avanços em visão computacional, a calibração das câmeras e o uso de ferramentas apropriadas são fundamentais para criar uma experiência tridimensional precisa e envolvente. Para futuras experimentações, seria interessante melhorar ainda mais a calibração e testar diferentes métodos de correção de distorções, para reduzir os efeitos indesejados nas gravações.
 	  </p>
-	  
-	  <p class="py-1"><i><h2>Responda:</h2>Liste todos os parâmetros e valores obtidos para sua câmera estéreo,
-	  colocando-os nas formas de matrizes e vetores. Quais destes parâmetros forma salvos no arquivo de parâmetros de calibração (xml)?</i>
-	  </p>
-	  
-	  <p class="h4"><b>2.5. d) Geração de vídeo 3D próprio</b></p>
-	  <br>
-	  
-	  <p class="py-1">
-	  Alteração do programa do código <code>movie3d.py</code> de tal forma que passe a realizar a gravação de um vídeo 3D para anaglifo (estratégia de uso de cores diferentes para gerar efeito tridimensional), 
-	  com aproximadamente 10s a 20s. Usar o exemplo de gravação da aula de laboratório 1. Conversão do video obtido para MP4.
-	  </p>
-	  
-	  <p class="py-1"><i><h2>Responda:</h2>A percepção individual de todos integrantes da equipe. Compare e 
-	  analise as diferenças com os resultados ao vivo e gravado.</i>
-	  </p>
-	  
-	  <p class="h3"><b>3. Análise de resultados</b></p>
-	  <br>
-	  
-	  <p class="py-1">
-	  <b><i>Continua...</i></b>
-	  </p>
-	  
-	  <p class="h3"><b>4. Conclusão</b></p>
-	  <br>
-	  
-	  <p class="py-1">
-	  <b><i>Continua...</i></b>
-	  </p>
-	  
-      <p class="h3"><b>5. Referências</b></p>
+  </section>
+	<hr>
+  <section class="pb-4">
+      <p class="h3" id="refs"><b>REFERÊNCIAS</b></p>
 
       <ol>
         <li>LearnOpenCV. (2020). <em>Introduction to Epipolar Geometry and Stereo Vision</em>. Disponível em:
-          <code>https://learnopencv.com/introduction-to-epipolar-geometry-and-stereo-vision/</code>
+          <a class="text-black" href="https://learnopencv.com/introduction-to-epipolar-geometry-and-stereo-vision/" target="_blank">https://learnopencv.com/introduction-to-epipolar-geometry-and-stereo-vision/</a>. Acesso em: 21 jul. 2025.
         </li>
         <li>LearnOpenCV. (2021). <em>Making A Low-Cost Stereo Camera Using OpenCV</em>. Disponível em:
-          <code>https://learnopencv.com/making-a-low-cost-stereo-camera-using-opencv/</code>
+          <a class="text-black" href="https://learnopencv.com/making-a-low-cost-stereo-camera-using-opencv/" target="_blank"> https://learnopencv.com/making-a-low-cost-stereo-camera-using-opencv/</a>. Acesso em: 21 jul. 2025.
         </li>
-		<li>
-		<b>E mais</b>...
-		</li>
-
+        <li>Arthur Wilton. (2021). <em>Running FFmpeg commands from a Python Script.</em>. Disponível em:
+          <a class="text-black" href="https://artwilton.medium.com/running-ffmpeg-commands-from-a-python-script-676eaf2b2739" target="_blank"> https://artwilton.medium.com/running-ffmpeg-commands-from-a-python-script-676eaf2b2739</a>. Acesso em: 21 jul. 2025.
+        </li>
       </ol>
+  </section>
 
 
   </main>
