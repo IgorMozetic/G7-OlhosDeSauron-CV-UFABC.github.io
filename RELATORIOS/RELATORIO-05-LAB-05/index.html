@@ -32,8 +32,8 @@
       <p>Igor Domingos da Silva Mozetic - 11202320802</p>
       <p>Jhonattan Ferreira Machado - 11202320245</p>
       <p>Mikael Alves Monteiro - 21055813</p>
-      <p><b>Data de Realização do relatório:</b> 18/06/2025</p>
-      <p><b>Data de Publicação do relatório:</b> 25/06/2025</p>
+      <p><b>Data de Realização do relatório:</b> 21/07/2025</p>
+      <p><b>Data de Publicação do relatório:</b> 28/07/2025</p>
       <hr>
     </div>
     <section class="pb-4">
@@ -162,53 +162,107 @@
           <p>Para isso, foi realizado a captura das imagens a seguir:</p>
           <div class="d-flex justify-content-center align-items-center py-2">
             <figure class="text-center">
-              <img src="assets/parte-02/objeto.png" alt="Imagem">
+              <img style="box-shadow: none;" src="assets/pt-2.0-item.png" alt="Imagem">
               <figcaption><i>Figura 1</i>: Imagem do objeto a ser identificado na imagem.</figcaption>
             </figure>
           </div>
           <div class="d-flex justify-content-center align-items-center py-2">
             <figure class="text-center">
-              <img src="assets/parte-02/objeto-na-cena.png" alt="Imagem">
+              <img src="assets/pt-2.1-item-na-imagem.png" alt="Imagem">
               <figcaption><i>Figura 2</i>: Imagem da cena onde o objeto deverá ser identificado.</figcaption>
             </figure>
           </div>
           <p>Após realizar a captura, foi elaborado o seguinte código para que o objeto pudesse ser identificado na
-            imagem de cena:</p>
+            cena:</p>
           <div class="d-flex justify-content-center">
             <figure>
-              <pre><code class="language-python">import numpy as np 
+              <pre><code class="language-python">import numpy as np
 import cv2 as cv
-  
-img = cv.imread('messi5.jpg',0)
-cv.imshow('image',img)
-k = cv.waitKey(0)
-if k == 27:         # wait for ESC key to exit
-    cv.destroyAllWindows()
-elif k == ord('s'): # wait for 's' key to save and exit
-    cv.imwrite('messigray.png',img)
-    cv.destroyAllWindows()
+from matplotlib import pyplot as plt
+
+MIN_MATCH_COUNT = 10
+
+# Carregar as imagens em escala de cinza
+img1 = cv.imread('item.png', cv.IMREAD_GRAYSCALE)  # queryImage
+img2 = cv.imread('item-na-imagem.png', cv.IMREAD_GRAYSCALE)  # trainImage
+
+# Iniciar o detector SIFT
+sift = cv.SIFT_create()
+
+# Encontrar os keypoints e descritores com o SIFT
+kp1, des1 = sift.detectAndCompute(img1, None)
+kp2, des2 = sift.detectAndCompute(img2, None)
+
+# Parâmetros para o FLANN matcher
+FLANN_INDEX_KDTREE = 1
+index_params = dict(algorithm=FLANN_INDEX_KDTREE, trees=5)
+search_params = dict(checks=50)
+
+# Inicializar o FLANN-based Matcher
+flann = cv.FlannBasedMatcher(index_params, search_params)
+
+# Realizar a correspondência dos descritores
+matches = flann.knnMatch(des1, des2, k=2)
+
+# Armazenar todas as boas correspondências conforme o teste de razão de Lowe
+good = []
+for m, n in matches:
+    if m.distance < 0.7 * n.distance:
+        good.append(m)
+
+# Verificar se as correspondências são suficientes para calcular a homografia
+if len(good) > MIN_MATCH_COUNT:
+    # Obter os pontos correspondentes nas duas imagens
+    src_pts = np.float32([kp1[m.queryIdx].pt for m in good]).reshape(-1, 1, 2)
+    dst_pts = np.float32([kp2[m.trainIdx].pt for m in good]).reshape(-1, 1, 2)
+
+    # Calcular a homografia usando RANSAC
+    M, mask = cv.findHomography(src_pts, dst_pts, cv.RANSAC, 5.0)
+    matchesMask = mask.ravel().tolist()
+
+    # Transformar a perspectiva
+    h, w = img1.shape
+    pts = np.float32([[0, 0], [0, h - 1], [w - 1, h - 1], [w - 1, 0]]).reshape(-1, 1, 2)
+    dst = cv.perspectiveTransform(pts, M)
+
+    # Desenhar o polígono da transformação de perspectiva
+    img2 = cv.polylines(img2, [np.int32(dst)], True, 255, 3, cv.LINE_AA)
+
+    # Desenhar as boas correspondências
+    img3 = cv.drawMatches(img1, kp1, img2, kp2, good, None, **{
+        'matchColor': (0, 255, 0),  # Cor das correspondências
+        'singlePointColor': (255, 0, 0),  # Cor dos pontos-chave
+        'flags': 2
+    })
+
+    # Exibir a imagem com as correspondências e a transformação
+    plt.imshow(img3)
+    plt.show()
+
+else:
+    print("Não há correspondências suficientes - {}/{}".format(len(good), MIN_MATCH_COUNT))
+
+
   </code></pre>
               <figcaption class="text-center"><i>Código 1</i>: Código para identificação do objeto na cena.</figcaption>
             </figure>
           </div>
-          <p>No código, as duas primeiras linhas estão sendo importadas as bibliotecas que serão utilizadas no restante
-            do código.</p>
-          <p>Na 3º linha <code>img = cv.imread('messi5.jpg',0)</code>, o código está carregando a imagem chamada
-            <strong>"messi5.jpg"</strong> em modo <i>grayscale</i> (tons de cinza), pois o segundo parâmetro é 0. A
-            imagem é armazenada na variável <code>img</code>.
+          <p>O código realiza detecção e correspondência de características locais entre duas imagens usando SIFT e
+            FLANN.</p>
+          <p>As imagens são carregadas em escala de cinza com <code>cv.imread()</code>. Em seguida, é utilizado o
+            detector <code>SIFT</code> para extrair keypoints e descritores das duas imagens.</p>
+          <p>Os descritores são comparados com o <code>FlannBasedMatcher</code> utilizando <code>knnMatch()</code>
+            (k=2). As correspondências são refinadas pelo critério de razão de Lowe
+            (<code>m.distance &lt; 0.7 * n.distance</code>) para reduzir falsos positivos.</p>
+          <p>Se o número de matches for maior que <code>MIN_MATCH_COUNT</code>, é computada uma matriz de homografia com
+            <code>cv.findHomography()</code> usando RANSAC, estimando uma transformação projetiva entre as imagens.
           </p>
-          <p>Na 4º linha <code>cv.imshow('image',img)</code>, o código está exibindo a imagem carregada em uma janela
-            com o nome <strong>"image"</strong>. Essa janela mostra o conteúdo da variável <code>img</code>.</p>
-          <p>Na 5ª linha <code>k = cv.waitKey(0)</code>, o programa fica aguardando indefinidamente até que o usuário
-            pressione alguma tecla. A tecla pressionada é armazenada na variável <code>k</code>.</p>
-          <p>Na 6ª linha <code>if k == 27:</code>, o código verifica se a tecla pressionada foi a tecla ESC
-            (representada pelo código 27). Se for, ele fecha todas as janelas abertas com
-            <code>cv.destroyAllWindows()</code>.
+          <p>A transformação é aplicada aos vértices da imagem de referência para localizar sua projeção na imagem de
+            destino, utilizando <code>cv.perspectiveTransform()</code>. O resultado é desenhado com
+            <code>cv.polylines()</code> e as correspondências com <code>cv.drawMatches()</code>.
           </p>
-          <p>Na 8ª linha <code>elif k == ord('s'):</code>, o código verifica se a tecla pressionada foi a tecla
-            <strong>'s'</strong>. Se for, ele salva a imagem carregada com o nome <strong>"messigray.png"</strong> e
-            também fecha todas as janelas.
-          </p>
+          <p>Por fim, o resultado é exibido com <code>matplotlib.pyplot</code>. Se não houver correspondências
+            suficientes, o código apenas imprime uma mensagem informativa.</p>
           <hr>
         </div>
         <div class="pt-3">
@@ -228,76 +282,166 @@ elif k == ord('s'): # wait for 's' key to save and exit
             <p>Portanto, segue o código alterado para execução da alternativa B:</p>
             <div class="d-flex justify-content-center">
               <figure>
-                <pre><code class="language-python">import time
+                <pre><code class="language-python">import cv2 as cv
 import numpy as np
-import cv2 as cv
+import subprocess
 
-cap = cv.VideoCapture('big_buck_bunny.mp4')
+MIN_MATCH_COUNT = 30
 
-while(cap.isOpened()):
-    ret, frame = cap.read()
-    
-    if ret==True:
-        # show the frame
-        cv.imshow('frame',frame)
+# Carregar imagem de referência
+img_ref_gray = cv.imread('item.png', cv.IMREAD_GRAYSCALE)
+if img_ref_gray is None:
+    raise Exception("Imagem de referência 'item.png' não encontrada.")
+img_ref_color = cv.cvtColor(img_ref_gray, cv.COLOR_GRAY2BGR)
 
-        #wait next frame by 40ms - 25fps
-        time.sleep(1/25.0) 
-        
-        if cv.waitKey(1) & 0xFF == ord('q'):
-            break
-    else:
+# Inicializar SIFT e extrair keypoints da imagem de referência
+sift = cv.SIFT_create()
+kp_ref, des_ref = sift.detectAndCompute(img_ref_gray, None)
+
+# Inicializar FLANN matcher
+FLANN_INDEX_KDTREE = 1
+index_params = dict(algorithm=FLANN_INDEX_KDTREE, trees=5)
+search_params = dict(checks=50)
+flann = cv.FlannBasedMatcher(index_params, search_params)
+
+# Inicializar webcams
+cap_left = cv.VideoCapture(0)
+cap_right = cv.VideoCapture(2)
+
+if not cap_left.isOpened() or not cap_right.isOpened():
+    raise Exception("Não foi possível acessar uma ou ambas as webcams.")
+
+# Redimensionar imagem de referência para combinar com o tamanho das câmeras
+img_ref_color = cv.resize(img_ref_color, (400, 480))
+
+# Pegar resolução das câmeras
+frame_width = 640
+frame_height = 480
+
+# Tamanho final da imagem combinada
+output_width = 400 + frame_width * 2
+output_height = frame_height
+
+# Inicializar gravação
+fourcc = cv.VideoWriter_fourcc(*'XVID')
+fps = 12.0
+out = cv.VideoWriter('video-sift.avi', fourcc, fps, (output_width, output_height))
+
+print("Gravando automaticamente... Pressione 'q' para sair.")
+
+while True:
+    ret1, frame_left = cap_left.read()
+    ret2, frame_right = cap_right.read()
+
+    if not ret1 or not ret2:
+        print("Erro ao capturar vídeo.")
         break
-               
-cap.release()
+
+    frame_left = cv.resize(frame_left, (frame_width, frame_height))
+    frame_right = cv.resize(frame_right, (frame_width, frame_height))
+
+    gray_left = cv.cvtColor(frame_left, cv.COLOR_BGR2GRAY)
+    gray_right = cv.cvtColor(frame_right, cv.COLOR_BGR2GRAY)
+
+    # Detectar keypoints nas câmeras
+    kp_left, des_left = sift.detectAndCompute(gray_left, None)
+    kp_right, des_right = sift.detectAndCompute(gray_right, None)
+
+    if des_left is None or des_right is None:
+        continue
+
+    # Função para encontrar boas correspondências com a imagem de referência
+    def get_good_matches(des_cam, kp_cam):
+        matches = flann.knnMatch(des_ref, des_cam, k=2)
+        good = [m for m, n in matches if m.distance < 0.7 * n.distance]
+        matched_kp_indices = [m.trainIdx for m in good]
+        matched_kps = [kp_cam[i] for i in matched_kp_indices]
+        matched_desc = des_cam[matched_kp_indices] if len(matched_kp_indices) > 0 else None
+        return matched_kps, matched_desc
+
+    good_kp_left, good_des_left = get_good_matches(des_left, kp_left)
+    good_kp_right, good_des_right = get_good_matches(des_right, kp_right)
+
+    if good_des_left is None or good_des_right is None:
+        continue
+
+    matches = flann.knnMatch(good_des_left, good_des_right, k=2)
+    final_matches = [m for m, n in matches if m.distance < 0.7 * n.distance]
+
+    # Desenhar correspondências entre câmera esquerda e direita
+    img_matches = cv.drawMatches(
+        frame_left, good_kp_left,
+        frame_right, good_kp_right,
+        final_matches, None,
+        matchColor=(0, 255, 0),
+        singlePointColor=(255, 0, 0),
+        flags=2
+    )
+
+    # Combinar imagem de referência + correspondência
+    combined = cv.hconcat([img_ref_color, img_matches])
+
+    # Mostrar imagem
+    cv.imshow("Referencia e Cameras", combined)
+
+    # Gravar imagem combinada
+    out.write(combined)
+
+    if cv.waitKey(1) & 0xFF == ord('q'):
+        break
+
+# Encerrar recursos
+cap_left.release()
+cap_right.release()
+out.release()
 cv.destroyAllWindows()
+
+# Caminho do arquivo de entrada e saída
+input_file = 'video-sift.avi'
+output_file = 'video-sift.mp4'
+
+# Comando FFmpeg
+command = [
+    'ffmpeg',
+    '-i', input_file,
+    '-vcodec', 'libx264',
+    '-crf', '18',             
+    '-preset', 'medium',        
+    output_file
+]
+
+# Executar comando
+try:
+    subprocess.run(command, check=True)
+    print("Conversão concluída com sucesso.")
+except subprocess.CalledProcessError as e:
+    print(f"Erro durante a conversão: {e}")
   </code></pre>
-                <figcaption class="text-center"><i>Código 2</i> Código para identificação do objeto no vídeo capturado
+                <figcaption class="text-center"><i>Código 2: </i> Código para identificação do objeto no vídeo capturado
                   pelas duas webcams.
                 </figcaption>
               </figure>
             </div>
-            <p>No código, as três primeiras linhas estão importando as bibliotecas necessárias para a execução:
-              <code>time</code> para controle de tempo, <code>numpy</code> para manipulação de arrays e <code>cv2</code>
-              para processamento de vídeo e imagem com OpenCV.
+            <p>O código realiza detecção e emparelhamento de características com SIFT em tempo real entre duas câmeras
+              (esquerda e direita) e uma imagem de referência, gravando o resultado e convertendo o vídeo ao final.</p>
+            <p>A imagem <strong>'item.png'</strong> é carregada em escala de cinza e convertida para BGR para exibição.
+              O detector <code>SIFT</code> extrai os keypoints e descritores da imagem de referência.</p>
+            <p>O <code>FlannBasedMatcher</code> é inicializado para realizar a correspondência entre descritores da
+              imagem de referência e os frames das câmeras, com filtro pela razão de Lowe.</p>
+            <p>As câmeras são acessadas via <code>cv.VideoCapture()</code> (esquerda e direita), e os frames são
+              redimensionados para padronização. Também é iniciado um <code>VideoWriter</code> para salvar os frames
+              combinados.</p>
+            <p>A cada iteração do loop, os descritores das duas câmeras são extraídos e comparados com os da imagem de
+              referência. As correspondências entre as duas câmeras (após filtro) são desenhadas com
+              <code>cv.drawMatches()</code>.
             </p>
-
-            <p>Na 4ª linha <code>cap = cv.VideoCapture('big_buck_bunny.mp4')</code>, o código está carregando o vídeo
-              chamado <strong>"big_buck_bunny.mp4"</strong> para reprodução. A função <code>VideoCapture</code> cria um
-              objeto que será usado para capturar quadro a quadro do vídeo.</p>
-
-            <p>Na 6ª linha <code>while(cap.isOpened()):</code>, o código inicia um loop que continuará enquanto o vídeo
-              estiver aberto corretamente e houver quadros para ler.</p>
-
-            <p>Na 7ª linha <code>ret, frame = cap.read()</code>, o código tenta ler o próximo quadro do vídeo.
-              <code>ret</code> será <code>True</code> se o quadro for lido com sucesso, e <code>frame</code> contém a
-              imagem do quadro atual.
+            <p>A imagem de referência é concatenada horizontalmente com o resultado das câmeras usando
+              <code>cv.hconcat()</code>, exibida em tempo real e salva no vídeo de saída.
             </p>
-
-            <p>Na 9ª linha <code>if ret==True:</code>, o código verifica se o quadro foi lido com sucesso. Se sim, o
-              bloco
-              de instruções dentro do <code>if</code> será executado.</p>
-
-            <p>Na 11ª linha <code>cv.imshow('frame',frame)</code>, o código exibe o quadro atual em uma janela chamada
-              <strong>"frame"</strong>.
+            <p>Ao final, os recursos são liberados e o vídeo <code>video-sift.avi</code> é convertido para
+              <code>video-sift.mp4</code> com <strong>FFmpeg</strong>, utilizando o codec H.264 e parâmetros de
+              qualidade/compressão definidos.
             </p>
-
-            <p>Na 13ª linha <code>time.sleep(1/25.0)</code>, o código pausa por 1/25 segundos (ou 40 milissegundos),
-              para
-              simular uma taxa de atualização de 25 quadros por segundo (fps), que é comum em vídeos.</p>
-
-            <p>Na 15ª linha <code>if cv.waitKey(1) & 0xFF == ord('q'):</code>, o código verifica se a tecla
-              <strong>'q'</strong> foi pressionada. Se sim, o loop será interrompido, encerrando a reprodução do vídeo.
-            </p>
-
-            <p>Na 17ª linha <code>else:</code>, caso <code>ret</code> seja <code>False</code> (por exemplo, se o vídeo
-              chegou ao fim), o loop também é encerrado.</p>
-
-            <p>Na 20ª linha <code>cap.release()</code>, o código libera o objeto de captura de vídeo, liberando os
-              recursos associados.</p>
-
-            <p>Na 21ª linha <code>cv.destroyAllWindows()</code>, o código fecha todas as janelas abertas do OpenCV.</p>
-
             <hr>
           </div>
         </div>
@@ -323,65 +467,209 @@ cv.destroyAllWindows()
           <p>Para isso, foi escolhido as imagens a seguir:</p>
           <div class="d-flex justify-content-center align-items-center py-2">
             <figure class="text-center">
-              <img src="assets/parte-02/objeto.png" alt="Imagem">
+              <img src="assets/pt-3.0-lanes.jpg" alt="Imagem">
+              <figcaption><i>Figura 3</i>: Imagem com supostas linhas em sua cena.</figcaption>
+            </figure>
+          </div>
+          <div class="d-flex justify-content-center align-items-center py-2">
+            <figure class="text-center">
+              <img src="assets/pt-3.0-lanes2.jpg" alt="Imagem">
               <figcaption><i>Figura 4</i>: Imagem com supostas linhas em sua cena.</figcaption>
             </figure>
           </div>
           <div class="d-flex justify-content-center align-items-center py-2">
             <figure class="text-center">
-              <img src="assets/parte-02/objeto.png" alt="Imagem">
+              <img src="assets/pt-3.0-lanes3.png" alt="Imagem">
               <figcaption><i>Figura 5</i>: Imagem com supostas linhas em sua cena.</figcaption>
             </figure>
           </div>
           <div class="d-flex justify-content-center align-items-center py-2">
             <figure class="text-center">
-              <img src="assets/parte-02/objeto.png" alt="Imagem">
+              <img src="assets/pt-3.0-circles.jpg" alt="Imagem">
               <figcaption><i>Figura 6</i>: Imagem com supostos círculos em sua cena.</figcaption>
             </figure>
           </div>
           <div class="d-flex justify-content-center align-items-center py-2">
             <figure class="text-center">
-              <img src="assets/parte-02/objeto.png" alt="Imagem">
+              <img src="assets/pt-3.0-circles2.png" alt="Imagem">
               <figcaption><i>Figura 7</i>: Imagem com supostos círculos em sua cena.</figcaption>
             </figure>
           </div>
-          <p>Após a definição das imagens, foi elaborado o seguinte código para que as formas (linhas e círculos)
-            pudesse ser identificado nas imagens:</p>
-          <div class="d-flex justify-content-center">
-            <figure>
-              <pre><code class="language-python">import numpy as np 
-import cv2 as cv
-  
-img = cv.imread('messi5.jpg',0)
-cv.imshow('image',img)
-k = cv.waitKey(0)
-if k == 27:         # wait for ESC key to exit
-    cv.destroyAllWindows()
-elif k == ord('s'): # wait for 's' key to save and exit
-    cv.imwrite('messigray.png',img)
-    cv.destroyAllWindows()
-  </code></pre>
-              <figcaption class="text-center"><i>Código 3</i>: Código para identificação das formas (linhas e círculos)
-                na cena.</figcaption>
+          <div class="d-flex justify-content-center align-items-center py-2">
+            <figure class="text-center">
+              <img src="assets/pt-3.0-circles3.png" alt="Imagem">
+              <figcaption><i>Figura 8</i>: Imagem com supostos círculos em sua cena.</figcaption>
             </figure>
           </div>
-          <p>No código, as duas primeiras linhas estão sendo importadas as bibliotecas que serão utilizadas no restante
-            do código.</p>
-          <p>Na 3º linha <code>img = cv.imread('messi5.jpg',0)</code>, o código está carregando a imagem chamada
-            <strong>"messi5.jpg"</strong> em modo <i>grayscale</i> (tons de cinza), pois o segundo parâmetro é 0. A
-            imagem é armazenada na variável <code>img</code>.
+          <p>Após a definição das imagens, foi elaborado o seguinte código para que as linhas pudessem ser identificadas
+            nas imagens:</p>
+          <div class="d-flex justify-content-center">
+            <figure>
+              <pre><code class="language-python">import cv2
+import numpy as np
+
+# Leitura da imagem
+img = cv2.imread('pt-3.0-lanes.jpg', cv2.IMREAD_COLOR)
+img2 = cv2.imread('pt-3.0-lanes2.jpg', cv2.IMREAD_COLOR)
+img3 = cv2.imread('pt-3.0-lanes3.png', cv2.IMREAD_COLOR)
+
+# Conversão para escala de cinza
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+gray2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
+gray3 = cv2.cvtColor(img3, cv2.COLOR_BGR2GRAY)
+
+# Detectar bordas com Canny
+edges = cv2.Canny(gray, 50, 200)
+edges2 = cv2.Canny(gray2, 50, 200)
+edges3 = cv2.Canny(gray3, 50, 200)
+
+# Parâmetros da HoughLinesP
+rho = 1                # Resolução em pixels
+theta = np.pi / 180    # Resolução angular em radianos
+threshold = 100        # Número mínimo de interseções
+min_line_length = 10   # Comprimento mínimo da linha
+max_line_gap = 250     # Distância máxima entre segmentos conectáveis
+
+# Detectar linhas com HoughLinesP
+lines = cv2.HoughLinesP(edges, rho, theta, threshold, minLineLength=min_line_length, maxLineGap=max_line_gap)
+lines2 = cv2.HoughLinesP(edges2, rho, theta, threshold, minLineLength=min_line_length, maxLineGap=max_line_gap)
+lines3 = cv2.HoughLinesP(edges3, rho, theta, threshold, minLineLength=min_line_length, maxLineGap=max_line_gap)
+
+# Desenhar as linhas detectadas
+if lines is not None:
+    for line in lines:
+        x1, y1, x2, y2 = line[0]
+        cv2.line(img, (x1, y1), (x2, y2), (255, 0, 0), 2)
+
+if lines2 is not None:
+    for line in lines2:
+        x1, y1, x2, y2 = line[0]
+        cv2.line(img2, (x1, y1), (x2, y2), (255, 0, 0), 2)
+
+if lines3 is not None:
+    for line in lines3:
+        x1, y1, x2, y2 = line[0]
+        cv2.line(img3, (x1, y1), (x2, y2), (255, 0, 0), 2)
+
+
+# Exibir o resultado
+cv2.imshow("Linhas detectadas imagem 1", img)
+cv2.imshow("Linhas detectadas imagem 2", img2)
+cv2.imshow("Linhas detectadas imagem 3", img3)
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+  </code></pre>
+              <figcaption class="text-center"><i>Código 3</i>: Código para identificação das linhas nas cenas.
+              </figcaption>
+            </figure>
+          </div>
+          <p>O código realiza a detecção de linhas em três imagens usando o algoritmo <strong>Hough Transform
+              Probabilística (HoughLinesP)</strong>, após a detecção de bordas com o operador de Canny.</p>
+          <p>As imagens <code>'pt-3.0-lanes.jpg'</code>, <code>'pt-3.0-lanes2.jpg'</code> e
+            <code>'pt-3.0-lanes3.png'</code> são carregadas em formato colorido e convertidas para tons de cinza com
+            <code>cv2.cvtColor()</code>.
           </p>
-          <p>Na 4º linha <code>cv.imshow('image',img)</code>, o código está exibindo a imagem carregada em uma janela
-            com o nome <strong>"image"</strong>. Essa janela mostra o conteúdo da variável <code>img</code>.</p>
-          <p>Na 5ª linha <code>k = cv.waitKey(0)</code>, o programa fica aguardando indefinidamente até que o usuário
-            pressione alguma tecla. A tecla pressionada é armazenada na variável <code>k</code>.</p>
-          <p>Na 6ª linha <code>if k == 27:</code>, o código verifica se a tecla pressionada foi a tecla ESC
-            (representada pelo código 27). Se for, ele fecha todas as janelas abertas com
-            <code>cv.destroyAllWindows()</code>.
+          <p>O detector de bordas <code>Canny</code> é aplicado às imagens com limiares de 50 e 200, gerando contornos
+            bem definidos que serão usados na etapa seguinte.</p>
+          <p>As linhas são detectadas com <code>cv2.HoughLinesP()</code>, que utiliza os parâmetros:
+            <code>rho = 1</code> (resolução em pixels), <code>theta = π/180</code> (resolução angular),
+            <code>threshold = 100</code> (mínimo de interseções para validar uma linha), além de
+            <code>minLineLength</code> e <code>maxLineGap</code> para controlar o comprimento mínimo e a distância
+            máxima entre segmentos conectáveis.
           </p>
-          <p>Na 8ª linha <code>elif k == ord('s'):</code>, o código verifica se a tecla pressionada foi a tecla
-            <strong>'s'</strong>. Se for, ele salva a imagem carregada com o nome <strong>"messigray.png"</strong> e
-            também fecha todas as janelas.
+          <p>Se houver linhas detectadas, elas são desenhadas sobre a imagem original com <code>cv2.line()</code> na cor
+            azul (BGR: (255, 0, 0)) e espessura 2 pixels.</p>
+          <p>Por fim, as três imagens com as linhas sobrepostas são exibidas em janelas separadas utilizando
+            <code>cv2.imshow()</code>. O programa espera o pressionamento de uma tecla para encerrar, com
+            <code>cv2.waitKey(0)</code>, e libera os recursos com <code>cv2.destroyAllWindows()</code>.
+          </p>
+          <p>E o seguinte código foi elaborado para que os círculos pudessem ser identificados nas imagens:</p>
+          <div class="d-flex justify-content-center">
+            <figure>
+              <pre><code class="language-python">import cv2
+import numpy as np
+
+# Read images as color
+img = cv2.imread('pt-3.0-circles.jpg', cv2.IMREAD_COLOR)
+img2 = cv2.imread('pt-3.0-circles2.png', cv2.IMREAD_COLOR)
+img3 = cv2.imread('pt-3.0-circles3.png', cv2.IMREAD_COLOR)
+
+# Convert to gray-scale
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+gray2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
+gray3 = cv2.cvtColor(img3, cv2.COLOR_BGR2GRAY)
+
+# Blur the images to reduce noise
+img_blur = cv2.medianBlur(gray, 5)
+img_blur2 = cv2.medianBlur(gray2, 5)
+img_blur3 = cv2.medianBlur(gray3, 5)
+
+# Apply Hough Transform to detect circles in the images
+circles = cv2.HoughCircles(img_blur, cv2.HOUGH_GRADIENT, 1, 40, param1=50, param2=40, minRadius=10, maxRadius=40)
+circles2 = cv2.HoughCircles(img_blur2, cv2.HOUGH_GRADIENT, 1, 40, param1=50, param2=40, minRadius=10, maxRadius=50)
+circles3 = cv2.HoughCircles(img_blur3, cv2.HOUGH_GRADIENT, 1, 40, param1=50, param2=40, minRadius=10, maxRadius=50)
+
+# Draw detected circles on the first image
+if circles is not None:
+    circles = np.uint16(np.around(circles))
+    for i in circles[0, :]:
+        # Draw outer circle
+        cv2.circle(img, (i[0], i[1]), i[2], (0, 255, 0), 2)
+        # Draw inner circle (center)
+        cv2.circle(img, (i[0], i[1]), 2, (0, 0, 255), 3)
+
+# Draw detected circles on the second image
+if circles2 is not None:
+    circles2 = np.uint16(np.around(circles2))
+    for i in circles2[0, :]:
+        # Draw outer circle
+        cv2.circle(img2, (i[0], i[1]), i[2], (0, 255, 0), 2)
+        # Draw inner circle (center)
+        cv2.circle(img2, (i[0], i[1]), 2, (0, 0, 255), 3)
+
+# Draw detected circles on the third image
+if circles3 is not None:
+    circles3 = np.uint16(np.around(circles3))
+    for i in circles3[0, :]:
+        # Draw outer circle
+        cv2.circle(img3, (i[0], i[1]), i[2], (0, 255, 0), 2)
+        # Draw inner circle (center)
+        cv2.circle(img3, (i[0], i[1]), 2, (0, 0, 255), 3)
+
+# Show the results
+cv2.imshow("Circulos detectados imagem 1", img)
+cv2.imshow("Circulos detectados imagem 2", img2)
+cv2.imshow("Circulos detectados imagem 3", img3)
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+  </code></pre>
+              <figcaption class="text-center"><i>Código 4</i>: Código para identificação dos círculos nas cenas.
+              </figcaption>
+            </figure>
+          </div>
+          <p>O código realiza a detecção de círculos em três imagens utilizando a <strong>Transformada de Hough para
+              círculos</strong> (<code>cv2.HoughCircles()</code>), após pré-processamento com conversão em tons de cinza
+            e aplicação de desfoque.</p>
+          <p>As imagens <code>'pt-3.0-circles.jpg'</code>, <code>'pt-3.0-circles2.png'</code> e
+            <code>'pt-3.0-circles3.png'</code> são carregadas em modo colorido e convertidas para escala de cinza com
+            <code>cv2.cvtColor()</code>.
+          </p>
+          <p>Para reduzir ruídos e melhorar a detecção, é aplicado um filtro de mediana com
+            <code>cv2.medianBlur()</code>, utilizando kernel de tamanho 5.
+          </p>
+          <p>A detecção de círculos é feita com <code>cv2.HoughCircles()</code>, utilizando o método
+            <code>cv2.HOUGH_GRADIENT</code>. Os parâmetros controlam a resolução, distância mínima entre círculos,
+            limiares de detecção (<code>param1</code> e <code>param2</code>), e os raios mínimo e máximo dos círculos a
+            serem detectados.
+          </p>
+          <p>Se círculos forem encontrados, são arredondados e desenhados sobre as imagens originais com
+            <code>cv2.circle()</code>, onde o contorno é desenhado em verde e o centro em vermelho.
+          </p>
+          <p>Por fim, os resultados são exibidos com <code>cv2.imshow()</code> e o programa aguarda o pressionamento de
+            uma tecla com <code>cv2.waitKey(0)</code> antes de fechar as janelas com
+            <code>cv2.destroyAllWindows()</code>.
           </p>
           <hr>
         </div>
@@ -394,105 +682,276 @@ elif k == ord('s'): # wait for 's' key to save and exit
           </p>
           <div class="analise">&emsp;
             <p>
-              Nesta etapa do experimento, foi solicitada a modificação do código elaborado na Alternativa B da PARTE 2,
+              Nesta etapa do experimento, foi solicitada a modificação do código elaborado na Alternativa C da PARTE 2,
               com o objetivo de permitir a captura de imagens em tempo real utilizando duas webcams. A proposta
-              consistiu
-              em identificar, as formas (linhas e círculos), realizando a correspondência entre eles e traçando
-              visualmente as identificações.
+              consistiu em identificar, as formas (linhas e círculos), realizando a correspondência entre eles e
+              traçando visualmente as identificações.
             </p>
-            <p>Portanto, segue o código alterado para execução da alternativa D:</p>
+            <p>Portanto, segue o código alterado para execução da identificação das linhas:</p>
             <div class="d-flex justify-content-center">
               <figure>
-                <pre><code class="language-python">import time
+                <pre><code class="language-python">import cv2
 import numpy as np
-import cv2 as cv
+import subprocess
 
-cap = cv.VideoCapture('big_buck_bunny.mp4')
+# Inicializar as duas webcams (substitua os índices se necessário)
+cap_left = cv2.VideoCapture(2)
+cap_right = cv2.VideoCapture(0)
 
-while(cap.isOpened()):
-    ret, frame = cap.read()
-    
-    if ret==True:
-        # show the frame
-        cv.imshow('frame',frame)
+if not cap_left.isOpened() or not cap_right.isOpened():
+    print("Erro: não foi possível abrir as câmeras.")
+    exit()
 
-        #wait next frame by 40ms - 25fps
-        time.sleep(1/25.0) 
-        
-        if cv.waitKey(1) & 0xFF == ord('q'):
-            break
-    else:
+# Parâmetros da HoughLinesP
+rho = 1
+theta = np.pi / 180
+threshold = 100
+min_line_length = 10
+max_line_gap = 250
+
+# Definir o codec e criar o objeto VideoWriter para salvar a gravação
+fourcc = cv2.VideoWriter_fourcc(*'XVID')
+fps = 30  # ou use cap_left.get(cv2.CAP_PROP_FPS) para pegar o FPS real da câmera
+frame_width = int(cap_left.get(cv2.CAP_PROP_FRAME_WIDTH))
+frame_height = int(cap_left.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+# VideoWriter para salvar a gravação
+out = cv2.VideoWriter('video-hough-lines.avi', fourcc, fps, (frame_width * 2, frame_height))
+
+print("Pressione 'q' para sair.")
+
+while True:
+    # Capturar frames das duas câmeras
+    ret_left, frame_left = cap_left.read()
+    ret_right, frame_right = cap_right.read()
+
+    if not ret_left or not ret_right:
+        print("Erro ao capturar imagens das câmeras.")
         break
-               
-cap.release()
-cv.destroyAllWindows()
+
+    def process_frame(frame):
+        # Converter para escala de cinza
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        # Detectar bordas
+        edges = cv2.Canny(gray, 50, 200)
+        # Detectar linhas
+        lines = cv2.HoughLinesP(edges, rho, theta, threshold,
+                                minLineLength=min_line_length,
+                                maxLineGap=max_line_gap)
+        # Desenhar linhas
+        if lines is not None:
+            for line in lines:
+                x1, y1, x2, y2 = line[0]
+                cv2.line(frame, (x1, y1), (x2, y2), (255, 0, 0), 2)
+        return frame
+
+    # Processar os dois frames
+    processed_left = process_frame(frame_left.copy())
+    processed_right = process_frame(frame_right.copy())
+
+    # Redimensionar para exibição lado a lado (opcional)
+    processed_left = cv2.resize(processed_left, (640, 480))
+    processed_right = cv2.resize(processed_right, (640, 480))
+
+    # Combinar os dois vídeos lado a lado
+    combined = np.hstack((processed_left, processed_right))
+
+    # Gravar o frame combinado
+    out.write(combined)
+
+    # Exibir
+    cv2.imshow('Linhas Detectadas - Direita | Esquerda', combined)
+
+    # Sair com 'q'
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+# Liberar recursos
+cap_left.release()
+cap_right.release()
+out.release()
+cv2.destroyAllWindows()
+
+
+# Caminho do arquivo de entrada e saída
+input_file = 'video-hough-lines.avi'
+output_file = 'video-hough-lines.mp4'
+
+# Comando FFmpeg
+command = [
+    'ffmpeg',
+    '-i', input_file,
+    '-vcodec', 'libx264',
+    '-crf', '18',             
+    '-preset', 'medium',        
+    output_file
+]
+
+# Executar comando
+try:
+    subprocess.run(command, check=True)
+    print("Conversão concluída com sucesso.")
+except subprocess.CalledProcessError as e:
+    print(f"Erro durante a conversão: {e}")
   </code></pre>
-                <figcaption class="text-center"><i>Código 2</i> Código para identificação do objeto no vídeo capturado
+                <figcaption class="text-center"><i>Código 5:</i> Código para identificação das linhas no vídeo capturado
                   pelas duas webcams.
                 </figcaption>
               </figure>
             </div>
-            <p>No código, as duas primeiras linhas estão importando as bibliotecas necessárias: <code>numpy</code> para
-              manipulação de arrays e <code>cv2</code> para captura e manipulação de vídeos com OpenCV.</p>
-
-            <p>Na 3ª linha <code>cap = cv.VideoCapture(0)</code>, o código inicia a captura de vídeo da câmera padrão do
-              computador (geralmente a webcam). O número <code>0</code> indica que será usada a primeira câmera
-              disponível.</p>
-
-            <p>Nas linhas 5 e 7, o código obtém as dimensões atuais do vídeo capturado.
-              <code>width = cap.get(cv.CAP_PROP_FRAME_WIDTH)</code> retorna a largura dos quadros e
-              <code>height = cap.get(cv.CAP_PROP_FRAME_HEIGHT)</code> retorna a altura. Ambos os valores são
-              inicialmente
-              <code>float</code>.
+            <p>O código captura vídeo em tempo real de duas webcams, aplica detecção de linhas usando a
+              <strong>Transformada de Hough Probabilística (HoughLinesP)</strong> e grava os resultados lado a lado em
+              um vídeo AVI, que é posteriormente convertido para MP4 com o FFmpeg.
             </p>
-
-            <p>Na linha 9, <code>fps = 30.0</code> define que o vídeo será gravado a 30 quadros por segundo (frames por
-              segundo).</p>
-
-            <p>Na linha 12, <code>fourcc = cv.VideoWriter_fourcc(*'XVID')</code> define o codec de compressão de vídeo
-              que
-              será utilizado para salvar o arquivo. O codec 'XVID' é amplamente usado para arquivos AVI.</p>
-
-            <p>Na linha 13, <code>out = cv.VideoWriter('saida.avi', fourcc, fps, (int(width),int(height)))</code> cria
-              um
-              objeto <code>VideoWriter</code> que será responsável por salvar o vídeo com o nome
-              <strong>'saida.avi'</strong>, usando o codec definido, com a taxa de quadros especificada, e nas dimensões
-              capturadas da câmera.
+            <p>As webcams são acessadas com <code>cv2.VideoCapture()</code>. Se não forem abertas corretamente, o
+              programa é encerrado. Parâmetros da HoughLinesP (como <code>rho</code>, <code>theta</code>,
+              <code>threshold</code>, <code>min_line_length</code> e <code>max_line_gap</code>) são definidos para
+              controlar a sensibilidade da detecção.
             </p>
-
-            <p>Na linha 15, o <code>while cap.isOpened():</code> inicia um loop que continuará enquanto a câmera estiver
-              funcionando corretamente.</p>
-
-            <p>Na linha 16, <code>ret, frame = cap.read()</code> captura um novo quadro da câmera. <code>ret</code>
-              indica
-              se a captura foi bem-sucedida, e <code>frame</code> contém o quadro capturado.</p>
-
-            <p>Na linha 17, <code>if not ret:</code> verifica se houve falha na captura do quadro. Se sim, é exibida uma
-              mensagem de erro e o loop é encerrado.</p>
-
-            <p>Na linha 19, <code>frame = cv.flip(frame, 0)</code> inverte verticalmente o quadro capturado (flip no
-              eixo
-              0).</p>
-
-            <p>Na linha 21, <code>out.write(frame)</code> salva o quadro invertido no arquivo de vídeo definido
-              anteriormente.</p>
-
-            <p>Na linha 22, <code>cv.imshow('frame', frame)</code> exibe o quadro atual (invertido) em uma janela
-              chamada
-              <strong>"frame"</strong>.
+            <p>Um objeto <code>cv2.VideoWriter</code> é criado para salvar a gravação em <strong>formato AVI</strong>,
+              com resolução combinada (duas imagens lado a lado).</p>
+            <p>Dentro do laço principal, cada frame das duas câmeras é capturado e processado pela função
+              <code>process_frame()</code>, que converte a imagem para escala de cinza, detecta bordas com
+              <code>cv2.Canny()</code> e aplica <code>cv2.HoughLinesP()</code> para detectar e desenhar linhas nas
+              imagens.
             </p>
+            <p>Os dois frames processados são redimensionados e combinados horizontalmente com <code>np.hstack()</code>.
+              O resultado é exibido com <code>cv2.imshow()</code> e salvo com <code>VideoWriter.write()</code>.</p>
+            <p>Ao pressionar a tecla <strong>'q'</strong>, o loop é encerrado. Recursos como capturas e gravações são
+              liberados com <code>release()</code> e janelas são fechadas com <code>cv2.destroyAllWindows()</code>.</p>
+            <p>Por fim, o vídeo <strong>AVI</strong> é convertido para <strong>MP4</strong> usando o
+              <code>subprocess</code> para executar o comando <code>ffmpeg</code>, com codec H.264, qualidade
+              <code>CRF 18</code> e preset de compressão <code>medium</code>.
+            </p>
+            <p>E agora, segue o código alterado para execução da identificação dos círculos:</p>
+            <div class="d-flex justify-content-center">
+              <figure>
+                <pre><code class="language-python">import cv2
+import numpy as np
+import subprocess
 
-            <p>Na linha 23, <code>if cv.waitKey(1) == ord('q'):</code> verifica se a tecla <strong>'q'</strong> foi
-              pressionada. Se for, o loop é encerrado.</p>
+# Inicializar as duas webcams (substitua os índices se necessário)
+cap_left = cv2.VideoCapture(2)  # Webcam esquerda
+cap_right = cv2.VideoCapture(0)  # Webcam direita
 
-            <p>Na linha 26, <code>cap.release()</code> libera a câmera, encerrando a captura de vídeo.</p>
+if not cap_left.isOpened() or not cap_right.isOpened():
+    print("Erro: não foi possível abrir as câmeras.")
+    exit()
 
-            <p>Na linha 27, <code>out.release()</code> finaliza o arquivo de vídeo e libera o objeto responsável por
-              gravá-lo.</p>
+# Definir o codec e criar o objeto VideoWriter para salvar a gravação
+fourcc = cv2.VideoWriter_fourcc(*'XVID')
+fps = 30  # ou use cap_left.get(cv2.CAP_PROP_FPS) para pegar o FPS real da câmera
+frame_width = int(cap_left.get(cv2.CAP_PROP_FRAME_WIDTH))
+frame_height = int(cap_left.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
-            <p>Na linha 28, <code>cv.destroyAllWindows()</code> fecha todas as janelas abertas pelo OpenCV.</p>
+# VideoWriter para salvar a gravação
+out = cv2.VideoWriter('video-hough-circles.avi', fourcc, fps, (frame_width * 2, frame_height))
+
+# Função para detectar círculos usando Hough Transform
+def detect_circles(frame):
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)  # Converter para escala de cinza
+    blurred = cv2.medianBlur(gray, 5)  # Reduzir ruído com filtro de mediana
+    circles = cv2.HoughCircles(blurred, cv2.HOUGH_GRADIENT, 1, 40, param1=50, param2=40, minRadius=10, maxRadius=50)
+
+    if circles is not None:
+        circles = np.uint16(np.around(circles))
+        for i in circles[0, :]:
+            # Desenhar o círculo externo
+            cv2.circle(frame, (i[0], i[1]), i[2], (0, 255, 0), 2)
+            # Desenhar o centro do círculo
+            cv2.circle(frame, (i[0], i[1]), 2, (0, 0, 255), 3)
+
+    return frame
+
+print("Pressione 'q' para sair.")
+
+while True:
+    # Capturar frames das duas câmeras
+    ret_left, frame_left = cap_left.read()
+    ret_right, frame_right = cap_right.read()
+
+    if not ret_left or not ret_right:
+        print("Erro ao capturar imagens das câmeras.")
+        break
+
+    # Detectar círculos nos frames das webcams
+    frame_left_with_circles = detect_circles(frame_left.copy())
+    frame_right_with_circles = detect_circles(frame_right.copy())
+
+    # Redimensionar os frames para exibição lado a lado
+    frame_left_resized = cv2.resize(frame_left_with_circles, (640, 480))
+    frame_right_resized = cv2.resize(frame_right_with_circles, (640, 480))
+
+    # Combinar os frames lado a lado
+    combined_frame = np.hstack((frame_left_resized, frame_right_resized))
+
+    # Gravar o frame combinado
+    out.write(combined_frame)
+
+    # Exibir o resultado
+    cv2.imshow('Circulos Detectados - Esquerda | Direita', combined_frame)
+
+    # Sair com a tecla 'q'
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+# Liberar os recursos
+cap_left.release()
+cap_right.release()
+out.release()
+cv2.destroyAllWindows()
 
 
+
+# Caminho do arquivo de entrada e saída
+input_file = 'video-hough-circles.avi'
+output_file = 'video-hough-circles.mp4'
+
+# Comando FFmpeg
+command = [
+    'ffmpeg',
+    '-i', input_file,
+    '-vcodec', 'libx264',
+    '-crf', '18',             
+    '-preset', 'medium',        
+    output_file
+]
+
+# Executar comando
+try:
+    subprocess.run(command, check=True)
+    print("Conversão concluída com sucesso.")
+except subprocess.CalledProcessError as e:
+    print(f"Erro durante a conversão: {e}")
+  </code></pre>
+                <figcaption class="text-center"><i>Código 6:</i> Código para identificação dos círculos no vídeo
+                  capturado pelas duas webcams.
+                </figcaption>
+              </figure>
+            </div>
+            <p>Este código realiza a <strong>detecção de círculos</strong> em vídeo ao vivo utilizando a
+              <code>HoughCircles()</code> do OpenCV em duas webcams simultaneamente, exibindo os resultados lado a lado
+              e salvando a gravação em vídeo. O resultado final é convertido para <strong>formato MP4</strong> com
+              FFmpeg.
+            </p>
+            <p>As webcams são inicializadas com <code>cv2.VideoCapture()</code>. A resolução e o FPS são obtidos da
+              câmera esquerda para configurar o objeto <code>cv2.VideoWriter</code>, que grava os frames processados em
+              um arquivo <code>.avi</code>.</p>
+            <p>A função <code>detect_circles()</code> aplica os seguintes passos: conversão do frame para escala de
+              cinza, redução de ruído com <code>medianBlur()</code> e detecção de círculos usando
+              <code>cv2.HoughCircles()</code> com o método <code>HOUGH_GRADIENT</code>. Se círculos forem detectados,
+              são desenhados com <code>cv2.circle()</code>.
+            </p>
+            <p>No laço principal, os frames de ambas as câmeras são capturados e processados. Os resultados são
+              redimensionados para 640x480 e combinados horizontalmente com <code>np.hstack()</code>. O resultado
+              combinado é exibido e gravado a cada iteração.</p>
+            <p>O loop pode ser encerrado pressionando a tecla <strong>'q'</strong>. Ao final, todos os recursos são
+              liberados com <code>release()</code> e <code>cv2.destroyAllWindows()</code>.</p>
+            <p>O vídeo resultante <code>.avi</code> é convertido para <code>.mp4</code> com codec <strong>H.264</strong>
+              usando a biblioteca <code>subprocess</code> para chamar o comando <code>ffmpeg</code>, utilizando
+              <code>-crf 18</code> (qualidade alta) e <code>-preset medium</code> (equilíbrio entre velocidade e
+              compressão).
+            </p>
             <hr>
           </div>
         </div>
@@ -517,62 +976,18 @@ cv.destroyAllWindows()
         </p>
 
         <div class="analise card p-4">
-
-          <p>No código apresentado, a imagem <strong>'messi5.jpg'</strong> não é exibida em cores porque está
-            sendo
-            carregada em <strong>escala de cinza</strong> (grayscale) devido ao segundo argumento da função
-            <code>cv.imread()</code>.
+          <p>Ao executar código apresentado na seção acima, a imagem <strong>'pt-2.2-detecao_item_na_cena.png'</strong>
+            é
+            gerada, sendo traçada entre elas os pontos em comum identificando o objeto na cena.
           </p>
-
-          <p>Na linha <code>img = cv.imread('messi5.jpg', 0)</code>, o número <strong>0</strong> passado como segundo
-            parâmetro indica ao OpenCV que a imagem deve ser carregada no modo <strong>grayscale</strong>. Isso
-            significa que a imagem será convertida automaticamente para tons de cinza, perdendo as informações de cor
-            originais (RGB).</p>
-
-          <p>Segundo a <a class="text-black"
-              href="https://docs.opencv.org/4.x/d4/da8/group__imgcodecs.html#ga8c9cba4c07f10dfde5ed5b703eb56c7e"
-              target="_blank">documentação oficial do OpenCV</a>, os valores possíveis para o segundo parâmetro de
-            <code>cv.imread()</code> são:
-          </p>
-
-          <ul>
-            <li><strong>cv.IMREAD_COLOR (ou 1):</strong> Carrega a imagem em cores (modo padrão).</li>
-            <li><strong>cv.IMREAD_GRAYSCALE (ou 0):</strong> Carrega a imagem em tons de cinza.</li>
-            <li><strong>cv.IMREAD_UNCHANGED (-1):</strong> Carrega a imagem com o canal alfa, se houver (incluindo
-              transparência).</li>
-          </ul>
-          <ul style="list-style-type:none;">
-            <li>Link para a função <a class="text-black"
-                href="https://docs.opencv.org/4.x/d8/d6a/group__imgcodecs__flags.html#ga61d9b0126a3e57d9277ac48327799c80">ImreadModes.</a>
-            </li>
-            <li>Link para a <a class="text-black"
-                href="https://docs.opencv.org/4.x/d8/d6a/group__imgcodecs__flags.html#enum-members">Tabela com a
-                enumeração</a>.</li>
-          </ul>
-
-          <p>Portanto, para exibir a imagem em cores, o segundo argumento da função <code>cv.imread()</code> deve ser
-            alterado para <code>1</code> ou simplesmente omitido (pois <code>cv.IMREAD_COLOR</code> é o comportamento
-            padrão).
-          </p>
-
-          <p>Logo, o código ficaria dessa maneira:</p>
-
-          <div class="d-flex justify-content-center">
-            <figure>
-              <pre><code class="language-python">import numpy as np 
-import cv2 as cv
-  
-img = cv.imread('messi5.jpg')
-cv.imshow('image',img)
-k = cv.waitKey(0)
-if k == 27:         # wait for ESC key to exit
-    cv.destroyAllWindows()
-elif k == ord('s'): # wait for 's' key to save and exit
-    cv.imwrite('messigray.png',img)
-    cv.destroyAllWindows()
-  </code></pre>
-              <figcaption class="text-center"><i>Código 7</i>: Código modificado do arquivo <code
-                  class="text-black">L1_1_img.py</code></figcaption>
+          <p>Para executar o código, foi enviado o seguinte comando via terminal:</p>
+          <p class="w-100 text-center"><code
+              class="text-black border border-black py-2 px-3">Python3 code-1-SIFT-A.py</code></p>
+          <p>Após processamento, a seguinte imagem foi gerada:</p>
+          <div class="d-flex justify-content-center align-items-center py-2">
+            <figure class="text-center">
+              <img style="box-shadow: none;" src="assets/pt-2.2-detecao_item_na_cena.png" alt="Imagem">
+              <figcaption><i>Figura 9</i>: Imagem com o objeto correspondido na cena.</figcaption>
             </figure>
           </div>
         </div>
@@ -583,80 +998,25 @@ elif k == ord('s'): # wait for 's' key to save and exit
           estereoscópica calibrada, mostrando o resultado em video.
         </p>
         <div class="analise card p-4">
-
-          <p>O programa apresentado lê um vídeo e exibe seus quadros um a um usando o OpenCV, controlando a velocidade
-            de exibição pela função <code>time.sleep()</code>, que pausa o programa por um intervalo de tempo entre os
-            quadros.</p>
-
-          <p>Atualmente, a linha <code>time.sleep(1/25.0)</code> faz o programa aguardar 1/25 segundos (40
-            milissegundos) antes de exibir o próximo quadro, o que corresponde a uma taxa de <strong>25 quadros por
-              segundo (fps)</strong>. Essa pausa é responsável por sincronizar a exibição dos quadros para que o vídeo
-            seja mostrado em velocidade natural.</p>
-
-          <p>Para exibir os quadros mais rapidamente:</p>
-          <ul>
-            <li>Reduza o tempo de pausa na função <code>time.sleep()</code> para um valor menor que 1/25 (menos de 40
-              ms).</li>
-            <li>Exemplo: para aproximadamente 100 fps, utilize <code>time.sleep(1/100.0)</code>, ou seja, 10 ms de
-              pausa.
-            </li>
-          </ul>
-
-          <p>Exemplo de código modificado para mais rápido (100 fps):</p>
-
-          <div class="d-flex justify-content-center">
-            <figure>
-              <pre><code class="language-python">import time
-import numpy as np
-import cv2 as cv
-
-cap = cv.VideoCapture('big_buck_bunny.mp4')
-
-while(cap.isOpened()):
-    ret, frame = cap.read()
-    
-    if ret==True:
-        # show the frame
-        cv.imshow('frame',frame)
-
-        #wait next frame by 10ms - 100fps
-        time.sleep(1/100.0) 
-        
-        if cv.waitKey(1) & 0xFF == ord('q'):
-            break
-    else:
-        break
-               
-cap.release()
-cv.destroyAllWindows()
-  </code></pre>
-              <figcaption class="text-center"><i>Código 8</i>: Código modificado do arquivo <code
-                  class="text-black">L1_2_video.py</code></figcaption>
+          <p>Ao executar código apresentado na seção acima, o vídeo <strong>'video-sift.avi'</strong> é
+            gerado, e logo após convertido <strong>'video-sift.mp4'</strong> sendo exibido a identificação da imagem de
+            referência nas imagens capturadas pelas duas câmeras, traçancdo entre elas os pontos em comum
+            identificando o objeto na cena.
+          </p>
+          <p>Para executar o código, foi enviado o seguinte comando via terminal:</p>
+          <p class="w-100 text-center"><code
+              class="text-black border border-black py-2 px-3">Python3 code-2-SIFT-B.py</code></p>
+          <p>Após processamento, o seguinte vídeo foi gerado:</p>
+          <div class="d-flex justify-content-center align-items-center py-2">
+            <figure class="text-center">
+              <video class="w-100" autoplay muted loop>
+                <source src="assets/video-sift.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+              <figcaption><i>Vídeo 1</i>: Resultado da execução do comando para o vídeo <code
+                  class="text-black">code-2-SIFT-B.py</code></figcaption>
             </figure>
           </div>
-
-          <p>O método <code>time.sleep()</code> pausa a execução do programa pelo número de segundos especificado. Ao
-            diminuir o tempo de pausa, os quadros são exibidos com maior frequência, resultando em uma reprodução mais
-            rápida do vídeo. Por outro lado, aumentar o tempo de pausa faz com que cada quadro permaneça na tela por
-            mais tempo, diminuindo a velocidade de reprodução.</p>
-
-          <p>Além disso, é importante que o valor passado para <code>time.sleep()</code> esteja alinhado à taxa de
-            quadros natural do vídeo para evitar reprodução acelerada ou muito lenta que possa prejudicar a experiência
-            visual.</p>
-
-          <ul style="list-style-type:none;">
-            <li><a class="text-black" href="https://docs.python.org/3/library/time.html#time.sleep" target="_blank">
-                Link para Documentação
-                oficial
-                Python - time.sleep()</a></li>
-            <li><a class="text-black"
-                href="https://docs.opencv.org/4.x/d7/dfc/group__highgui.html#ga5870d8a0eacb8fbd30b5b3eab805f658"
-                target="_blank">Link para Documentação OpenCV - cv.waitKey()</a></li>
-            <li><a class="text-black"
-                href="https://learnopencv.com/read-write-and-display-a-video-using-opencv-cpp-python/"
-                target="_blank">Link para Tutorial OpenCV - Leitura e exibição de vídeo</a></li>
-          </ul>
-
         </div>
       </div>
       <div class="py-3">
@@ -673,73 +1033,63 @@ cv.destroyAllWindows()
               mostrar, conforme o tutorial, as linhas e circulos obtidas.</i></small>
         </p>
         <div class="analise card p-4">
-          <p>O código original realiza a captura de vídeo da câmera e exibe os quadros em tempo real. A modificação
-            solicitada consiste em adicionar uma funcionalidade que permita salvar o quadro atual em um arquivo chamado
-            <strong>"foto1.png"</strong> ao pressionar a tecla <strong>'x'</strong>.
+          <p>Ao executar código apresentado na seção acima, as imagens
+            <strong>'pt-3.1-lanes1-linhas-detectadas.png'</strong>,
+            <strong>'pt-3.1-lanes2-linhas-detectadas.png'</strong> e
+            <strong>'pt-3.1-lanes3-linhas-detectadas.png'</strong> são geradas
+            sendo detectadas as linhas existentes nas imagens traçada.
           </p>
-          <p>Para isso, adicionamos uma verificação dentro do loop para detectar se a tecla <strong>'x'</strong> foi
-            pressionada.
-            Se for, utilizamos a função <code>cv.imwrite()</code> para salvar o conteúdo atual da variável
-            <code>frame</code> (que representa o quadro capturado da câmera) no arquivo desejado.
-          </p>
-          <div class="d-flex justify-content-center">
-            <figure>
-              <pre><code class="language-python">import numpy as np
-import cv2 as cv
-
-cap = cv.VideoCapture(0)
-
-if not cap.isOpened():
-    print("Cannot open camera")
-    exit()
-    
-while True:
-    # Capture frame-by-frame
-    ret, frame = cap.read()
-    if not ret:
-        print("Can't receive frame (stream end?). Exiting ...")
-        break
-
-    # Display the resulting frame
-    cv.imshow('frame', frame)
-    
-    key = cv.waitKey(1)
-    if key == ord('q'):
-        break
-    elif key == ord('x'):
-        cv.imwrite('foto1.png', frame)
-        print("Foto salva como 'foto1.png'")
-
-# When everything done, release the capture
-cap.release()
-cv.destroyAllWindows()
-  </code></pre>
-              <figcaption class="text-center"><i>Código 9</i>: Código modificado do arquivo <code
-                  class="text-black">L1_3_webcam.py</code></figcaption>
+          <p>Para executar o código, foi enviado o seguinte comando via terminal:</p>
+          <p class="w-100 text-center"><code
+              class="text-black border border-black py-2 px-3">Python3 code-3-hough-transform-lines.py</code></p>
+          <p>Após processamento, as seguintes imagems foram geradas:</p>
+          <div class="d-flex justify-content-center align-items-center py-2">
+            <figure class="text-center">
+              <img style="box-shadow: none;" src="assets/pt-3.1-lanes1-linhas-detectadas.png" alt="Imagem">
+              <figcaption><i>Figura 10</i>: Imagem com as linhas existentes traçadas.</figcaption>
             </figure>
           </div>
-          <p>O que foi alterado no código:</p>
-          <ul>
-            <li><code>key = cv.waitKey(1)</code>: armazena a tecla pressionada pelo usuário.</li>
-            <li><code>elif key == ord('x')</code>: verifica se a tecla pressionada foi a letra <strong>'x'</strong>.
-            </li>
-            <li><code>cv.imwrite('foto1.png', frame)</code>: salva o quadro atual da câmera em um arquivo de imagem com
-              o nome <strong>foto1.png</strong>.</li>
-            <li><code>print("Foto salva como 'foto1.png'")</code>: fornece uma confirmação no console para o usuário.
-            </li>
-          </ul>
-          <p>Ao executar o programa, a janela mostrará a imagem da câmera em tempo real. Quando o usuário pressionar a
-            tecla <strong>'x'</strong>, o quadro atual será salvo como <strong>foto1.png</strong> no mesmo diretório
-            onde o script está sendo executado. A tecla <strong>'q'</strong> ainda funciona como comando para encerrar a
-            aplicação.</p>
-          <ul style="list-style-type:none;">
-            <li><a class="text-black"
-                href="https://docs.opencv.org/4.x/d8/d6a/group__imgcodecs__save.html#ga61f7f9b02c5d92b7370d87725a28eab0"
-                target="_blank">Link para OpenCV Docs – cv.imwrite()</a></li>
-            <li><a class="text-black"
-                href="https://docs.opencv.org/4.x/d7/dfc/group__highgui.html#ga5870d8a0eacb8fbd30b5b3eab805f658"
-                target="_blank">Link para Documentação OpenCV - cv.waitKey()</a></li>
-          </ul>
+          <div class="d-flex justify-content-center align-items-center py-2">
+            <figure class="text-center">
+              <img src="assets/pt-3.1-lanes2-linhas-detectadas.png" alt="Imagem">
+              <figcaption><i>Figura 11</i>: Imagem com as linhas existentes traçadas.</figcaption>
+            </figure>
+          </div>
+          <div class="d-flex justify-content-center align-items-center py-2">
+            <figure class="text-center">
+              <img src="assets/pt-3.1-lanes3-linhas-detectadas.png" alt="Imagem">
+              <figcaption><i>Figura 12</i>: Imagem com as linhas existentes traçadas.</figcaption>
+            </figure>
+          </div>
+
+          <p>Ao executar código apresentado na seção acima, as imagens
+            <strong>'pt-3.1-circles1-circulos-detectadas.png'</strong>,
+            <strong>'pt-3.1-circles2-circulos-detectadas.png'</strong> e
+            <strong>'pt-3.1-circles3-circulos-detectadas.png'</strong> são geradas
+            sendo detectadas as linhas existentes nas imagens traçada.
+          </p>
+          <p>Para executar o código, foi enviado o seguinte comando via terminal:</p>
+          <p class="w-100 text-center"><code
+              class="text-black border border-black py-2 px-3">Python3 code-4-hough-transform-circle.py</code></p>
+          <p>Após processamento, as seguintes imagems foram geradas:</p>
+          <div class="d-flex justify-content-center align-items-center py-2">
+            <figure class="text-center">
+              <img src="assets/pt-3.1-circles1-circulos-detectadas.png" alt="Imagem">
+              <figcaption><i>Figura 13</i>: Imagem com os círculos existentes traçados.</figcaption>
+            </figure>
+          </div>
+          <div class="d-flex justify-content-center align-items-center py-2">
+            <figure class="text-center">
+              <img src="assets/pt-3.1-circles2-circulos-detectadas.png" alt="Imagem">
+              <figcaption><i>Figura 14</i>: Imagem com os círculos existentes traçados.</figcaption>
+            </figure>
+          </div>
+          <div class="d-flex justify-content-center align-items-center py-2">
+            <figure class="text-center">
+              <img src="assets/pt-3.1-circles3-circulos-detectadas.png" alt="Imagem">
+              <figcaption><i>Figura 15</i>: Imagem com os círculos existentes traçados.</figcaption>
+            </figure>
+          </div>
         </div>
 
       </div>
@@ -752,148 +1102,122 @@ cv.destroyAllWindows()
 
         <div class="analise card p-4">
 
-          <p>O código está fazendo com que o vídeo salvo está sendo gravado <strong>de cabeça para baixo</strong> por
-            causa da função <code>cv.flip(frame, 0)</code>, e pode apresentar velocidade incorreta se o valor de
-            <code>fps</code> não estiver bem ajustado ao hardware da câmera.
+          <p>Ao executar código apresentado na seção acima, o vídeo <strong>'video-hough-lines.avi'</strong> é
+            gerado, e logo após convertido <strong>'video-hough-lines.mp4'</strong> sendo exibido a detecção das
+            linhas nas imagens capturadas pelas duas câmeras.
           </p>
-
-          <p>O fato da imagem estar "de cabeça para baixo" é causado pela linha
-            <code>frame = cv.flip(frame, 0)</code> invertendo o quadro capturado verticalmente (eixo 0). Para
-            manter o vídeo salvo em sua orientação normal, basta <strong>remover ou comentar essa linha</strong>.
-          </p>
-
-          <p>A taxa de quadros por segundo (<code>fps</code>) usada na criação do <code>VideoWriter</code> deve refletir
-            a taxa real de captura da câmera para evitar que o vídeo seja reproduzido muito rápido ou muito devagar.</p>
-
-          <p>Para um bom resultado, mantenha <code>fps = 30.0</code> se sua câmera suporta 30 fps. Você também pode
-            consultar a taxa real com <code>cap.get(cv.CAP_PROP_FPS)</code>.</p>
-
-          <p>Aplicando as correções necessárias no código, obtemos:</p>
-          <div class="d-flex justify-content-center">
-            <figure>
-              <pre><code class="language-python">import numpy as np
-import cv2 as cv
-
-cap = cv.VideoCapture(0)
-
-# Get current width and height of frame
-width = cap.get(cv.CAP_PROP_FRAME_WIDTH)
-height = cap.get(cv.CAP_PROP_FRAME_HEIGHT)
-fps = 30.0  # Ajuste conforme necessário
-
-# Define codec and create VideoWriter object
-fourcc = cv.VideoWriter_fourcc(*'XVID')
-out = cv.VideoWriter('saida.avi', fourcc, fps, (int(width), int(height)))
-
-while cap.isOpened():
-    ret, frame = cap.read()
-    if not ret:
-        print("Can't receive frame (stream end?). Exiting ...")
-        break
-
-    # write the normal (não invertido) frame
-    out.write(frame)
-
-    # Show frame in real time
-    cv.imshow('frame', frame)
-
-    if cv.waitKey(1) == ord('q'):
-        break
-
-cap.release()
-out.release()
-cv.destroyAllWindows()
-  </code></pre>
-              <figcaption class="text-center"><i>Código 10</i>: Código modificado do arquivo <code
-                  class="text-black">L1_4_webcap.py</code></figcaption>
+          <p>Para executar o código, foi enviado o seguinte comando via terminal:</p>
+          <p class="w-100 text-center"><code
+              class="text-black border border-black py-2 px-3">Python3 code-5-hough-transform-2-cams-lines.py</code></p>
+          <p>Após processamento, o seguinte vídeo foi gerado:</p>
+          <div class="d-flex justify-content-center align-items-center py-2">
+            <figure class="text-center">
+              <video class="w-100" autoplay muted loop>
+                <source src="assets/video-hough-lines.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+              <figcaption><i>Vídeo 2</i>: Resultado da execução do comando para o vídeo <code
+                  class="text-black">code-5-hough-transform-2-cams-lines.py</code></figcaption>
             </figure>
           </div>
 
-          <p>A partir das correções, temos os seguintes resultados:</p>
-          <ul>
-            <li>O vídeo exibido na janela continua aparecendo normalmente em tempo real.</li>
-            <li>O arquivo <code>saida.avi</code> será salvo com os quadros <strong>sem inversão</strong>.</li>
-            <li>A reprodução do vídeo ocorrerá com uma <strong>velocidade natural</strong>, condizente com os 30 fps
-              definidos.</li>
-          </ul>
-
-          <ul style="list-style-type:none;">
-            <li><a class="text-black" href="https://docs.opencv.org/4.x/dd/d43/tutorial_py_video_display.html"
-                target="_blank">Link para OpenCV Docs – Display Video</a></li>
-            <li><a class="text-black" href="https://docs.opencv.org/4.x/dd/d9e/classcv_1_1VideoCapture.html"
-                target="_blank">Link para OpenCV – VideoCapture Class Reference</a></li>
-            <li><a class="text-black" href="https://docs.opencv.org/4.x/dd/d9e/classcv_1_1VideoWriter.html"
-                target="_blank">Link para OpenCV – VideoWriter Class Reference</a></li>
-          </ul>
+          <p>Ao executar código apresentado na seção acima, o vídeo <strong>'video-hough-circles.avi'</strong> é
+            gerado, e logo após convertido <strong>'video-hough-circles.mp4'</strong> sendo exibido a detecção dos
+            círculos nas imagens capturadas pelas duas câmeras.
+          </p>
+          <p>Para executar o código, foi enviado o seguinte comando via terminal:</p>
+          <p class="w-100 text-center"><code
+              class="text-black border border-black py-2 px-3">Python3 code-6-hough-transform-2-cams-circles.py</code>
+          </p>
+          <p>Após processamento, o seguinte vídeo foi gerado:</p>
+          <div class="d-flex justify-content-center align-items-center py-2">
+            <figure class="text-center">
+              <video class="w-100" autoplay muted loop>
+                <source src="assets/video-hough-circles.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+              <figcaption><i>Vídeo 3</i>: Resultado da execução do comando para o vídeo <code
+                  class="text-black">code-6-hough-transform-2-cams-circles.py</code></figcaption>
+            </figure>
+          </div>
 
         </div>
       </div>
     </section>
 
     <section id="analise-aplicacoes-features">
-      <p class="h3 pb-3"><b>ANÁLISE: APLICAÇÕES DA DETECÇÃO DE FEATURES E RELEVÂNCIA PARA O TRABALHO T1</b></p>
-      <h4>Aplicações Relevantes da Detecção de Features</h4>
-      <ul>
-        <li><b>Reconhecimento e correspondência de objetos</b>: Algoritmos como SIFT, SURF e Harris são usados para
-          identificar e comparar objetos em diferentes imagens ou pontos de vista, mesmo sob variações de escala,
-          rotação e iluminação. Por exemplo, o SIFT aplica correspondência de pontos-chave seguida de filtragem por
-          razão de distâncias para evitar falsos positivos.</li>
-        <li><b>Visão estéreo e reconstrução 3D</b>: A combinação de detectores de características com correspondência em
-          pares de imagens permite gerar mapas de profundidade, essenciais para estimativa de distância, navegação
-          autônoma e reconstrução de cenários tridimensionais.</li>
-        <li><b>Robótica e percepção ambiental</b>: Robôs utilizam detecção de *features* para evitar obstáculos,
-          reconhecer objetos manipuláveis e realizar mapeamento do ambiente. A detecção de features robustas melhora a
-          precisão em contextos de efeito sensorial ou variação de iluminação.</li>
-        <li><b>Indexação de imagens e recuperação baseada em conteúdo</b>: Detectores como Harris e suas variantes
-          (ex.: Harris-affine) são aplicados em sistemas de recuperação de imagens, permitindo a indexação de
-          objetos-chave e situações repetíveis em vídeos ou bases multimídia.</li>
-      </ul>
-      <h4>Aplicação no Trabalho T1</h4>
-      <ul>
-        <li><b>Detecção inicial de pontos-chave</b> na imagem de referência utilizando SIFT ou Shi‑Tomasi,
-          permitindo
-          identificar regiões distintas que serão buscadas em ambas câmeras. </li>
-        <li><b>Correspondência entre imagens estéreo</b>, aplicando um matcher como Brute‑Force ou FLANN para
-          encontrar
-          pares de *keypoints* entre os dois streams, e filtragem com RANSAC para garantir correspondência geométrica
-          robusta.</li>
-        <li><b>Estimativa de profundidade e paralaxe</b>, permitindo traçar os mesmos pontos detectados nas duas
-          webcams
-          para calcular disparidade e inferir distância ou pose relativa do objeto. </li>
-        <li><b>Visualização de correspondências</b>: destacar graficamente os pares encontrados entre câmeras,
-          ilustrando
-          os pontos comuns e validando a precisão da calibração. </li>
-      </ul>
-      <h4>Contribuições esperadas para o projeto</h4>
-      <p>A utilização dessas técnicas trará benefícios ao T1, como: </p>
-      <ul>
-        <li>Robustez contra alterações de escala, rotação ou iluminação.</li>
-        <li>Precisão na correspondência entre câmeras, essencial para reconstrução geométrica estéreo.</li>
-        <li>Capacidade de aplicar homografia ou triangulação a partir dos pontos comuns detectados.</li>
-        <li>Documentação didática que mistura teoria e prática, facilitando a validação do método científico empregado.
-        </li>
-      </ul>
+      <div class="py-3">
+        <p class="h3 pb-3"><b>ANÁLISE: APLICAÇÕES DA DETECÇÃO DE FEATURES E RELEVÂNCIA PARA O TRABALHO T1</b></p>
+        <h4>Aplicações Relevantes da Detecção de Features</h4>
+        <ul>
+          <li><b>Reconhecimento e correspondência de objetos</b>: Algoritmos como SIFT, SURF e Harris são usados para
+            identificar e comparar objetos em diferentes imagens ou pontos de vista, mesmo sob variações de escala,
+            rotação e iluminação. Por exemplo, o SIFT aplica correspondência de pontos-chave seguida de filtragem por
+            razão de distâncias para evitar falsos positivos.</li>
+          <li><b>Visão estéreo e reconstrução 3D</b>: A combinação de detectores de características com correspondência
+            em
+            pares de imagens permite gerar mapas de profundidade, essenciais para estimativa de distância, navegação
+            autônoma e reconstrução de cenários tridimensionais.</li>
+          <li><b>Robótica e percepção ambiental</b>: Robôs utilizam detecção de *features* para evitar obstáculos,
+            reconhecer objetos manipuláveis e realizar mapeamento do ambiente. A detecção de features robustas melhora a
+            precisão em contextos de efeito sensorial ou variação de iluminação.</li>
+          <li><b>Indexação de imagens e recuperação baseada em conteúdo</b>: Detectores como Harris e suas variantes
+            (ex.: Harris-affine) são aplicados em sistemas de recuperação de imagens, permitindo a indexação de
+            objetos-chave e situações repetíveis em vídeos ou bases multimídia.</li>
+        </ul>
+        <h4>Aplicação no Trabalho T1</h4>
+        <ul>
+          <li><b>Detecção inicial de pontos-chave</b> na imagem de referência utilizando SIFT ou Shi‑Tomasi,
+            permitindo
+            identificar regiões distintas que serão buscadas em ambas câmeras. </li>
+          <li><b>Correspondência entre imagens estéreo</b>, aplicando um matcher como Brute‑Force ou FLANN para
+            encontrar
+            pares de *keypoints* entre os dois streams, e filtragem com RANSAC para garantir correspondência geométrica
+            robusta.</li>
+          <li><b>Estimativa de profundidade e paralaxe</b>, permitindo traçar os mesmos pontos detectados nas duas
+            webcams
+            para calcular disparidade e inferir distância ou pose relativa do objeto. </li>
+          <li><b>Visualização de correspondências</b>: destacar graficamente os pares encontrados entre câmeras,
+            ilustrando
+            os pontos comuns e validando a precisão da calibração. </li>
+        </ul>
+        <h4>Contribuições esperadas para o projeto</h4>
+        <p>A utilização dessas técnicas trará benefícios ao T1, como: </p>
+        <ul>
+          <li>Robustez contra alterações de escala, rotação ou iluminação.</li>
+          <li>Precisão na correspondência entre câmeras, essencial para reconstrução geométrica estéreo.</li>
+          <li>Capacidade de aplicar homografia ou triangulação a partir dos pontos comuns detectados.</li>
+          <li>Documentação didática que mistura teoria e prática, facilitando a validação do método científico
+            empregado.
+          </li>
+        </ul>
+        <hr>
+      </div>
     </section>
 
     <section class="pb-4">
       <p class="h3 pb-3"><b>CONCLUSÕES</b></p>
-      <p>
-        A realização deste laboratório permitiu compreender, de forma teórica e prática, os principais conceitos
-        envolvidos na detecção e descrição de características em imagens, etapa fundamental em diversos sistemas de
-        visão computacional. Foi possível explorar e comparar diferentes algoritmos como Harris, Shi-Tomasi, SIFT e a
-        Transformada de Hough, observando suas vantagens, limitações e aplicações.
+      <p>Este laboratório proporcionou uma compreensão prática e aprofundada sobre os principais métodos de
+        <strong>detecção e descrição de características</strong> em imagens, com o uso intensivo da biblioteca
+        <code>OpenCV</code>. Foram exploradas funções como <code>cv2.goodFeaturesToTrack()</code> para detecção de
+        cantos pelos métodos de Harris e Shi-Tomasi, <code>cv2.SIFT_create()</code> para extração e descrição de
+        keypoints, e <code>cv2.HoughCircles()</code> para a detecção de formas geométricas como círculos via
+        Transformada de Hough.
       </p>
-      <p>
-        A implementação de correspondência de características com homografia demonstrou como é possível reconhecer
-        objetos em diferentes imagens, mesmo quando sujeitos a variações de escala, rotação e perspectiva. A extensão
-        para uso com webcams estereoscópicas destacou a aplicabilidade desses métodos em tempo real, reforçando sua
-        utilidade em sistemas de monitoramento, rastreamento e robótica.
+      <p>O uso de <code>cv2.findHomography()</code> em conjunto com <code>cv2.perspectiveTransform()</code> permitiu a
+        identificação e o mapeamento de objetos em diferentes imagens, mesmo sob transformações geométricas como
+        rotação, escala e mudança de perspectiva. A aplicação da função <code>cv2.drawMatches()</code> auxiliou na
+        visualização das correspondências de keypoints entre imagens.</p>
+      <p>Além disso, a integração de <code>cv2.VideoCapture()</code> e <code>cv2.VideoWriter()</code> viabilizou a
+        aplicação desses algoritmos em tempo real utilizando webcams estereoscópicas, enquanto
+        <code>cv2.resize()</code>, <code>np.hstack()</code> e <code>cv2.imshow()</code> facilitaram a manipulação e
+        exibição simultânea das imagens processadas.
       </p>
-      <p>
-        Este laboratório contribuiu significativamente para o desenvolvimento de habilidades técnicas com OpenCV e
-        aprofundamento conceitual, sendo uma base sólida para a continuidade do projeto T1 e demais desafios que
-        envolvem visão computacional.
-      </p>
+      <p>Por fim, a conversão de arquivos de vídeo com <code>subprocess.run()</code> e <code>ffmpeg</code> demonstrou a
+        interoperabilidade entre Python e ferramentas externas, finalizando um pipeline completo de aquisição,
+        processamento e exportação de resultados em visão computacional.</p>
+
+      <hr>
     </section>
 
     <section class="pb-4">
