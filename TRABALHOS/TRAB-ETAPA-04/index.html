@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipe Olhos de Sauron – Etapa 4 – Desenvolvimento do SPV</title>
+    <!-- Estilos globais já utilizados nas etapas anteriores -->
+    <link rel="stylesheet" href="../../assets/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+    <style>
+        /* Ajustes pontuais para esta etapa */
+        .bloco {
+            background: #ffffff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 6px solid #0d3b66;
+            border-radius: 8px;
+            box-shadow: rgba(0, 0, 0, 0.1) 0 2px 6px;
+        }
+        code {
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        pre {
+            background: #272822;
+            color: #f8f8f2;
+            padding: 15px 20px;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+        .table-tech td:first-child { font-weight: 600; }
+    </style>
+</head>
+
+<body class="d-flex justify-content-center flex-column align-items-center">
+    <!-- Cabeçalho padrão -->
+    <header class="py-4 w-100 text-center text-white">
+        <h1 class="m-0">Grupo 07 – Equipe Olhos de Sauron – CV – Q2.2025</h1>
+    </header>
+
+    <main class="py-5 w-100 container">
+        <!-- Navegação -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a class="text-black" href="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/">Home</a></li>
+                <li class="breadcrumb-item"><a class="text-black" href="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/TRABALHOS/">Trabalhos</a></li>
+            </ol>
+        </nav>
+
+        <!-- Título da Etapa -->
+        <p class="h3 w-100 text-center"><a href="#" class="text-decoration-none text-black">Etapa 4 – Desenvolvimento do Sistema de Processamento Visual (SPV)</a></p>
+
+        <!-- Detalhes do trabalho -->
+        <div class="details py-4">
+            <p><b>INTEGRANTES:</b></p>
+            <p>Igor Domingos da Silva Mozetic – 11202320802</p>
+            <p>Jhonattan Ferreira Machado – 11202320245</p>
+            <p>Mikael Alves Monteiro – 21055813</p>
+            <p><b>Data de Realização:</b> 23/07/2025</p>
+            <p><b>Data de Publicação:</b> 30/07/2025</p>
+            <p><strong>Tema:</strong> Sistema de Contagem de Moedas Brasileiras com Visão Computacional</p>
+            <hr>
+        </div>
+
+        <!-- Objetivo -->
+        <section class="pb-3">
+            <p class="h3"><b>OBJETIVO DESTA ETAPA</b></p>
+            <p>
+                Consolidar e documentar a implementação funcional do Sistema de Processamento Visual (SPV) capaz de detectar, classificar e somar moedas brasileiras em tempo real, conforme os requisitos descritos no edital da disciplina e na modelagem aprovada nas etapas anteriores.
+            </p>
+            <hr>
+        </section>
+
+        <!-- Tecnologias -->
+        <section class="pb-3">
+            <p class="h3"><b>TECNOLOGIAS UTILIZADAS</b></p>
+            <table class="table table-bordered table-tech">
+                <tbody>
+                    <tr>
+                        <td>Python 3.10</td>
+                        <td>Linguagem principal do projeto. Fornece sintaxe simples e vasta comunidade de bibliotecas para ciência de dados e visão computacional.</td>
+                    </tr>
+                    <tr>
+                        <td>OpenCV 4.10.0</td>
+                        <td>Biblioteca open‑source para processamento de imagens e visão computacional. Utilizada para captura da webcam, filtragem, detecção de contornos, desenho de overlays e exibição de janelas.</td>
+                    </tr>
+                    <tr>
+                        <td>TensorFlow 2.9.1 / Keras 2.6.0</td>
+                        <td>Framework de aprendizado profundo. O modelo <i>keras_model.h5</i> (MobileNet‑V2 fine‑tuned) classifica cada moeda em 1 real, 50 centavos ou 25 centavos.</td>
+                    </tr>
+                    <tr>
+                        <td>NumPy 1.26</td>
+                        <td>Manipulação matricial de alto desempenho; converte frames em <code>ndarray</code> e normaliza pixels antes de alimentar a rede neural.</td>
+                    </tr>
+                    <tr>
+                        <td>Bootstrap 5.3 / HTML & CSS</td>
+                        <td>Front‑end responsivo para os relatórios em GitHub Pages, garantindo identidade visual uniforme entre todas as entregas.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <hr>
+        </section>
+
+        <!-- Componentes implementados -->
+        <section class="pb-3">
+            <p class="h3"><b>COMPONENTES IMPLEMENTADOS</b></p>
+            <div class="bloco">
+                <p class="h4">1. Captura de Vídeo</p>
+                <p>Inicializada com <code>cv2.VideoCapture(0, cv2.CAP_DSHOW)</code>, configurando resolução 640×480. A webcam fornece cada quadro como matriz <code>NumPy</code>.</p>
+            </div>
+            <div class="bloco">
+                <p class="h4">2. Pré‑processamento da Imagem</p>
+                <p>Função <code>preProcess()</code> faz suavização, detecção de bordas e operações morfológicas para salientar contornos circulares das moedas.</p>
+                <pre><code>def preProcess(img):
+    imgPre = cv2.GaussianBlur(img, (5, 5), 3)
+    imgPre = cv2.Canny(imgPre, 90, 140)
+    kernel = np.ones((4, 4), np.uint8)
+    imgPre = cv2.dilate(imgPre, kernel, iterations=2)
+    imgPre = cv2.erode(imgPre, kernel, iterations=1)
+    return imgPre</code></pre>
+            </div>
+            <div class="bloco">
+                <p class="h4">3. Classificação com Rede Neural</p>
+                <p>A função <code>DetectarMoeda()</code> prepara a ROI e executa o modelo <i>keras_model.h5</i>, retornando rótulo e confiabilidade.</p>
+                <pre><code>def DetectarMoeda(img):
+    imgMoeda = cv2.resize(img, (224, 224))
+    imgMoeda = np.asarray(imgMoeda)
+    imgMoedaNormalize = (imgMoeda.astype(np.float32) / 127.0) - 1
+    data[0] = imgMoedaNormalize
+    prediction = model.predict(data)
+    index   = np.argmax(prediction)
+    classe  = classes[index]
+    conf    = prediction[0][index]
+    return classe, conf</code></pre>
+            </div>
+            <div class="bloco">
+                <p class="h4">4. Loop Principal</p>
+                <p>Para cada contorno válido (&gt; 2000 px²) o sistema recorta, classifica, desenha <i>bounding box</i> e acumula o valor monetário.</p>
+                <pre><code>for cnt in contornos:
+    area = cv2.contourArea(cnt)
+    if area &gt; 2000:
+        x, y, w, h = cv2.boundingRect(cnt)
+        recorte = frame[y:y+h, x:x+w]
+        classe, conf = DetectarMoeda(recorte)
+        if conf &gt; 0.7:
+            total += valor_moeda(classe)
+            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+            cv2.putText(frame, classe, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 2)</code></pre>
+            </div>
+            <div class="bloco">
+                <p class="h4">5. Exibição em Tempo Real</p>
+                <p>O overlay com <code>cv2.putText()</code> apresenta o total acumulado dentro de um retângulo vermelho, tornando a interface autoexplicativa para usuários leigos.</p>
+            </div>
+            <hr>
+        </section>
+
+
+
+        <!-- Conformidade -->
+        <section class="pb-3">
+            <p class="h3"><b>CONFORMIDADE COM O EDITAL</b></p>
+            <ul>
+                <li>Uso obrigatório do OpenCV e execução em Ubuntu‑Linux ✔️</li>
+                <li>Cálculo <em>on‑the‑fly</em> com visualização em tempo real ✔️</li>
+                <li>Cabeçalhos de autoria nos arquivos fonte (em adição) 🔄</li>
+                <li>Bibliotecas externas de domínio público (OpenCV, TensorFlow, NumPy) ✔️</li>
+                <li>Conceitos de filtragem, transformações geométricas e reconhecimento implementados ✔️</li>
+            </ul>
+            <hr>
+        </section>
+
+        <!-- Próximos passos -->
+        <section class="pb-3">
+            <p class="h3"><b>PRÓXIMOS PASSOS</b></p>
+            <ul>
+                <li>Integrar calibração de câmera para robustez a distâncias variáveis.</li>
+                <li>Melhorar treinamento do modelo com mais imagens</li>
+                <li>Expandir dataset com moedas desgastadas e sujas.</li>
+                <li>Criar roteiro do Laboratório Experimental e questionários para Etapa 5.</li>
+                <li>Validar a possibilidade de feedback sonoro para acessibilidade.</li>
+                <li>Incluir as moedas faltantes: 5 e 10 centavos</li>
+            </ul>
+            <hr>
+        </section>
+
+        <!-- Conclusão -->
+        <section class="pb-3">
+            <p class="h3"><b>CONCLUSÃO</b></p>
+            <p>
+                O protótipo entregue nesta etapa comprova a viabilidade técnica da contagem automática de moedas via visão computacional, atingindo alto desempenho em tempo real com hardware comum. A arquitetura modular facilita manutenções futuras e a integração de novas funcionalidades (por exemplo, calibração e acessibilidade sonora). O próximo ciclo de trabalho focará na avaliação com usuários externos e na coleta de métricas subjetivas de usabilidade.
+            </p>
+        </section>
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="mt-5 p-3 ">
+        &copy; 2025 – Desenvolvido por Equipe Olhos de Sauron
+    </footer>
+</body>
+
+</html>
