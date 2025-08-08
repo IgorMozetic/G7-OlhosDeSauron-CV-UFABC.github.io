@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Equipe Olhos de Sauron - CV - Q2.2025</title>
+  <link rel="stylesheet" href="../../assets/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+</head>
+
+<body class="d-flex justify-content-center flex-column align-items-center">
+  <header class="py-4 w-100 text-center text-white">
+    <h1 class="m-0">Grupo 07: Equipe Olhos de Sauron - CV - Q2.2025</h1>
+  </header>
+  <main class="py-5 w-100 container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a class="text-black"
+            href="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/">Home</a></li>
+        <li class="breadcrumb-item"><a class="text-black"
+            href="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/TRABALHOS/">Trabalhos</a>
+        </li>
+      </ol>
+    </nav>
+    <div>
+      <p class="h3 w-100 text-center"><a href="#" class="text-decoration-none text-black">Etapa 5: Desenvolvimento do
+          Laboratório Experimental (LEx)</a></p>
+      <div class="details py-4">
+        <p><b>INTEGRANTES:</b></p>
+        <p>Igor Domingos da Silva Mozetic - 11202320802</p>
+        <p>Jhonattan Ferreira Machado - 11202320245</p>
+        <p>Mikael Alves Monteiro - 21055813</p>
+        <p><b>Data de Realização do trabalho:</b> 08/08/2025</p>
+        <p><b>Data de Publicação do trabalho:</b> 08/08/2025</p>
+        <p><strong>Tema:</strong> Sistema de Contagem de Moedas Brasileiras com Visão Computacional</p>
+        <hr>
+      </div>
+
+      <section class="pb-3">
+        <p class="h3"><b>INTRODUÇÃO</b></p>
+        <p>Este roteiro descreve o Laboratório Experimental para o sistema de <strong>Reconhecimento Automático de
+            Moedas</strong>. O objetivo é guiar usuários leigos para executar o sistema, coletar resultados e
+          responder a um questionário após o experimento.</p>
+        <p>O sistema realiza captura por câmera, segmentação por contornos (formato circular/elíptico), classificação
+          com modelo Keras exportado do Teachable Machine e apresentação do valor total detectado na tela.</p>
+        <p>O escopo de aplicação deste sistema vai além da mera contagem financeira. Ele representa uma ferramenta de
+          inclusão e autonomia, especialmente para pessoas com diminuição da capacidade visual, para quem a tarefa de
+          diferenciar moedas por tamanho, peso ou relevo pode ser um desafio considerável. Ao automatizar esse processo,
+          o sistema busca oferecer uma solução prática e precisa para as atividades financeiras do dia a dia, promovendo
+          maior independência para o usuário.</p>
+        <p>A utilização de uma <b>caixa de contagem</b> com ring light oferece a praticidade e portabilidade necessárias
+          para uso em diferentes ambientes, desde pequenos comércios até residências. Além disso, a estrutura simples do
+          equipamento e a baixa complexidade das etapas, detalhadas a seguir, reforçam a proposta de um sistema de fácil
+          acesso e operação. O objetivo principal deste experimento é, portanto, validar a eficácia da IA para este
+          propósito e avaliar sua usabilidade e precisão para um público diversificado.</p>
+        <hr>
+      </section>
+
+      <section class="pb-3">
+        <p class="h3"><b>PROCEDIMENTO EXPERIMENTAL</b></p>
+        <p>Nessa seção você encontrará o passo a passo a ser seguido para que consiga utilizar o sistema na melhor
+          maneira possível.</p>
+        <p class="h4">Passo 1 — Preparação do ambiente</p>
+        <ul>
+          <li>Ambiente bem iluminado, preferencialmente com luz difusa (evitar reflexos intensos).</li>
+          <li>Separe moedas de R$ 0,05, R$ 0,50 e R$ 1,00 em quantidades variadas.</li>
+          <li>Remova objetos circulares concorrentes (tampas, botões) da área de teste.</li>
+        </ul>
+
+        <p class="h4">Passo 2 — Inicialização do sistema</p>
+        <ul>
+          <li>Abrir o terminal na pasta do projeto.</li>
+          <li>Executar o comando: <code>python main.py</code></li>
+          <li>Aguardar a janela com o feed de vídeo iniciar.</li>
+        </ul>
+
+        <p class="h4">Passo 3 — Execução do experimento</p>
+        <ul>
+          <li>Colocar uma ou mais moedas sobre a superfície de teste.</li>
+          <li>Observar o feed: moedas detectadas são marcadas por um retângulo verde; o rótulo da classe
+            aparece sobre o retângulo; o valor total aparece no canto superior direito.</li>
+          <li>Variar condições: ângulo da moeda, distância e iluminação; anotar observações.</li>
+        </ul>
+
+        <p class="h4">Passo 4 — Finalização</p>
+        <ul>
+          <li>Pressionar <code>Q</code> para encerrar o sistema.</li>
+          <li>Registrar observações e comentários sobre o desempenho.</li>
+        </ul>
+        <hr>
+      </section>
+
+      <section class="pb-3">
+        <p class="h3"><b>RESULTADOS ESPERADOS</b></p>
+        <ul>
+          <li>Reconhecimento correto das moedas nas condições favoráveis de teste.</li>
+          <li>Exibição do valor total acumulado: R$ X,XX.</li>
+          <li>Redução da acurácia com iluminação inadequada, reflexos extremos, ou moedas parcialmente sobrepostas.
+          </li>
+        </ul>
+      </section>
+
+      <section class="pb-3">
+        <p class="h3"><b>QUESTIONÁRIO DE AVALIAÇÃO</b></p>
+        <p>Peça aos participantes que respondam ao questionário imediatamente após o experimento.</p>
+        <p><strong>Link para o formulário:</strong></p>
+        <p class="note">link</p>
+        <h3>Estrutura do questionário</h3>
+        <h4>Parte 1 — Objetiva (escala 1 a 5)</h4>
+        <ol>
+          <li>O sistema foi fácil de operar?</li>
+          <li>As moedas foram reconhecidas corretamente?</li>
+          <li>O valor total exibido foi confiável?</li>
+          <li>A velocidade de detecção foi adequada?</li>
+          <li>Você recomendaria este sistema para outra pessoa?</li>
+        </ol>
+        <h4>Parte 2 — Subjetiva (respostas abertas)</h4>
+        <ol>
+          <li>O que mais chamou sua atenção no funcionamento do sistema?</li>
+          <li>Quais melhorias você sugeriria?</li>
+          <li>Em quais situações práticas você imagina que este sistema poderia ser útil?</li>
+        </ol>
+      </section>
+  </main>
+
+  <footer class="mt-5 p-3 ">
+    &copy; 2025 - Desenvolvido por Equipe Olhos de Sauron
+  </footer>
+</body>
+
+</html>
