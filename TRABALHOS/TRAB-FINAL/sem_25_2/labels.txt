@@ -1,0 +1,4 @@
+0 1 real
+1 50 cent
+2 10 cent
+3 5 cent
