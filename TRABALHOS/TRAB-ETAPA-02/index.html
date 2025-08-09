@@ -199,14 +199,14 @@
           <li>Classificação com modelo <code>keras_model.h5</code> previamente treinado</li>
         </ul>
         </p>
-        <p><strong>Saída:</strong> Rótulo da moeda (ex: “1 real”, “25 cent”) e probabilidade (confiança).</p>
+        <p><strong>Saída:</strong> Rótulo da moeda (ex: “1real”, “50cent” e “5cent”).</p>
       </div>
 
       <div class="bloco mb-5">
         <p class="h4 mb-3">6. Filtragem por Confiança</p>
 
         <p><strong>Entrada:</strong> Classe e probabilidade da predição.</p>
-        <p><strong>Processamento:</strong> Aceita a predição apenas se a confiança for superior a 70%, evitando
+        <p><strong>Processamento:</strong> Aceita a predição apenas se a confiança for superior a 65%, evitando
           classificações equivocadas.</p>
         <p><strong>Saída:</strong> Moeda validada para contagem ou descartada.</p>
       </div>
