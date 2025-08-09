@@ -10,10 +10,10 @@ with open("calibracao_camera.pkl", "rb") as f:
 # --- Inicializa a captura ---
 video = cv2.VideoCapture(0)
 
-model = load_model('sem_25_2/keras_model.h5', compile=False)
+model = load_model('modelo_keras/keras_model.h5', compile=False)
 data = np.ndarray(shape=(1,224,224,3), dtype=np.float32)
-#classes = ["1real", "50cent", "25cent", "10cent", "5cent"]
 classes = ["1real", "50cent", "10cent", "5cent"]
+# classes = ["1real", "50cent", "25cent", "10cent", "5cent"]
 
 def preProcess(img):
     imgPre = cv2.GaussianBlur(img,(5,5),3)
@@ -29,7 +29,6 @@ def DetectarMoeda(img):
     imgMoedaNormalize = (imgMoeda.astype(np.float32)/127.0)-1
     data[0] = imgMoedaNormalize
     prediction = model.predict(data)
-    # print(prediction)
     index = np.argmax(prediction)
     percent = prediction[0][index]
     classe = classes[index]
@@ -37,13 +36,9 @@ def DetectarMoeda(img):
     
 while True:
     _, img = video.read()
-
-    # >>>>>>>> AQUI: aplica a correção de distorção
     h, w = img.shape[:2]
     newcameramtx, roi = cv2.getOptimalNewCameraMatrix(mtx, dist, (w, h), 1, (w, h))
     img = cv2.undistort(img, mtx, dist, None, newcameramtx)
-
-    # >>>>>>>> (Opcional) Recorte usando ROI
     x, y, w, h = roi
     img = img[y:y+h, x:x+w]
 
@@ -66,7 +61,7 @@ while True:
                 if classe == '1real': qtd += 1
                 if classe == '50cent': qtd += 0.5
                 # if classe == '25cent': qtd += 0.25
-                if classe == '10cent': qtd += 0.10
+                # if classe == '10cent': qtd += 0.10
                 if classe == '5cent': qtd += 0.05
 
     cv2.rectangle(img, (430, 30), (600, 80), (0, 0, 255), -1)
