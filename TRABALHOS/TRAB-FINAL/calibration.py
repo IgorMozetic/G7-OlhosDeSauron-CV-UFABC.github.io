@@ -23,7 +23,7 @@ objp[:, :2] = np.mgrid[0:CHECKERBOARD[0], 0:CHECKERBOARD[1]].T.reshape(-1, 2)
 
 # --- 3. Processamento das Imagens de Calibração ---
 
-images = glob.glob('images_webcam/*.png') # Altere o caminho se necessário
+images = glob.glob('images_webcam_chess/*.png') # Altere o caminho se necessário
 
 for fname in images:
     img = cv.imread(fname)

@@ -42,5 +42,5 @@ def captureImages(coinName: str, cleanFolder: bool = False) -> None:
     cv2.destroyAllWindows()
 
 if __name__ == '__main__':
-    captureImages('teste')
+    captureImages('imagens_treino')
 

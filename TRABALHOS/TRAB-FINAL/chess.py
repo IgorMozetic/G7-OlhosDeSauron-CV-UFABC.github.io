@@ -5,7 +5,7 @@ import os
 # --- Configurações ---
 NOME_IMAGEM = "imgs"  # Altere para o nome de um integrante da equipe
 CAM_INDEX = 0            # Índice da câmera (0 geralmente é a webcam interna)
-SAVE_PATH = "images_webcam" # Pasta para salvar as imagens
+SAVE_PATH = "images_webcam_chess" # Pasta para salvar as imagens
 
 # Cria a pasta de salvamento se ela não existir
 if not os.path.exists(SAVE_PATH):
@@ -18,7 +18,7 @@ if not cap.isOpened():
     exit()
 
 img_counter = 0
-print("Pressione a tecla ESPAcO para capturar uma imagem.")
+print("Pressione a tecla ESPACO para capturar uma imagem.")
 print("Pressione a tecla ESC para sair.")
 
 while True:
