@@ -14,7 +14,7 @@
   <header class="py-4 w-100 text-center text-white">
     <h1 class="m-0">Grupo 07: Equipe Olhos de Sauron - CV - Q2.2025</h1>
   </header>
-  <main class="py-5 w-100 container">
+  <main class="py-5 w-100 container trabalhos">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a class="text-black"
@@ -41,8 +41,8 @@
       <section class="pb-3">
         <p class="h3"><b>INTRODUÇÃO</b></p>
         <p>Este roteiro descreve o Laboratório Experimental para o sistema de <strong>Reconhecimento Automático de
-            Moedas</strong>. O objetivo é guiar usuários leigos para executar o sistema, coletar resultados e
-          responder a um questionário após o experimento.</p>
+            Moedas</strong>. O objetivo é guiar usuários para executar o sistema, coletar resultados e responder a um
+          questionário após o experimento.</p>
         <p>O sistema realiza captura por câmera, segmentação por contornos (formato circular/elíptico), classificação
           com modelo Keras exportado do Teachable Machine e apresentação do valor total detectado na tela.</p>
         <p>O escopo de aplicação deste sistema vai além da mera contagem financeira. Ele representa uma ferramenta de
@@ -55,6 +55,38 @@
           equipamento e a baixa complexidade das etapas, detalhadas a seguir, reforçam a proposta de um sistema de fácil
           acesso e operação. O objetivo principal deste experimento é, portanto, validar a eficácia da IA para este
           propósito e avaliar sua usabilidade e precisão para um público diversificado.</p>
+        <p>De modo geral, o funcionamento do sistema ocorrerá da seguinte forma:</p>
+        <p>O usuário irá iniciar o sistema e posicionar as moedas no espaço designado na caixa
+          estruturada pelos alunos. Com isso, o sistema irá realizar o processo de observação e reconhecimento das
+          moedas, identificando automaticamente o tipo e o valor de cada uma. Na tela, o usuário verá as imagens
+          capturadas pela câmera, com as moedas destacadas por caixas coloridas e acompanhadas de rótulos que indicam
+          seu valor.</p>
+        <p>À medida que as moedas são reconhecidas, o sistema soma os valores e exibe o total atualizado em tempo real.
+          O usuário não precisa fazer cálculos nem informar manualmente quais moedas estão sendo utilizadas, basta
+          garantir que elas estejam visíveis e bem posicionadas. Em poucos segundos, o resultado aparece na tela,
+          tornando o processo rápido, simples e prático para qualquer pessoa, mesmo sem experiência com computadores ou
+          sistemas de visão artificial.</p>
+        <p><b>Interface de entrada: </b> consiste na captura de vídeo em tempo real pela webcam, exibida
+          diretamente na tela. É através dessa visualização que o usuário posiciona as moedas sobre a superfície
+          delimitada pela caixa estruturada, garantindo que todas estejam visíveis no enquadramento. O sistema inicia a
+          análise assim que a câmera detecta os objetos no campo de visão, sem necessidade de configurações complexas ou
+          ajustes técnicos.</p>
+        <p><b>Interface de saída: </b>consiste na apresentação ao usuário o resultado do processamento realizado
+          pelo sistema. Sobre a imagem capturada, são desenhadas quadrados verdes em volta de cada moeda, acompanhadas
+          de rótulos indicando seu valor individual. Além disso, na parte direita superior da exibição haverá um painel
+          indicando o valor total calculado em tempo real, atualizado conforme novas moedas são adicionadas ou
+          removidas. O objetivo é fornecer informações visuais e numéricas claras, permitindo que o usuário entenda
+          facilmente o que foi identificado e o total obtido sem qualquer necessidade de interpretação técnica.</p>
+        <p>Alguns benefícios trazidos para o usuário com a implementação do projeto são:</p>
+        <ul>
+          <li><strong>Redução de erros</strong> no recebimento e conferência de moedas.</li>
+          <li><strong>Aumento da autonomia</strong> de pessoas idosas ou com dificuldades de leitura e
+            cálculo.</li>
+          <li><strong>Rapidez na conferência de valores</strong>, economizando tempo e esforço.</li>
+          <li><strong>Baixo custo de implementação</strong>, utilizando apenas uma webcam e um computador
+            simples.</li>
+          <li><strong>Aplicação social e inclusiva</strong>, promovendo acessibilidade digital.</li>
+        </ul>
         <hr>
       </section>
 
@@ -64,8 +96,9 @@
           maneira possível.</p>
         <p class="h4">Passo 1 — Preparação do ambiente</p>
         <ul>
-          <li>Ambiente bem iluminado, preferencialmente com luz difusa (evitar reflexos intensos).</li>
-          <li>Separe moedas de R$ 0,05, R$ 0,50 e R$ 1,00 em quantidades variadas.</li>
+          <li>Ligar as luzes de dentro da caixa para que o ambiente seja bem iluminado, evitando reflexos intensos e
+            comprometendo na identificação das moedas.</li>
+          <li>Separar as moedas de R$ 0,05, R$ 0,50 e R$ 1,00 em quantidades variadas.</li>
           <li>Remova objetos circulares concorrentes (tampas, botões) da área de teste.</li>
         </ul>
 
@@ -73,20 +106,25 @@
         <ul>
           <li>Abrir o terminal na pasta do projeto.</li>
           <li>Executar o comando: <code>python main.py</code></li>
-          <li>Aguardar a janela com o feed de vídeo iniciar.</li>
+          <li>Aguardar as janelas do sistema serem carregadas e exbidias no monitor.</li>
+          <li>Como a câmera já foi calibrada préviamente, não será necessário aplicar nenhum outro passo para o início
+            da utilização do sistema.</li>
         </ul>
 
         <p class="h4">Passo 3 — Execução do experimento</p>
         <ul>
-          <li>Colocar uma ou mais moedas sobre a superfície de teste.</li>
-          <li>Observar o feed: moedas detectadas são marcadas por um retângulo verde; o rótulo da classe
-            aparece sobre o retângulo; o valor total aparece no canto superior direito.</li>
-          <li>Variar condições: ângulo da moeda, distância e iluminação; anotar observações.</li>
+          <li>Colocar uma ou mais moedas sobre a superfície de teste que está sendo indicada na parte debaixo da caixa
+            com um retângulo com as bordas pretas.</li>
+          <li>Observar a janela com a exibição: moedas detectadas são marcadas por um retângulo verde; o rótulo da
+            classe aparece sobre o retângulo; o valor total aparece no canto superior direito.</li>
+          <li>Acrescentar novas moedas e visualizar o comportamento do sistema.</li>
         </ul>
 
         <p class="h4">Passo 4 — Finalização</p>
         <ul>
-          <li>Pressionar <code>Q</code> para encerrar o sistema.</li>
+          <li>Clicar na janela onde as moedas estão sendo exbidias e pressionar a tecla <code>Q</code> para encerrar o
+            sistema.
+          </li>
           <li>Registrar observações e comentários sobre o desempenho.</li>
         </ul>
         <hr>
@@ -100,28 +138,31 @@
           <li>Redução da acurácia com iluminação inadequada, reflexos extremos, ou moedas parcialmente sobrepostas.
           </li>
         </ul>
+        <p>Segue uma imagem de como será a interface de saída após uso do sistema:</p>
+        <div class="d-flex justify-content-center align-items-center py-2">
+          <figure class="text-center">
+            <img src="assets/programa_funcionando.png" alt="Imagem">
+            <figcaption><i>Figura 1</i>: Resultado da interface de saída do sistema.</figcaption>
+          </figure>
+        </div>
+        <hr>
       </section>
 
       <section class="pb-3">
         <p class="h3"><b>QUESTIONÁRIO DE AVALIAÇÃO</b></p>
-        <p>Peça aos participantes que respondam ao questionário imediatamente após o experimento.</p>
-        <p><strong>Link para o formulário:</strong></p>
-        <p class="note">link</p>
-        <h3>Estrutura do questionário</h3>
-        <h4>Parte 1 — Objetiva (escala 1 a 5)</h4>
-        <ol>
-          <li>O sistema foi fácil de operar?</li>
-          <li>As moedas foram reconhecidas corretamente?</li>
-          <li>O valor total exibido foi confiável?</li>
-          <li>A velocidade de detecção foi adequada?</li>
-          <li>Você recomendaria este sistema para outra pessoa?</li>
-        </ol>
-        <h4>Parte 2 — Subjetiva (respostas abertas)</h4>
-        <ol>
-          <li>O que mais chamou sua atenção no funcionamento do sistema?</li>
-          <li>Quais melhorias você sugeriria?</li>
-          <li>Em quais situações práticas você imagina que este sistema poderia ser útil?</li>
-        </ol>
+        <p>A seguir estão os links para os formulários relacionados ao sistema.</p>
+        <div class="link-list-forms">
+          <p><strong>Link para o formulário:</strong></p>
+          <p>
+            <a class="text-decoration-none p-2 w-auto my-3" href="https://forms.gle/oNGW7fXU3DgkmWXt9"
+              target="_blank">Formulário</a>
+          </p>
+          <p><strong>Link para o formulário ESO (Enquete Subjetiva de Opinião):</strong></p>
+          <p>
+            <a class="text-decoration-none p-2 w-auto my-3" href="https://forms.gle/zAQwDJJR3DtwvjgP8"
+              target="_blank">Formulário ESO</a>
+          </p>
+        </div>
       </section>
   </main>
 
