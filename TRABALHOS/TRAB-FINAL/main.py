@@ -65,7 +65,7 @@ while True:
                 if classe == '5cent': qtd += 0.05
 
     cv2.rectangle(img, (430, 30), (600, 80), (0, 0, 255), -1)
-    cv2.putText(img, f'R$ {qtd}', (440, 67), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (255, 255, 255), 2)
+    cv2.putText(img, f'R$ {qtd:.2f}', (440, 67), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (255, 255, 255), 2)
 
     cv2.imshow('Imagem com as Moedas', img)
     cv2.imshow('Imagem Processada', imgPre)
