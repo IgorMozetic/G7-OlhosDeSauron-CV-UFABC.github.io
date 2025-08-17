@@ -1,4 +1,12 @@
-# L2_chess.py - Script para Captura de Imagens de Calibração
+# GRUPO 07 - Olho de Sauron
+# Igor Domingos da Silva Mozetic    - 11202320802
+# Jhonattan Ferreira Machado        - 11202320245
+# Mikael Alves Monteiro             - 21055813
+# Script para Captura de Imagens de Calibração
+# Data: 11/08/2025
+# Nome do Arquivo: chess.py 
+# Prompt do Linux: python3 chess.py
+
 import cv2 as cv
 import os
 
@@ -29,7 +37,7 @@ while True:
         break
 
     # Exibe o quadro resultante
-    cv.imshow('Captura de Calibracao - Pressione ESPACO para salvar, ESC para sair', frame)
+    cv.imshow('GRUPO 07 - Olho de Sauron - Captura de Calibracao', frame)
 
     # Aguarda por uma tecla
     k = cv.waitKey(1)

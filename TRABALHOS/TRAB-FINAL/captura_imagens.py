@@ -1,6 +1,15 @@
+# GRUPO 07 - Olho de Sauron
+# Igor Domingos da Silva Mozetic    - 11202320802
+# Jhonattan Ferreira Machado        - 11202320245
+# Mikael Alves Monteiro             - 21055813
+# Script de Captura de imagens de treino
+# Data: 11/08/2025
+# Nome do Arquivo: captura_imagens.py 
+# Prompt do Linux: python3 captura_imagens.py
+
 import os
 import cv2
-import numpy as np  # Você esqueceu de importar o numpy
+import numpy as np
 
 def preProcess(img):
     imgPre = cv2.GaussianBlur(img, (5, 5), 3)
@@ -34,11 +43,11 @@ def captureImages(coinName: str, cleanFolder: bool = False) -> None:
                 x, y, w, h = cv2.boundingRect(cnt)
                 imageCropped = image[y:y + h, x:x + w]
                 imageCropped = cv2.resize(imageCropped, (224, 224))
-                cv2.imshow('Image', imageCropped)
+                cv2.imshow('GRUPO 07 - Olho de Sauron - Imagem', imageCropped)
 
                 key = cv2.waitKey(1) & 0xFF
                 if key == ord('s'):
-                    os.makedirs('teste', exist_ok=True)  # Garante que a pasta exista
+                    os.makedirs('teste', exist_ok=True)
                     cv2.imwrite(f'teste/imagem{indexImage}.jpg', imageCropped)
                     print(f'Saving image number: {indexImage}')
                     indexImage += 1

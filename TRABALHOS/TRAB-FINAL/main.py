@@ -1,3 +1,12 @@
+# GRUPO 07 - Olho de Sauron
+# Igor Domingos da Silva Mozetic    - 11202320802
+# Jhonattan Ferreira Machado        - 11202320245
+# Mikael Alves Monteiro             - 21055813
+# Progrma Final para Reconhecimento de Moedas Brasileiras
+# Data: 11/08/2025
+# Nome do Arquivo: main.py 
+# Prompt do Linux: python3 main.py
+
 import cv2
 import numpy as np
 from keras.models import load_model
@@ -67,8 +76,8 @@ while True:
     cv2.rectangle(img, (430, 30), (600, 80), (0, 0, 255), -1)
     cv2.putText(img, f'R$ {qtd:.2f}', (440, 67), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (255, 255, 255), 2)
 
-    cv2.imshow('Imagem com as Moedas', img)
-    cv2.imshow('Imagem Processada', imgPre)
+    cv2.imshow('GRUPO 07 - Olho de Sauron - Imagem Webcam', img)
+    cv2.imshow('GRUPO 07 - Olho de Sauron - Imagem Processada', imgPre)
 
     key = cv2.waitKey(1) & 0xFF
     if key == ord('q') or key == 27:

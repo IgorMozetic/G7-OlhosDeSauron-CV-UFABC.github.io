@@ -1,4 +1,12 @@
-# L2_cal.py - Script de Calibração de Câmera
+# GRUPO 07 - Olho de Sauron
+# Igor Domingos da Silva Mozetic    - 11202320802
+# Jhonattan Ferreira Machado        - 11202320245
+# Mikael Alves Monteiro             - 21055813
+# Script de Calibração de Câmera
+# Data: 11/08/2025
+# Nome do Arquivo: calibration.py 
+# Prompt do Linux: python3 calibration.py
+
 import numpy as np
 import cv2 as cv
 import glob
@@ -37,7 +45,7 @@ for fname in images:
         imgpoints.append(corners2)
 
         cv.drawChessboardCorners(img, CHECKERBOARD, corners2, ret)
-        cv.imshow('Imagem com Cantos Detectados', img)
+        cv.imshow('GRUPO 07 - Olho de Sauron - Imagem com Cantos Detectados', img)
         cv.waitKey(500)
 
 cv.destroyAllWindows()
