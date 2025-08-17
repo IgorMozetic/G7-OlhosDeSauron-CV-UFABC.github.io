@@ -11,9 +11,9 @@ import cv2 as cv
 import os
 
 # --- Configurações ---
-NOME_IMAGEM = "imgs"  # Altere para o nome de um integrante da equipe
-CAM_INDEX = 0            # Índice da câmera (0 geralmente é a webcam interna)
-SAVE_PATH = "images_webcam_chess" # Pasta para salvar as imagens
+NOME_IMAGEM = "imgs"  
+CAM_INDEX = 0            
+SAVE_PATH = "images_webcam_chess"
 
 # Cria a pasta de salvamento se ela não existir
 if not os.path.exists(SAVE_PATH):
@@ -36,10 +36,7 @@ while True:
         print("Erro: Não foi possível receber o quadro da câmera. Saindo...")
         break
 
-    # Exibe o quadro resultante
     cv.imshow('GRUPO 07 - Olho de Sauron - Captura de Calibracao', frame)
-
-    # Aguarda por uma tecla
     k = cv.waitKey(1)
 
     if k % 256 == 27:  # Tecla ESC
