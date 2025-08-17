@@ -126,7 +126,7 @@
             <p class="h3"><b>COMPONENTES IMPLEMENTADOS</b></p>
             <div class="bloco">
                 <p class="h4">1. Captura de Vídeo</p>
-                <p>Inicializada com <code>cv2.VideoCapture(0, cv2.CAP_DSHOW)</code>, configurando resolução 640×480. A
+                <p>Inicializada com <code>cv2.VideoCapture(0)</code>, configurando resolução 640×480. A
                     webcam fornece cada quadro como matriz <code>NumPy</code>.</p>
             </div>
             <div class="bloco">
@@ -166,7 +166,7 @@
         x, y, w, h = cv2.boundingRect(cnt)
         recorte = frame[y:y+h, x:x+w]
         classe, conf = DetectarMoeda(recorte)
-        if conf &gt; 0.7:
+        if conf &gt; 0.65:
             total += valor_moeda(classe)
             cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
             cv2.putText(frame, classe, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 2)</code></pre>
@@ -203,7 +203,6 @@
                 <li>Expandir dataset com moedas desgastadas e sujas.</li>
                 <li>Criar roteiro do Laboratório Experimental e questionários para Etapa 5.</li>
                 <li>Validar a possibilidade de feedback sonoro para acessibilidade.</li>
-                <li>Incluir as moedas faltantes: 10 e 25 centavos</li>
             </ul>
             <hr>
         </section>
