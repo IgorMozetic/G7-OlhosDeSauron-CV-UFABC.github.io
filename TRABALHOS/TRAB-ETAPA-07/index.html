@@ -2,46 +2,1400 @@
 <html lang="pt-BR">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Equipe Olhos de Sauron - CV - Q2.2025</title>
-  <link rel="stylesheet" href="../../assets/style.css">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipe Olhos de Sauron - CV - Q2.2025</title>
+    <link rel="stylesheet" href="../../assets/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
 </head>
+<style>
+    .bloco {
+        background: #ffffff;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-left: 6px solid #0d3b66;
+        border-radius: 8px;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    }
+
+    code {
+        padding: 3px 6px;
+        border-radius: 4px;
+        font-family: monospace;
+    }
+
+    .diagrama {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 25px;
+        border-radius: 8px;
+        margin: 30px 0;
+        max-width: 500px;
+    }
+
+    .diagrama .etapa {
+        background: #0d3b66;
+        color: white;
+        padding: 12px 25px;
+        border-radius: 25px;
+        font-weight: bold;
+        text-align: center;
+        min-width: 300px;
+    }
+
+    .seta {
+        font-size: 30px;
+        color: #0d3b66;
+    }
+
+    ul {
+        background: #ffffff;
+        padding: 15px 20px;
+        border-radius: 6px;
+        list-style: disc inside;
+        border: 1px solid #ddd;
+        margin-bottom: 40px;
+    }
+
+    .gallery-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 10px;
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 10px;
+    }
+
+    .gallery-item {
+        flex: 0 0 auto;
+        width: 100px;
+        height: auto;
+        box-sizing: border-box;
+    }
+
+    .gallery-item img {
+        width: 100%;
+        height: auto;
+        display: block;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    pre {
+        background: #272822;
+        color: #f8f8f2;
+        padding: 15px 20px;
+        border-radius: 6px;
+        overflow-x: auto;
+    }
+
+    .table-tech td:first-child {
+        font-weight: 600;
+    }
+</style>
 
 <body class="d-flex justify-content-center flex-column align-items-center">
-  <header class="py-4 w-100 text-center text-white">
-    <h1 class="m-0">Grupo 07: Equipe Olhos de Sauron - CV - Q2.2025</h1>
-  </header>
-  <main class="py-5 w-100 container trabalhos">
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a class="text-black"
-            href="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/">Home</a></li>
-        <li class="breadcrumb-item"><a class="text-black"
-            href="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/TRABALHOS/">Trabalhos</a>
-        </li>
-      </ol>
-    </nav>
-    <div>
-      <p class="h3 w-100 text-center"><a href="#" class="text-decoration-none text-black">Etapa 7: Relatório Final do
-          Trabalho (RFT)</a></p>
-      <div class="details py-4">
-        <p><b>INTEGRANTES:</b></p>
-        <p>Igor Domingos da Silva Mozetic - 11202320802</p>
-        <p>Jhonattan Ferreira Machado - 11202320245</p>
-        <p>Mikael Alves Monteiro - 21055813</p>
-        <p><b>Data de Realização do trabalho:</b> 13/08/2025</p>
-        <p><b>Data de Publicação do trabalho:</b> 18/08/2025</p>
-        <p><strong>Tema:</strong> Sistema de Contagem de Moedas Brasileiras com Visão Computacional</p>
-        <hr>
-      </div>
-  </main>
+    <header class="py-4 w-100 text-center text-white">
+        <h1 class="m-0">Grupo 07: Equipe Olhos de Sauron - CV - Q2.2025</h1>
+    </header>
+    <main class="py-5 w-100 container trabalhos">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a class="text-black"
+                        href="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/">Home</a></li>
+                <li class="breadcrumb-item"><a class="text-black"
+                        href="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/TRABALHOS/">Trabalhos</a>
+                </li>
+            </ol>
+        </nav>
+        <div>
+            <p class="h3 w-100 text-center"><a href="#" class="text-decoration-none text-black">Etapa 7: Relatório Final
+                    do
+                    Trabalho (RFT)</a></p>
+            <div class="details py-4">
+                <p><b>INTEGRANTES:</b></p>
+                <p>Igor Domingos da Silva Mozetic - 11202320802</p>
+                <p>Jhonattan Ferreira Machado - 11202320245</p>
+                <p>Mikael Alves Monteiro - 21055813</p>
+                <p><b>Data de Realização do trabalho:</b> 13/08/2025</p>
+                <p><b>Data de Publicação do trabalho:</b> 18/08/2025</p>
+                <p><strong>Tema:</strong> Sistema de Contagem de Moedas Brasileiras com Visão Computacional</p>
+                <hr>
+            </div>
 
-  <footer class="mt-5 p-3 ">
-    &copy; 2025 - Desenvolvido por Equipe Olhos de Sauron
-  </footer>
+            <a class="text-black" href="#ca">INTRODUÇÃO</a><br>
+            <a class="text-black" href="#matMethods">MATERIAIS E MÉTODOS</a><br>
+            <a class="text-black" href="#expLab">LABORATÓRIO EXPERIMENTAL</a><br>
+            <a class="text-black" href="#conc">CONCLUSÕES</a><br>
+            <a class="text-black" href="#refs">REFERÊNCIAS</a><br>
+            <a class="text-black" href="#append">ANEXO</a><br>
+            <!-- Introdução = PARTE 1 -->
+            <h2 id="ca">Introdução</h2>
+            <!-- Etapa 1 - Contexto e Cenário de Aplicação (CA) -->
+            <h3 style="text-indent: 40px">Cenário de Aplicação (CA)</h3>
+            <details open>
+                <section class="pb-3">
+
+                    <p class="h5"><b>PROBLEMA, CONTEXTO E JUSTIFICATIVA</b></p>
+                    <p>
+                        Com a popularização de métodos digitais de pagamento, muitos profissionais autônomos e idosos
+                        ainda
+                        operam exclusivamente com dinheiro físico por falta de acesso ou familiaridade com tecnologia. A
+                        entrevista realizada com uma costureira de 73 anos revelou um cenário recorrente entre
+                        trabalhadores
+                        informais: a dificuldade de <strong>conferir e validar pagamentos em moedas</strong>, recebidos
+                        em
+                        pequenas quantias por serviços diários.
+                    </p>
+                    <p>
+                        No caso da entrevistada, a baixa escolaridade e a idade avançada dificultam a realização de
+                        operações matemáticas simples, como somar o valor total recebido em moedas. Além disso, a
+                        semelhança
+                        visual entre diferentes tipos de moedas (5 centavos e 50 centavos) causa confusão, especialmente
+                        em
+                        ambientes com iluminação precária. Essa limitação a leva a depender de outras pessoas para
+                        verificar
+                        o pagamento — o que compromete sua autonomia — e já ocasionou perdas financeiras por falhas na
+                        conferência que só foram percebidas muito tempo depois.
+                    </p>
+                    <p>
+                        Situações como essa se repetem em diversos lares e comércios pequenos, onde o atendimento é
+                        feito de
+                        forma simples, rápida e muitas vezes sem recursos adequados de controle. Ainda que existam
+                        balanças
+                        de precisão e caixas registradoras eletrônicas, esses dispositivos são inacessíveis
+                        financeiramente
+                        ou complexos demais para o público-alvo em questão. Portanto, há uma lacuna evidente para
+                        soluções
+                        de baixo custo e fácil utilização que empreguem <strong>tecnologia visual simples para resolver
+                            um
+                            problema cotidiano real</strong>.
+                    </p>
+                    <p>
+                        Neste contexto, o uso de visão computacional se apresenta como uma solução acessível, escalável
+                        e de
+                        fácil operação. Ao permitir que uma câmera “entenda” e identifique automaticamente os tipos de
+                        moedas presentes em uma superfície, o sistema reduz drasticamente o esforço cognitivo do usuário
+                        e
+                        garante maior confiabilidade no recebimento. A proposta se baseia na observação de uma
+                        necessidade
+                        concreta e cotidiana, e pretende gerar impacto direto na rotina de trabalho de profissionais em
+                        situação de vulnerabilidade digital.
+                    </p>
+                    <hr>
+                </section>
+                <section class="pb-3">
+                    <p class="h5"><b>OBJETIVO DO SISTEMA</b></p>
+                    <p>
+                        O objetivo do sistema é desenvolver uma aplicação prática, simples e funcional de visão
+                        computacional que permita a <strong>identificação automática e contagem de moedas brasileiras
+                            utilizando uma webcam comum</strong>. O sistema será capaz de reconhecer moedas de
+                        diferentes
+                        valores (5 centavos, 50 centavos e 1 real), exibir visualmente na tela o nome de cada moeda
+                        detectada, e somar automaticamente o valor total em tempo real.
+                    </p>
+                    <p>
+                        A proposta visa proporcionar uma ferramenta de fácil acesso a usuários leigos, como idosos ou
+                        pessoas com baixo grau de alfabetização digital, permitindo que realizem tarefas de conferência
+                        de
+                        pagamentos com maior autonomia, rapidez e precisão. O sistema deverá operar sem necessidade de
+                        instalação de dispositivos especiais ou conhecimento técnico por parte do usuário, funcionando
+                        apenas com uma câmera e um computador simples.
+                    </p>
+                    <p>
+                        Como diferencial, a aplicação valoriza a <strong>interface visual intuitiva</strong> e elimina a
+                        necessidade de interação textual ou numérica. Dessa forma, o sistema não apenas cumpre uma
+                        função
+                        prática, mas também atua como um exemplo concreto do poder da visão computacional para promover
+                        inclusão digital e acessibilidade em contextos cotidianos.
+                    </p>
+                    <hr>
+                </section>
+                <section class="pb-3">
+                    <p class="h5"><b>COMO O SISTEMA SERÁ UTILIZADO (INTERATIVIDADE DO USUÁRIO)</b></p>
+                    <p>
+                        O sistema será projetado para ser extremamente simples, acessível inclusive para pessoas com
+                        pouca
+                        familiaridade com tecnologia:
+                    </p>
+                    <ul>
+                        <li>O usuário posiciona as moedas em frente à webcam.</li>
+                        <li>O sistema detecta as moedas automaticamente.</li>
+                        <li>Cada moeda identificada é rotulada na imagem com seu valor.</li>
+                        <li>O valor total acumulado das moedas detectadas é exibido em destaque na tela.</li>
+                    </ul>
+                    <p>Não será necessário digitar, clicar, nem usar comandos de teclado. A interação será
+                        <strong>totalmente visual e automatizada</strong>, focando no público leigo.
+                    </p>
+                    <hr>
+                </section>
+
+                <section class="pb-3">
+                    <p class="h5"><b>BENEFÍCIOS DO SISTEMA AO USUÁRIO</b></p>
+                    <ul>
+                        <li><strong>Redução de erros</strong> no recebimento e conferência de moedas.</li>
+                        <li><strong>Aumento da autonomia</strong> de pessoas idosas ou com dificuldades de leitura e
+                            cálculo.</li>
+                        <li><strong>Simplicidade de uso</strong>, sem necessidade de conhecimento técnico.</li>
+                        <li><strong>Rapidez na conferência de valores</strong>, economizando tempo e esforço.</li>
+                        <li><strong>Baixo custo de implementação</strong>, utilizando apenas uma webcam e um computador
+                            simples.</li>
+                        <li><strong>Aplicação social e inclusiva</strong>, promovendo acessibilidade digital.</li>
+                    </ul>
+                </section>
+            </details>
+            <h3 style="text-indent: 40px"> Fundamentação teórica</h3>
+            <details open>
+                <section class="pb-3">
+                    <p>O projeto tem como fundamentos principais os conceitos e as ferramentas de visão computacional,
+                        processamento digital de imagens e aprendizado de máquina. Essas três áreas se complementam para
+                        criar um sistema capaz de identificar e classificar moedas de forma automatizada.</p>
+
+                    <p><b>Visão Computacional e Processamento Digital de Imagens:</b><br>
+                        Para que o sistema possa "enxergar" e interpretar as moedas, são aplicadas diversas técnicas de
+                        visão computacional. O processo se inicia com a captura da imagem e segue com etapas de
+                        pré-processamento, que são cruciais para preparar os dados para a análise posterior.</p>
+
+                    As operações de pré-processamento incluem:<br>
+
+                    <p>Calibração de Câmera: A calibração é um passo fundamental em muitos sistemas de visão
+                        computacional. Ela corrige distorções ópticas da lente e mapeia os pontos da imagem para
+                        coordenadas do mundo real, garantindo uma representação mais precisa dos objetos. Esse processo
+                        envolve o cálculo de parâmetros intrínsecos (como foco e centro da imagem) e extrínsecos
+                        (posição e orientação da câmera).</p>
+
+                    <p>Filtragem para Redução de Ruído: Imagens capturadas podem conter ruídos que dificultam a análise.
+                        Para minimizar esse problema, utiliza-se a filtragem. Um dos filtros mais comuns é o Filtro
+                        Gaussiano, que aplica uma suavização à imagem, desfocando-a de forma controlada. Ele se baseia
+                        na função Gaussiana, que atribui maior peso aos pixels centrais e menor aos mais distantes,
+                        resultando em um desfoque suave que preserva as bordas enquanto reduz o ruído.</p>
+
+                    <p>Detecção de Bordas e Contornos: Após a suavização, o próximo passo é destacar as fronteiras das
+                        moedas. Técnicas de detecção de bordas são aplicadas para identificar áreas com mudanças bruscas
+                        de intensidade de pixels. Com base nessas bordas, a detecção de contornos é utilizada para
+                        localizar com precisão as regiões circulares que correspondem às moedas na imagem, isolando-as
+                        do fundo (para realizar o corte de cada região).</p>
+                    <br>
+                    <p><b>Aprendizado de Máquina e Redes Neurais Convolucionais (CNNs):</b><br>
+                        Uma vez que as moedas são localizadas e segmentadas, a tarefa de classificá-las (ou seja,
+                        identificar seu valor) é realizada por um modelo de aprendizado de máquina. Para este projeto,
+                        foi utilizada uma Rede Neural Convolucional (CNN), um tipo de arquitetura de rede neural
+                        especialmente eficaz para tarefas de classificação de imagens.</p>
+
+                    <p>O modelo, desenvolvido com a biblioteca Keras, foi treinado com um grande conjunto de imagens de
+                        moedas previamente rotuladas. Durante o treinamento, a CNN aprende a reconhecer padrões,
+                        texturas e características visuais específicas de cada tipo de moeda. Após o treinamento, o
+                        modelo é capaz de receber uma nova imagem de uma moeda e prever com alta precisão a qual
+                        categoria ela pertence.</p>
+                </section>
+            </details>
+            <hr>
+            <!-- Materiais e métodos = PARTE 2 -->
+            <h2 id="matMethods">Materiais e Métodos</h2>
+            <!-- Etapa 2 - Modelagem Funcional do Sistema (MF) -->
+            <h3 style="text-indent: 40px">Modelagem Funcional do SPV (MF)</h3>
+            <details open>
+                <section class="pb-3">
+                    <p class="h5"><b>INTRODUÇÃO</b></p>
+                    <p>A modelagem funcional apresentada a seguir descreve, de forma estruturada e visual, o
+                        funcionamento
+                        interno do
+                        sistema de contagem automática de moedas por visão computacional. Esta etapa tem como objetivo
+                        representar os
+                        principais blocos de processamento do sistema, detalhando as entradas, saídas e operações
+                        realizadas
+                        em cada
+                        parte do fluxo.
+                    </p>
+                    <p>Com base no problema identificado na etapa de contexto — a dificuldade de pessoas idosas ou com
+                        baixa
+                        familiaridade com tecnologia em conferir valores recebidos em moedas — o sistema foi projetado
+                        para
+                        operar de
+                        forma autônoma, utilizando uma câmera simples para capturar imagens, processá-las, reconhecer as
+                        moedas com o
+                        auxílio de um modelo treinado e, por fim, exibir de forma clara o valor total das moedas
+                        detectadas.
+                    </p>
+                    <p>
+                        A modelagem visa facilitar a compreensão do comportamento do sistema e servir como base para sua
+                        implementação e
+                        validação prática.
+                    </p>
+                    <hr>
+                </section>
+                <section class="pb-3">
+                    <p class="h5"><b>OBJETIVO</b></p>
+
+                    <p>Descrever os componentes funcionais do sistema que detecta e classifica moedas usando a webcam e
+                        exibe o valor
+                        total ao usuário, de forma automática e em tempo real.</p>
+                    <hr>
+                </section>
+                <section class="pb-3">
+                    <p class="h5"><b>DIAGRAMA DE BLOCOS</b></p>
+                    <div class="w-100 d-flex justify-content-center">
+                        <div class=" w-100 diagrama">
+                            <div class="etapa">Captura de Vídeo</div>
+                            <div class="seta">↓</div>
+                            <div class="etapa">Pré-processamento da Imagem</div>
+                            <div class="seta">↓</div>
+                            <div class="etapa">Detecção de Contornos</div>
+                            <div class="seta">↓</div>
+                            <div class="etapa">Recorte das Regiões de Interesse</div>
+                            <div class="seta">↓</div>
+                            <div class="etapa">Classificação com Rede Neural</div>
+                            <div class="seta">↓</div>
+                            <div class="etapa">Filtragem por Confiança</div>
+                            <div class="seta">↓</div>
+                            <div class="etapa">Atualização do Valor Total</div>
+                            <div class="seta">↓</div>
+                            <div class="etapa">Exibição de Resultados na Tela</div>
+                        </div>
+                    </div>
+                    <hr>
+                </section>
+
+                <section class="pb-3">
+                    <p class="h3 mb-4"><b>DESCRIÇÃO DETALHADA DOS BLOCOS FUNCIONAIS</b></p>
+
+                    <div class="bloco mb-5">
+                        <p class="h4 mb-3">1. Captura de Vídeo</p>
+
+                        <p><strong>Entrada:</strong> Webcam do dispositivo.</p>
+                        <p><strong>Processamento:</strong> Inicializa a câmera usando <code>cv2.VideoCapture()</code>
+                            para
+                            capturar
+                            imagens
+                            em tempo real. Cada frame serve como entrada para o sistema.</p>
+                        <p><strong>Saída:</strong> Imagem colorida no formato RGB, representada como uma matriz NumPy.
+                        </p>
+                    </div>
+
+                    <div class="bloco mb-5">
+                        <p class="h4 mb-3">2. Pré-processamento da Imagem</p>
+
+                        <p><strong>Entrada:</strong> Frame da webcam.</p>
+                        <p><strong>Processamento:</strong>
+                            Aplica um conjunto de operações para realçar as bordas das moedas, incluindo:
+                        <ul>
+                            <li>Suavização com <code>cv2.GaussianBlur</code></li>
+                            <li>Detecção de bordas com <code>cv2.Canny</code></li>
+                            <li>Dilatação para engrossar as bordas</li>
+                            <li>Erosão para eliminar ruído</li>
+                        </ul>
+                        </p>
+                        <p><strong>Saída:</strong> Imagem binária que destaca contornos e áreas de interesse.</p>
+                    </div>
+
+                    <div class="bloco mb-5">
+                        <p class="h4 mb-3">3. Detecção de Contornos</p>
+
+                        <p><strong>Entrada:</strong> Imagem binária processada.</p>
+                        <p><strong>Processamento:</strong> Utiliza <code>cv2.findContours()</code> para encontrar
+                            regiões
+                            fechadas.
+                            Essas
+                            regiões indicam possíveis moedas na cena.</p>
+                        <p><strong>Saída:</strong> Lista de contornos (arrays com coordenadas dos pontos).</p>
+                    </div>
+
+                    <div class="bloco mb-5">
+                        <p class="h4 mb-3">4. Recorte das Regiões de Interesse</p>
+
+                        <p><strong>Entrada:</strong> Contornos filtrados por área (ex: área &gt; 2000).</p>
+                        <p><strong>Processamento:</strong> Para cada contorno detectado, extrai uma subimagem
+                            correspondente
+                            à região
+                            delimitada. Essa região é o provável local da moeda.</p>
+                        <p><strong>Saída:</strong> Imagens recortadas (ROI – Region of Interest) de moedas individuais.
+                        </p>
+                    </div>
+
+                    <div class="bloco mb-5">
+                        <p class="h4 mb-3">5. Classificação com Rede Neural</p>
+
+                        <p><strong>Entrada:</strong> ROI de moeda recortada.</p>
+                        <p><strong>Processamento:</strong>
+                        <ul>
+                            <li>Redimensionamento da imagem para 224x224 pixels</li>
+                            <li>Normalização dos valores dos pixels</li>
+                            <li>Classificação com modelo <code>keras_model.h5</code> previamente treinado</li>
+                        </ul>
+                        </p>
+                        <p><strong>Saída:</strong> Rótulo da moeda (ex: “1real”, “50cent” e “5cent”).</p>
+                    </div>
+
+                    <div class="bloco mb-5">
+                        <p class="h4 mb-3">6. Filtragem por Confiança</p>
+
+                        <p><strong>Entrada:</strong> Classe e probabilidade da predição.</p>
+                        <p><strong>Processamento:</strong> Aceita a predição apenas se a confiança for superior a 65%,
+                            evitando
+                            classificações equivocadas.</p>
+                        <p><strong>Saída:</strong> Moeda validada para contagem ou descartada.</p>
+                    </div>
+
+                    <div class="bloco mb-5">
+                        <p class="h4 mb-3">7. Atualização do Valor Total</p>
+
+                        <p><strong>Entrada:</strong> Moeda validada.</p>
+                        <p><strong>Processamento:</strong> Soma o valor da moeda ao total acumulado exibido ao usuário.
+                        </p>
+                        <p><strong>Saída:</strong> Total monetário atualizado.</p>
+                    </div>
+
+                    <div class="bloco mb-5">
+                        <p class="h4 mb-3">8. Exibição de Resultados na Tela</p>
+
+                        <p><strong>Entrada:</strong> Frame com bounding boxes, rótulos e valor total.</p>
+                        <p><strong>Processamento:</strong> Adiciona sobreposições gráficas usando
+                            <code>cv2.putText()</code>
+                            e
+                            <code>cv2.rectangle()</code> para informar ao usuário os resultados em tempo real.
+                        </p>
+                        <p><strong>Saída:</strong> Interface visual interativa com os valores das moedas e o total
+                            acumulado.</p>
+                    </div>
+                    <hr>
+                </section>
+
+                <section class="pb-3">
+                    <p class="h3 mb-4"><b>CONCEITOS DE VISÃO COMPUTACIONAL APLICADOS</b></p>
+
+                    <ul>
+                        <li><strong>Filtragem de Imagem:</strong> Blur, Canny, morfologia</li>
+                        <li><strong>Transformações Geométricas:</strong> Recorte, redimensionamento</li>
+                        <li><strong>Reconhecimento:</strong> Classificação de imagem com CNN</li>
+                        <li><strong>Métrica de Desempenho:</strong> Acurácia visual e valor monetário exibido</li>
+                    </ul>
+                    <hr>
+                </section>
+            </details>
+            <!-- Etapa 3 - Seminário S1 dos Trabalhos - Apresentação -->
+            <!-- Etapa 4 - Desenvolvimento Sistema de Processamento Visual (SPV) -->
+            <h3 style="text-indent: 40px">Descrição da implementação do Sistema de Processamento da Visão (SPV)</h3>
+            <details open>
+                <!-- Objetivo -->
+                <section class="pb-3">
+                    <p class="h5"><b>OBJETIVO DESTA ETAPA</b></p>
+                    <p>
+                        Consolidar e documentar a implementação funcional do Sistema de Processamento Visual (SPV) capaz
+                        de
+                        detectar, classificar e somar moedas brasileiras em tempo real, conforme os requisitos descritos
+                        no
+                        edital da disciplina e na modelagem aprovada nas etapas anteriores.
+                    </p>
+                    <hr>
+                </section>
+
+                <!-- Tecnologias -->
+                <section class="pb-3">
+                    <p class="h5"><b>TECNOLOGIAS UTILIZADAS</b></p>
+                    <table class="table table-bordered table-tech">
+                        <tbody>
+                            <tr>
+                                <td>Python 3.10</td>
+                                <td>Linguagem principal do projeto. Fornece sintaxe simples e vasta comunidade de
+                                    bibliotecas
+                                    para ciência de dados e visão computacional.</td>
+                            </tr>
+                            <tr>
+                                <td>OpenCV 4.10.0</td>
+                                <td>Biblioteca open‑source para processamento de imagens e visão computacional.
+                                    Utilizada
+                                    para
+                                    captura da webcam, filtragem, detecção de contornos, desenho de overlays e exibição
+                                    de
+                                    janelas.</td>
+                            </tr>
+                            <tr>
+                                <td>TensorFlow 2.9.1 / Keras 2.6.0</td>
+                                <td>Framework de aprendizado profundo. O modelo <i>keras_model.h5</i> (MobileNet‑V2
+                                    fine‑tuned)
+                                    classifica cada moeda em 1 real, 50 centavos ou 5 centavos.</td>
+                            </tr>
+                            <tr>
+                                <td>NumPy 1.26</td>
+                                <td>Manipulação matricial de alto desempenho; converte frames em <code>ndarray</code> e
+                                    normaliza pixels antes de alimentar a rede neural.</td>
+                            </tr>
+                            <tr>
+                                <td>Bootstrap 5.3 / HTML & CSS</td>
+                                <td>Front‑end responsivo para os relatórios em GitHub Pages, garantindo identidade
+                                    visual
+                                    uniforme entre todas as entregas.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <hr>
+                </section>
+
+                <!-- Componentes implementados -->
+                <section class="pb-3">
+                    <p class="h5"><b>COMPONENTES IMPLEMENTADOS</b></p>
+                    <div class="bloco">
+                        <p class="h4">1. Captura de Vídeo</p>
+                        <p>Inicializada com <code>cv2.VideoCapture(0, cv2.CAP_DSHOW)</code>, configurando resolução
+                            640×480.
+                            A
+                            webcam fornece cada quadro como matriz <code>NumPy</code>.</p>
+                    </div>
+                    <div class="bloco">
+                        <p class="h4">2. Pré‑processamento da Imagem</p>
+                        <p>Função <code>preProcess()</code> faz suavização, detecção de bordas e operações morfológicas
+                            para
+                            salientar contornos circulares das moedas.</p>
+                        <pre><code>def preProcess(img):
+    imgPre = cv2.GaussianBlur(img, (5, 5), 3)
+    imgPre = cv2.Canny(imgPre, 90, 140)
+    kernel = np.ones((4, 4), np.uint8)
+    imgPre = cv2.dilate(imgPre, kernel, iterations=2)
+    imgPre = cv2.erode(imgPre, kernel, iterations=1)
+    return imgPre</code></pre>
+                    </div>
+                    <div class="bloco">
+                        <p class="h4">3. Classificação com Rede Neural</p>
+                        <p>A função <code>DetectarMoeda()</code> prepara a ROI e executa o modelo <i>keras_model.h5</i>,
+                            retornando rótulo e confiabilidade.</p>
+                        <pre><code>def DetectarMoeda(img):
+    imgMoeda = cv2.resize(img, (224, 224))
+    imgMoeda = np.asarray(imgMoeda)
+    imgMoedaNormalize = (imgMoeda.astype(np.float32) / 127.0) - 1
+    data[0] = imgMoedaNormalize
+    prediction = model.predict(data)
+    index   = np.argmax(prediction)
+    classe  = classes[index]
+    conf    = prediction[0][index]
+    return classe, conf</code></pre>
+                    </div>
+                    <div class="bloco">
+                        <p class="h4">4. Loop Principal</p>
+                        <p>Para cada contorno válido (&gt; 2000 px²) o sistema recorta, classifica, desenha <i>bounding
+                                box</i>
+                            e acumula o valor monetário.</p>
+                        <pre><code>for cnt in contornos:
+    area = cv2.contourArea(cnt)
+    if area &gt; 2000:
+        x, y, w, h = cv2.boundingRect(cnt)
+        recorte = frame[y:y+h, x:x+w]
+        classe, conf = DetectarMoeda(recorte)
+        if conf &gt; 0.7:
+            total += valor_moeda(classe)
+            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+            cv2.putText(frame, classe, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 2)</code></pre>
+                    </div>
+                    <div class="bloco">
+                        <p class="h4">5. Exibição em Tempo Real</p>
+                        <p>O overlay com <code>cv2.putText()</code> apresenta o total acumulado dentro de um retângulo
+                            vermelho,
+                            tornando a interface autoexplicativa para usuários leigos.</p>
+                    </div>
+                    <hr>
+                </section>
+
+
+
+                <!-- Conformidade -->
+                <section class="pb-3">
+                    <p class="h5"><b>CONFORMIDADE COM O PROJETO</b></p>
+                    <ul>
+                        <li>Uso obrigatório do OpenCV e execução em Ubuntu‑Linux</li>
+                        <li>Cálculo <em>on‑the‑fly</em> com visualização em tempo real</li>
+                        <li>Cabeçalhos de autoria nos arquivos fonte (em adição)</li>
+                        <li>Bibliotecas externas de domínio público (OpenCV, TensorFlow, NumPy)</li>
+                        <li>Conceitos de filtragem, transformações geométricas e reconhecimento implementados</li>
+                    </ul>
+                    <hr>
+                </section>
+
+                <!-- Próximos passos -->
+                <section class="pb-3">
+                    <p class="h5"><b>PRÓXIMOS PASSOS</b></p>
+                    <ul>
+                        <li>Integrar calibração de câmera para robustez a distâncias variáveis.</li>
+                        <li>Melhorar treinamento do modelo com mais imagens</li>
+                        <li>Expandir dataset com moedas desgastadas e sujas.</li>
+                        <li>Criar roteiro do Laboratório Experimental e questionários para Etapa 5.</li>
+                        <li>Validar a possibilidade de feedback sonoro para acessibilidade.</li>
+                        <li>Incluir as moedas faltantes: 10 e 25 centavos</li>
+                    </ul>
+                    <hr>
+                </section>
+
+                <!-- Conclusão -->
+                <section class="pb-3">
+                    <p class="h5"><b>CONCLUSÃO</b></p>
+                    <p>
+                        O protótipo entregue nesta etapa comprova a viabilidade técnica da contagem automática de moedas
+                        via
+                        visão computacional, atingindo alto desempenho em tempo real com hardware comum. A arquitetura
+                        modular
+                        facilita manutenções futuras e a integração de novas funcionalidades (por exemplo, calibração e
+                        acessibilidade sonora). O próximo ciclo de trabalho focará na avaliação com usuários externos e
+                        na
+                        coleta de métricas subjetivas de usabilidade.
+                    </p>
+                </section>
+            </details>
+            <hr>
+            <!-- Etapa 4+ #1 - Lista dos arquivos (exigida no PDF) -->
+            <h3 style="text-indent: 40px">Lista dos arquivos</h3>
+            <details open>
+                <p>Em <b>reconhecimento_de_moedas</b> (listado na seção Anexo, no final deste documento):<br>
+
+                <h6 style="text-indent: 30px">> imagens_treino</h6>
+                <h6 style="text-indent: 60px">> 1real:</h6>
+                <h6 style="text-indent: 90px"><b>imagem1.jpg - imagem250.jpg</b> = Imagens da moeda de R$1,00 (segunda
+                    família do BRL, 1998-), usadas em
+                    treinamento;</h6>
+                <h6 style="text-indent: 60px">> 5cent:</h6>
+                <h6 style="text-indent: 90px"><b>imagem1.jpg - imagem281.jpg</b> = Imagens da moeda de R$0,05 (segunda
+                    família do BRL, 1998-), usadas em
+                    treinamento;</h6>
+                <h6 style="text-indent: 60px">> 10cent:</h6>
+                <h6 style="text-indent: 90px"><b>imagem1.jpg - imagem273.jpg</b> = Imagens da moeda de R$0,10 (segunda
+                    família do BRL, 1998-), usadas em
+                    treinamento;</h6>
+                <h6 style="text-indent: 60px">> 50cent:</h6>
+                <h6 style="text-indent: 90px"><b>imagem1.jpg - imagem273.jpg</b> = Imagens da moeda de R$0,50 (segunda
+                    família do BRL, 1998-), usadas em
+                    treinamento.</h6><br>
+
+                <h6 style="text-indent: 30px">> images_webcam_chess</h6>
+                <h6 style="text-indent: 60px"><b>imgs_calib_0.png - imgs_calib_18.png</b> = Imagens de calibração de
+                    câmera, para uso com OpenCV.</h6><br>
+                <h6 style="text-indent: 30px">> modelo_keras</h6>
+                <h6 style="text-indent: 60px"><b>keras_model.h5</b> = Modelo de inferência para detecção de
+                    modelo_keras;</h6><br>
+                <b>labels.txt</b> = Arquivo de associação de parâmetros do modelo de inferência com valores
+                associados.<br><br>
+
+                <b>calibracao_camera.pkl</b> = Arquivo serializado contendo informações sobre calibração de
+                câmera;<br><br>
+                <b>calibration.py</b> = Arquivo responsável pela calibração da câmera;<br><br>
+                <b>captura_imagens.py</b> = Arquivo responsável pela captura de imagens para processamento e detecção de
+                moedas;<br><br>
+                <b>chess.py</b> = Arquivo para captura de imagens de calibração;<br><br>
+                <b>main.py</b> = Arquivo principal do programa;<br><br>
+                <b>programa_funcionando.png</b> = Exemplo de resultado final durante execução do programa.</p>
+            </details>
+            <hr>
+            <!-- Etapa 4+ #2 - Análise técnica (exigida no PDF) -->
+            <h3 style="text-indent: 40px">Análise Técnica</h3>
+            <details open>
+                <p>Análise técnica do Sistema de Processamento Visual (SPV): arquitetura modular, projetada como
+                    resposta às dificuldades na conferência de moedas enfrentadas por pessoas com visão reduzida e idade
+                    mais avançada. O resultado é apresentado por meio de métricas de desempenho e conclusões extraídas
+                    das etapas de implementação e também do teste de campo.</p>
+
+                <p><b>1. Aderência ao Cenário de Aplicação e Desempenho Funcional:</b><br>
+                    O objetivo principal do projeto era criar uma ferramenta de baixo custo, simples e automatizada,
+                    visando promover a inclusão digital e a autonomia de usuários com pouca familiaridade tecnológica. A
+                    implementação atende essa premissa por meio de uma solução primariamente visual, que elimina a
+                    necessidade de comandos de teclado ou cliques, alinhando-se perfeitamente à modelagem funcional.</p>
+
+                <p>Métricas Qualitativas (Resultados do Teste de Campo):<br>
+                    O sucesso da abordagem foi confirmado pelos testes com usuários, que destacaram a "Praticidade e
+                    facilidade de uso" e a "Aplicabilidade social" da solução. A rapidez na contabilização e a confiança
+                    na precisão foram outros pontos positivos bastante mencionados, validando a capacidade do sistema em
+                    resolver o problema central de forma satisfatória.</p>
+
+                <p>Métricas Objetivas de Desempenho:<br>
+
+                    Limiar de Confiança: Para assegurar os resultados e minimizar falsos positivos, o sistema implementa
+                    um filtro que aceita classificações apenas com probabilidade superior a 65-70%;<br>
+
+                    Domínio de Classificação: O projeto é funcional para as moedas de R$ 0,05, R$ 0,50 e R$ 1,00,
+                    selecionadas com base na proporção de moedas em circulação no Brasil, bom como por sua relevância no
+                    problema inicial, que inclui a frequente confusão visual entre as de 5 e 50 centavos;<br>
+
+                    Processamento em Tempo Real: A seleção estratégica de um modelo Keras (baseado em MobileNet-V2) e o
+                    pré-processamento otimizado com OpenCV (640x480 pixels) garantiram o cálculo "ao vivo", atendendo ao
+                    requisito de exibição, em tempo real, do valor total.</p>
+
+                <p><b>2. Arquitetura Técnica e Algoritmos</b><br>
+                    A implementação do sistema adere à modelagem funcional, executando uma sequência de processamento
+                    bem definida. O processo inicia-se com a Aquisição e Pré-processamento, onde a captura de vídeo via
+                    <code>cv2.VideoCapture()</code> é seguida pela aplicação da função <code>preProcess()</code>
+                    (incluindo GaussianBlur, Canny e morfologia matemática) para isolar as bordas das moedas. Na
+                    sequência, a etapa de Segmentação e Extração utiliza <code>cv2.findContours()</code> com um filtro
+                    de área mínima (> 2000 pixels) para eliminar ruídos e otimizar o desempenho. Por fim, o núcleo de
+                    inteligência do sistema, a Classificação, é realizado pela função <code>DetectarMoeda()</code>, que
+                    emprega o modelo keras_model.h5 para identificar as regiões de interesse recortadas.
+                </p>
+
+                <p><b>3. Limitações e Pontos de Melhoria:</b><br>
+                    Apesar do desempenho satisfatório em condições controladas, a análise revelou limitações que
+                    impactam a robustez do sistema em cenários mais adversos:<br>
+
+                    Sensibilidade Ambiental: A precisão do sistema é suscetível a variações de iluminação, como reflexos
+                    intensos e sombras fortes. A utilização de uma "caixa de contagem" com iluminação dedicada diminuiu
+                    o problema, mas confirmou a necessidade de um ambiente controlado;<br>
+
+                    Oclusão de Moedas: O sistema não é projetado para tratar a oclusão, pois o algoritmo de contornos
+                    segmenta moedas sobrepostas ou muito próximas como uma única entidade, uma dificuldade relatada
+                    pelos usuários durante os teste;<br>
+
+                    Escalabilidade do Reconhecimento: O modelo Keras atual não foi treinado com as moedas de R$ 0,10 e
+                    R$ 0,25. Uma futura expansão do dataset de treinamento, incluindo todas as moedas de Real Brasileiro
+                    em circulação e exemplares com diferentes níveis de desgaste e oxidação, é um ponto de melhoria
+                    essencial para uma aplicação mais abrangente.</p>
+
+                <p>Em resumo, esta análise técnica conclui que o sistema desenvolvido cumpre adequadamente os requisitos
+                    do cenário de aplicação proposto, oferecendo uma solução funcional e de boa usabilidade. As métricas
+                    qualitativas confirmam a eficácia, enquanto as métricas objetivas, como o limiar de confiança,
+                    garantem sua precisão. As limitações identificadas constituem um conjunto de tópicos relevantes para
+                    futuras otimizações, que poderão ampliar o impacto social e a robustez da aplicação.</p>
+                <!-- Recomendável colocar uma descrição breve ao lado de cada nome-->
+            </details>
+            <hr>
+            <!-- Laboratório Experimental = PARTE 3 -->
+            <h2 id="expLab">Laboratório Experimental</h2>
+            <!-- Etapa 5 - Desenvolvimento do Laboratório Experimental (LEx) -->
+            <h3 style="text-indent: 40px">Roteiro do Laboratório Experimental (LEx)</h3>
+            <details open>
+                <section class="pb-3">
+                    <p class="h5"><b>INTRODUÇÃO</b></p>
+                    <p>Este roteiro descreve o Laboratório Experimental para o sistema de <strong>Reconhecimento
+                            Automático
+                            de
+                            Moedas</strong>. O objetivo é guiar usuários para executar o sistema, coletar resultados e
+                        responder a um
+                        questionário após o experimento.</p>
+                    <p>O sistema realiza captura por câmera, segmentação por contornos (formato circular/elíptico),
+                        classificação
+                        com modelo Keras exportado do Teachable Machine e apresentação do valor total detectado na tela.
+                    </p>
+                    <p>O escopo de aplicação deste sistema vai além da mera contagem financeira. Ele representa uma
+                        ferramenta de
+                        inclusão e autonomia, especialmente para pessoas com diminuição da capacidade visual, para quem
+                        a
+                        tarefa de
+                        diferenciar moedas por tamanho, peso ou relevo pode ser um desafio considerável. Ao automatizar
+                        esse
+                        processo,
+                        o sistema busca oferecer uma solução prática e precisa para as atividades financeiras do dia a
+                        dia,
+                        promovendo
+                        maior independência para o usuário.</p>
+                    <p>A utilização de uma <b>caixa de contagem</b> com ring light oferece a praticidade e portabilidade
+                        necessárias
+                        para uso em diferentes ambientes, desde pequenos comércios até residências. Além disso, a
+                        estrutura
+                        simples do
+                        equipamento e a baixa complexidade das etapas, detalhadas a seguir, reforçam a proposta de um
+                        sistema de fácil
+                        acesso e operação. O objetivo principal deste experimento é, portanto, validar a eficácia da IA
+                        para
+                        este
+                        propósito e avaliar sua usabilidade e precisão para um público diversificado.</p>
+                    <p>De modo geral, o funcionamento do sistema ocorrerá da seguinte forma:</p>
+                    <p>O usuário irá iniciar o sistema e posicionar as moedas no espaço designado na caixa
+                        estruturada pelos alunos. Com isso, o sistema irá realizar o processo de observação e
+                        reconhecimento
+                        das
+                        moedas, identificando automaticamente o tipo e o valor de cada uma. Na tela, o usuário verá as
+                        imagens
+                        capturadas pela câmera, com as moedas destacadas por caixas coloridas e acompanhadas de rótulos
+                        que
+                        indicam
+                        seu valor.</p>
+                    <p>À medida que as moedas são reconhecidas, o sistema soma os valores e exibe o total atualizado em
+                        tempo real.
+                        O usuário não precisa fazer cálculos nem informar manualmente quais moedas estão sendo
+                        utilizadas,
+                        basta
+                        garantir que elas estejam visíveis e bem posicionadas. Em poucos segundos, o resultado aparece
+                        na
+                        tela,
+                        tornando o processo rápido, simples e prático para qualquer pessoa, mesmo sem experiência com
+                        computadores ou
+                        sistemas de visão artificial.</p>
+                    <p><b>Interface de entrada: </b> consiste na captura de vídeo em tempo real pela webcam, exibida
+                        diretamente na tela. É através dessa visualização que o usuário posiciona as moedas sobre a
+                        superfície
+                        delimitada pela caixa estruturada, garantindo que todas estejam visíveis no enquadramento. O
+                        sistema
+                        inicia a
+                        análise assim que a câmera detecta os objetos no campo de visão, sem necessidade de
+                        configurações
+                        complexas ou
+                        ajustes técnicos.</p>
+                    <p><b>Interface de saída: </b>consiste na apresentação ao usuário o resultado do processamento
+                        realizado
+                        pelo sistema. Sobre a imagem capturada, são desenhadas quadrados verdes em volta de cada moeda,
+                        acompanhadas
+                        de rótulos indicando seu valor individual. Além disso, na parte direita superior da exibição
+                        haverá
+                        um painel
+                        indicando o valor total calculado em tempo real, atualizado conforme novas moedas são
+                        adicionadas ou
+                        removidas. O objetivo é fornecer informações visuais e numéricas claras, permitindo que o
+                        usuário
+                        entenda
+                        facilmente o que foi identificado e o total obtido sem qualquer necessidade de interpretação
+                        técnica.</p>
+                    <p>Alguns benefícios trazidos para o usuário com a implementação do projeto são:</p>
+                    <ul>
+                        <li><strong>Redução de erros</strong> no recebimento e conferência de moedas.</li>
+                        <li><strong>Aumento da autonomia</strong> de pessoas idosas ou com dificuldades de leitura e
+                            cálculo.</li>
+                        <li><strong>Rapidez na conferência de valores</strong>, economizando tempo e esforço.</li>
+                        <li><strong>Baixo custo de implementação</strong>, utilizando apenas uma webcam e um computador
+                            simples.</li>
+                        <li><strong>Aplicação social e inclusiva</strong>, promovendo acessibilidade digital.</li>
+                    </ul>
+                    <hr>
+                </section>
+
+                <section class="pb-3">
+                    <p class="h5"><b>PROCEDIMENTO EXPERIMENTAL</b></p>
+                    <p>Nessa seção você encontrará o passo a passo a ser seguido para que consiga utilizar o sistema na
+                        melhor
+                        maneira possível.</p>
+                    <p class="h4">Passo 1 — Preparação do ambiente</p>
+                    <ul>
+                        <li>Ligar as luzes de dentro da caixa para que o ambiente seja bem iluminado, evitando reflexos
+                            intensos e
+                            comprometendo na identificação das moedas.</li>
+                        <li>Separar as moedas de R$ 0,05, R$ 0,50 e R$ 1,00 em quantidades variadas.</li>
+                        <li>Remova objetos circulares concorrentes (tampas, botões) da área de teste.</li>
+                    </ul>
+
+                    <p class="h4">Passo 2 — Inicialização do sistema</p>
+                    <ul>
+                        <li>Abrir o terminal na pasta do projeto.</li>
+                        <li>Executar o comando: <code>python main.py</code></li>
+                        <li>Aguardar as janelas do sistema serem carregadas e exibidas no monitor.</li>
+                        <li>Como a câmera já foi calibrada préviamente, não será necessário aplicar nenhum outro passo
+                            para
+                            o início
+                            da utilização do sistema.</li>
+                    </ul>
+
+                    <p class="h4">Passo 3 — Execução do experimento</p>
+                    <ul>
+                        <li>Colocar uma ou mais moedas sobre a superfície de teste que está sendo indicada na parte
+                            debaixo
+                            da caixa
+                            com um retângulo com as bordas pretas.</li>
+                        <li>Observar a janela com a exibição: moedas detectadas são marcadas por um retângulo verde; o
+                            rótulo da
+                            classe aparece sobre o retângulo; o valor total aparece no canto superior direito.</li>
+                        <li>Acrescentar novas moedas e visualizar o comportamento do sistema.</li>
+                    </ul>
+
+                    <p class="h4">Passo 4 — Finalização</p>
+                    <ul>
+                        <li>Clicar na janela onde as moedas estão sendo exibidas e pressionar a tecla <code>Q</code>
+                            para
+                            encerrar o
+                            sistema.
+                        </li>
+                        <li>Registrar observações e comentários sobre o desempenho.</li>
+                    </ul>
+                    <hr>
+                </section>
+
+                <section class="pb-3">
+                    <p class="h5"><b>RESULTADOS ESPERADOS</b></p>
+                    <ul>
+                        <li>Reconhecimento correto das moedas nas condições favoráveis de teste.</li>
+                        <li>Exibição do valor total acumulado: R$ X,XX.</li>
+                        <li>Redução da acurácia com iluminação inadequada, reflexos extremos, ou moedas parcialmente
+                            sobrepostas.
+                        </li>
+                    </ul>
+                    <p>Segue uma imagem de como será a interface de saída após uso do sistema:</p>
+                    <div class="d-flex justify-content-center align-items-center py-2">
+                        <figure class="text-center">
+                            <img src="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/TRABALHOS/TRAB-ETAPA-08/assets/programa_funcionando.png"
+                                alt="Imagem">
+                            <figcaption><i>Figura 1</i>: Resultado da interface de saída do sistema.</figcaption>
+                        </figure>
+                    </div>
+                    <hr>
+                </section>
+
+                <section class="pb-3">
+                    <p class="h5"><b>QUESTIONÁRIO DE AVALIAÇÃO</b></p>
+                    <p>A seguir estão os links para os formulários relacionados ao sistema.</p>
+                    <div class="link-list-forms">
+                        <p><strong>Link para o formulário:</strong></p>
+                        <p>
+                            <a class="text-decoration-none p-2 w-auto my-3" href="https://forms.gle/oNGW7fXU3DgkmWXt9"
+                                target="_blank">Formulário</a>
+                        </p>
+                        <div class="d-flex justify-content-center align-items-center py-2">
+                            <figure class="text-center">
+                                <img style="width:300px; box-shadow:none"
+                                    src="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/TRABALHOS/TRAB-ETAPA-05/assets/formulario.png"
+                                    alt="Imagem">
+                                <figcaption><i>Figura 2</i>: QRCODE Formulário.</figcaption>
+                            </figure>
+                        </div>
+                        <p><strong>Link para o formulário ESO (Enquete Subjetiva de Opinião):</strong></p>
+                        <p>
+                            <a class="text-decoration-none p-2 w-auto my-3" href="https://forms.gle/zAQwDJJR3DtwvjgP8"
+                                target="_blank">Formulário ESO</a>
+                        </p>
+                        <div class="d-flex justify-content-center align-items-center py-2">
+                            <figure class="text-center">
+                                <img style="width:300px; box-shadow:none"
+                                    src="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/TRABALHOS/TRAB-ETAPA-05/assets/formulario-eso.png"
+                                    alt="Imagem">
+                                <figcaption><i>Figura 3</i>: QRCODE Formulário ESO.</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+                </section>
+            </details>
+            <!-- Etapa 6 - Teste de Campo do SPV (TC) -->
+            <h3 style="text-indent: 40px">Análise dos Resultados do Teste de Campo TCS</h3>
+            <details open>
+                <section class="pb-3">
+                    <p class="h3"><b>Resultados</b></p>
+                    O desenvolvimento do sistema resultou em um protótipo funcional em tempo real, capaz de identificar
+                    e
+                    contabilizar moedas. Durante os testes, o software demonstrou capacidade de detecção das moedas de
+                    <strong>R$
+                        0,05</strong>, <strong>R$ 0,50</strong> e <strong>R$ 1,00</strong>, mesmo em situações nas quais
+                    a
+                    luminosidade não era adequada e a superfície apresentava algum tipo de anomalia.
+                    </p>
+                    <p>
+                        Os experimentos realizados em ambientes controlados de laboratório mostraram que o sistema
+                        alcança um bom
+                        nível de precisão, com identificação correta das moedas e contabilização ao serem inseridas ou
+                        retiradas da
+                        área de detecção.
+                    </p>
+                    <p>
+                        A partir dos questionários aplicados junto aos usuários, destacam-se alguns pontos positivos
+                        percebidos:
+                    </p>
+                    <ul>
+                        <li><strong>Praticidade e facilidade de uso:</strong> mesmo pessoas sem experiência técnica
+                            conseguiram
+                            utilizar o sistema sem dificuldades.</li>
+                        <li><strong>Precisão na contagem:</strong> usuários relataram confiança na identificação das
+                            moedas, mesmo
+                            em condições de iluminação não ideais.</li>
+                        <li><strong>Aplicabilidade social:</strong> o sistema foi considerado útil especialmente para
+                            idosos ou
+                            pessoas com baixa visão, por reduzir esforço e risco de erros.</li>
+                        <li><strong>Rapidez:</strong> o processo de contabilização é automático e imediato, o que poupa
+                            tempo em
+                            comparação à contagem manual.</li>
+                        <li><strong>Inovação:</strong> a utilização de técnicas de visão computacional para uma tarefa
+                            cotidiana foi
+                            considerada um diferencial.</li>
+                    </ul>
+                    <p>
+                        Em termos de limitações observadas, foi relatado que o sistema pode apresentar dificuldades
+                        quando as moedas
+                        estão muito próximas umas das outras ou em casos de forte reflexão de luz. Ainda assim, os
+                        resultados
+                        demonstram que o protótipo atendeu ao objetivo inicial do projeto, confirmando sua viabilidade
+                        como solução
+                        prática para ambientes que demandam manipulação de moedas.
+                    </p>
+
+                    <p>Segue os gráficos com as perguntas e respostas tanto do questionário com relação aos conceitos da
+                        disciplina
+                        e em relação aos experimentos realizados, quanto o questionário ESO (Enquete Subjetiva de
+                        Opinião):</p>
+                    <p class="h4">Questionário</p>
+                    <div class="row">
+                        <div class="col-md">
+                            <div class="d-flex justify-content-center align-items-center py-2">
+                                <figure class="text-center">
+                                    <img src="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/TRABALHOS/TRAB-ETAPA-08/assets/quest-img01.png"
+                                        alt="Imagem">
+                                    <figcaption><i>Gráfico 1</i>: Feedback dos usuários.</figcaption>
+                                </figure>
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <div class="d-flex justify-content-center align-items-center py-2">
+                                <figure class="text-center">
+                                    <img src="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/TRABALHOS/TRAB-ETAPA-08/assets/quest-img02.png"
+                                        alt="Imagem">
+                                    <figcaption><i>Gráfico 2</i>: Feedback dos usuários.</figcaption>
+                                </figure>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md">
+                            <div class="d-flex justify-content-center align-items-center py-2">
+                                <figure class="text-center">
+                                    <img src="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/TRABALHOS/TRAB-ETAPA-08/assets/quest-img03.png"
+                                        alt="Imagem">
+                                    <figcaption><i>Gráfico 3</i>: Feedback dos usuários.</figcaption>
+                                </figure>
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <div class="d-flex justify-content-center align-items-center py-2">
+                                <figure class="text-center">
+                                    <img src="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/TRABALHOS/TRAB-ETAPA-08/assets/quest-img04.png"
+                                        alt="Imagem">
+                                    <figcaption><i>Gráfico 4</i>: Feedback dos usuários.</figcaption>
+                                </figure>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md">
+                            <div class="d-flex justify-content-center align-items-center py-2">
+                                <figure class="text-center">
+                                    <img src="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/TRABALHOS/TRAB-ETAPA-08/assets/quest-img05.png"
+                                        alt="Imagem">
+                                    <figcaption><i>Gráfico 5</i>: Feedback dos usuários.</figcaption>
+                                </figure>
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <div class="d-flex justify-content-center align-items-center py-2">
+                                <figure class="text-center">
+                                    <img src="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/TRABALHOS/TRAB-ETAPA-08/assets/quest-img06.png"
+                                        alt="Imagem">
+                                    <figcaption><i>Gráfico 6</i>: Feedback dos usuários.</figcaption>
+                                </figure>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md">
+                            <div class="d-flex justify-content-center align-items-center py-2">
+                                <figure class="text-center">
+                                    <img src="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/TRABALHOS/TRAB-ETAPA-08/assets/quest-img07.png"
+                                        alt="Imagem">
+                                    <figcaption><i>Gráfico 7</i>: Feedback dos usuários.</figcaption>
+                                </figure>
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <div class="d-flex justify-content-center align-items-center py-2">
+                                <figure class="text-center">
+                                    <img src="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/TRABALHOS/TRAB-ETAPA-08/assets/quest-img08.png"
+                                        alt="Imagem">
+                                    <figcaption><i>Gráfico 8</i>: Feedback dos usuários.</figcaption>
+                                </figure>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md">
+                            <div class="d-flex justify-content-center align-items-center py-2">
+                                <figure class="text-center">
+                                    <img src="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/TRABALHOS/TRAB-ETAPA-08/assets/quest-img09.png"
+                                        alt="Imagem">
+                                    <figcaption><i>Gráfico 9</i>: Feedback dos usuários.</figcaption>
+                                </figure>
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <div class="d-flex justify-content-center align-items-center py-2">
+                                <figure class="text-center">
+                                    <img src="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/TRABALHOS/TRAB-ETAPA-08/assets/quest-img010.png"
+                                        alt="Imagem">
+                                    <figcaption><i>Gráfico 10</i>: Feedback dos usuários.</figcaption>
+                                </figure>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="h4">Questionário ESO (Enquete Subjetiva de Opinião)</p>
+                    <p>Nesse questionário foram realizadas perguntas subjetivas e perguntas com escalas de Discordo
+                        Totalmente até
+                        Concordo Totalmente.</p>
+                    <p>Segue as peguntas subjetivas com as respostas mais importantes:</p>
+                    <p class="h5">1. O que você mais gostou no sistema apresentado?</p>
+                    <ul>
+                        <li>A contabilização das moedas em tempo real.</li>
+                        <li>Detecção automática ao retirar/inserir moedas.</li>
+                        <li>A utilidade e aplicação prática do projeto.</li>
+                        <li>Da facilidade e precisão que o sistema identifica as moedas mesmo com 'sujeira'.</li>
+                        <li>Praticidade e facilidade de uso.</li>
+                    </ul>
+                    <p class="h5">2. De que maneira você acredita que este sistema poderia facilitar suas atividades
+                        diárias
+                        relacionadas à manipulação ou conferência de moedas?</p>
+                    <ul>
+                        <li>Em mercados, lojas pequenas e outros comércios seria muito benéfico.</li>
+                        <li>Pode auxiliar pessoas com mais idade que possuem dificuldade para contar moedas.</li>
+                        <li>Rapidez, precisão na contagem e redução de erros.</li>
+                        <li>Facilitaria a vida de pessoas idosas ou com problemas de visão.</li>
+                        <li>Ajudar a calcular o troco em compras do dia a dia.</li>
+                    </ul>
+                    <p class="h5">3. Quais dificuldades ou problemas você encontrou durante o uso do sistema?</p>
+                    <ul>
+                        <li>Dificuldade com a iluminação alterando o valor das moedas.</li>
+                        <li>O programa demora para atualizar a imagem devido ao alto processamento.</li>
+                        <li>Se as moedas estiverem coladas, a identificação pode falhar.</li>
+                        <li>Reflexos da luz podem impedir a detecção em alguns casos.</li>
+                        <li>Moedas muito próximas apresentam dificuldade na identificação.</li>
+                    </ul>
+                    <p class="h5">4. Que sugestões você daria para melhorar o sistema e torná-lo mais útil?</p>
+                    <ul>
+                        <li>Incluir reconhecimento de cédulas além das moedas.</li>
+                        <li>Adicionar contador lateral com a quantidade de moedas de cada valor.</li>
+                        <li>Melhorar a eficiência do código ou usar hardware mais rápido.</li>
+                        <li>Aumentar a portabilidade do sistema (ex.: rodar em dispositivos móveis).</li>
+                        <li>Possibilitar salvar valores anteriores para somas em sequência.</li>
+                    </ul>
+
+                    <p>Segue os gráficos com os feedback quantitativos de acordo com a escala estipulada.</p>
+                    <div class="row">
+                        <div class="col-md">
+                            <div class="d-flex justify-content-center align-items-center py-2">
+                                <figure class="text-center">
+                                    <img src="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/TRABALHOS/TRAB-ETAPA-08/assets/quest-img011.png"
+                                        alt="Imagem">
+                                    <figcaption><i>Gráfico 11</i>: Feedback dos usuários.</figcaption>
+                                </figure>
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <div class="d-flex justify-content-center align-items-center py-2">
+                                <figure class="text-center">
+                                    <img src="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/TRABALHOS/TRAB-ETAPA-08/assets/quest-img012.png"
+                                        alt="Imagem">
+                                    <figcaption><i>Gráfico 12</i>: Feedback dos usuários.</figcaption>
+                                </figure>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md">
+                            <div class="d-flex justify-content-center align-items-center py-2">
+                                <figure class="text-center">
+                                    <img src="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/TRABALHOS/TRAB-ETAPA-08/assets/quest-img013.png"
+                                        alt="Imagem">
+                                    <figcaption><i>Gráfico 13</i>: Feedback dos usuários.</figcaption>
+                                </figure>
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <div class="d-flex justify-content-center align-items-center py-2">
+                                <figure class="text-center">
+                                    <img src="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/TRABALHOS/TRAB-ETAPA-08/assets/quest-img014.png"
+                                        alt="Imagem">
+                                    <figcaption><i>Gráfico 14</i>: Feedback dos usuários.</figcaption>
+                                </figure>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md">
+                            <div class="d-flex justify-content-center align-items-center py-2">
+                                <figure class="text-center">
+                                    <img src="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/TRABALHOS/TRAB-ETAPA-08/assets/quest-img015.png"
+                                        alt="Imagem">
+                                    <figcaption><i>Gráfico 15</i>: Feedback dos usuários.</figcaption>
+                                </figure>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="pb-3">
+                    <p class="h3"><b>Demonstração prática</b></p>
+                    <p>Vídeos gravados no Teste de Campo do
+                        SPV (TC),
+                        durante a etapa de apresentação do sistema para avaliadores:
+                    </p>
+                    <div class="d-flex justify-content-center align-items-center py-2">
+                        <figure class="text-center">
+                            <video controls autoplay muted loop>
+                                <source
+                                    src="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/TRABALHOS/TRAB-ETAPA-08/assets/video-teste-campo-01.mp4"
+                                    type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <figcaption><i>Vídeo 2</i>: Apresentação do sistema no Teste de Campo.</figcaption>
+                        </figure>
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center py-2">
+                        <figure class="text-center">
+                            <video controls autoplay muted loop>
+                                <source
+                                    src="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/TRABALHOS/TRAB-ETAPA-08/assets/video-teste-campo-02.mp4"
+                                    type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <figcaption><i>Vídeo 3</i>: Apresentação do sistema no Teste de Campo.</figcaption>
+                        </figure>
+                    </div>
+                    <hr>
+                </section>
+            </details>
+
+            <hr>
+            <!-- Conclusões = PARTE 4 -->
+            <h2 id="conc">Conclusões</h2>
+            <details open>
+                <p>O desenvolvimento do Sistema de Contagem de Moedas Brasileiras com Visão Computacional demonstrou,
+                    com sucesso, a viabilidade técnica e a relevância da proposta. O projeto atingiu seus principais
+                    objetivos ao criar uma aplicação prática, simples e funcional, capaz de identificar, contar e somar,
+                    em tempo real, os valores das moedas de R$ 0,05, R$ 0,50 e R$ 1,00, utilizando apenas uma webcam e
+                    um computador. A estratégia modular, combinando ferramentas como OpenCV e TensorFlow com um
+                    parâmetro de confiança mínimo de 65%, garantiu um desempenho robusto e um elevado nível de precisão,
+                    evitando falsos positivos.</p>
+
+                <p>Um dos principais trunfos do projeto, validado por avaliadores, é sua interface acessível e
+                    intuitiva. Ao eliminar a necessidade de interação textual ou numérica, o sistema se provou uma
+                    ferramenta de grande valor para usuários com baixa alfabetização digital, idosos ou com visão
+                    reduzida, promovendo maior autonomia, rapidez e precisão em tarefas cotidianas como a conferência de
+                    pagamentos. Dessa forma, o trabalho não apenas resolve um problema prático, mas também serve como um
+                    nítido exemplo do potencial da visão computacional para a inclusão digital e social.
+
+                <p>Apesar do sucesso alcançado, o projeto estabelece uma base sólida para diversas explorações futuras e
+                    aprimoramentos. As sugestões, coletadas tanto em entrevistas quanto em testes com usuários, indicam
+                    caminhos relevantes para a evolução do sistema. Entre as principais melhorias a realizar,
+                    destacam-se:<br><br>
+
+                    <b>Expansão da funcionalidade</b>: Adicionar o reconhecimento das moedas de Real Brasileiro
+                    restantes e,
+                    posteriormente, de cédulas brasileiras, além da possibilidade de adaptar o modelo para moedas de
+                    outros países;<br>
+
+                    <b>Melhoria da robustez e precisão</b>: Aprimorar o treinamento do modelo com um conjunto de dados
+                    com
+                    maior diversidade, incluindo moedas oxidadas e desgastadas, e aplicar técnicas avançadas de
+                    pré-processamento de imagem, como o HoughCircles, para otimizar a detecção;<br>
+
+                    <b>Aprimoramento da experiência do usuário</b>: Implementar um contador por denominação, um
+                    histórico de
+                    contagens para últimas somas (com direito à soma dessas etapas), e a calibração automática da câmera
+                    para lidar com diferentes distâncias;<br>
+
+                    <b>Acessibilidade aprimorada</b>: Introduzir um feedback sonoro, como um alerta para moedas não
+                    reconhecidas, para aumentar a acessibilidade;<br>
+
+                    <b>Otimização de desempenho</b>: Melhorar a eficiência do código e sugerir o uso de hardware mais
+                    potente
+                    para acelerar o processamento das imagens.
+                </p>
+
+                <p>Em resumo, o projeto não só comprova a eficácia da abordagem escolhida, mas também abre um vasto
+                    leque de oportunidades para otimizações e expansões futuras. A base consistente criada permite que o
+                    sistema continue a ser desenvolvido, aprimorando robustez, ampliando funcionalidades e reforçando
+                    seu papel como uma ferramenta inclusiva e transformadora.</p>
+            </details>
+            <hr>
+            <!-- Referências Bibliográficas = PARTE 5 -->
+            <h2 id="refs">Referências Bibliográficas</h2>
+            <details open>
+                <section> <!-- Incremental -->
+                    <ul>
+
+                        <li>
+                            LEARN OPENCV. <em>Read, Write and Display a Video using OpenCV (C++/Python)</em>. Disponível
+                            em:
+                            <a class="text-black"
+                                href="https://learnopencv.com/read-write-and-display-a-video-using-opencv-cpp-python/"
+                                target="_blank">
+                                https://learnopencv.com/read-write-and-display-a-video-using-opencv-cpp-python/
+                            </a>. Acesso em: 25 jun. 2025.
+                        </li>
+
+                        <li>
+                            OPENCV. <em>cv.waitKey — HighGUI module reference</em>. Disponível em:
+                            <a class="text-black"
+                                href="https://docs.opencv.org/4.x/d7/dfc/group__highgui.html#ga5870d8a0eacb8fbd30b5b3eab805f658"
+                                target="_blank">
+                                https://docs.opencv.org/4.x/d7/dfc/group__highgui.html#ga5870d8a0eacb8fbd30b5b3eab805f658
+                            </a>. Acesso em: 25 jun. 2025.
+                        </li>
+
+                        <li>
+                            OPENCV. <em>cv.imwrite — Image Codecs Save Functions</em>. Disponível em:
+                            <a class="text-black"
+                                href="https://docs.opencv.org/4.x/d8/d6a/group__imgcodecs__save.html#ga61f7f9b02c5d92b7370d87725a28eab0"
+                                target="_blank">
+                                https://docs.opencv.org/4.x/d8/d6a/group__imgcodecs__save.html#ga61f7f9b02c5d92b7370d87725a28eab0
+                            </a>. Acesso em: 25 jun. 2025.
+                        </li>
+
+                        <li>
+                            OPENCV. <em>Tutorial: Display video (Python)</em>. Disponível em:
+                            <a class="text-black"
+                                href="https://docs.opencv.org/4.x/dd/d43/tutorial_py_video_display.html"
+                                target="_blank">
+                                https://docs.opencv.org/4.x/dd/d43/tutorial_py_video_display.html
+                            </a>. Acesso em: 25 jun. 2025.
+                        </li>
+
+                        <li>LearnOpenCV. (2021). <em>Geometry of Image Formation</em>. Disponível em:
+                            <a class="text-black" href="https://learnopencv.com/geometry-of-image-formation/"
+                                target="_blank">
+                                https://learnopencv.com/geometry-of-image-formation/
+                            </a>. Acesso em: 01 jul. 2025.
+                        </li>
+                        <li>LearnOpenCV. (2020). <em>Camera Calibration using OpenCV</em>. Disponível em:
+                            <a class="text-black" href="https://learnopencv.com/camera-calibration-using-opencv"
+                                target="_blank">
+                                https://learnopencv.com/camera-calibration-using-opencv/
+                            </a>. Acesso em: 01 jul. 2025.
+                        </li>
+                        <li>OpenCV Documentation. <em>Camera Calibration</em>. Disponível em:
+                            <a class="text-black" href="https://docs.opencv.org/4.x/dc/dbb/tutorial_py_calibration.html"
+                                target="_blank">
+                                https://docs.opencv.org/4.x/dc/dbb/tutorial_py_calibration.html
+                            </a>. Acesso em: 01 jul. 2025.
+                        </li>
+                        <li>Matthew Stanciu. <em>Teachable Machine</em>. Disponível em:
+                            <a class="text-black" href="https://workshops.hackclub.com/teachable_machine"
+                                target="_blank">
+                                https://workshops.hackclub.com/teachable_machine
+                            </a>. Acesso em: 05 jul. 2025.
+                        </li>
+
+                        <li>Keras. <em>The Sequential model</em>. Disponível em:
+                            <a class="text-black" href="https://keras.io/guides/sequential_model" target="_blank">
+                                https://keras.io/guides/sequential_model
+                            </a>. Acesso em: 07 jul. 2025.
+                        </li>
+
+                        <li>Keras. <em>Save, serialize, and export models</em>. Disponível em:
+                            <a class="text-black" href="https://keras.io/guides/serialization_and_saving"
+                                target="_blank">
+                                https://keras.io/guides/serialization_and_saving
+                            </a>. Acesso em: 08 jul. 2025.
+                        </li>
+                </section>
+            </details>
+            <hr>
+            <!-- Anexo = PARTE 6 -->
+            <h2 id="append">Anexo</h2>
+            <details open>
+                <!-- Deverá apresentar os códigos e todos os arquivos -->
+                <!-- Conteúdo exigido no PDF, mas sem tanta definição -->
+                <section class="pb-3">
+                    <p>Solução completa de reconhecimento de moedas: <a class="text-black"
+                            href="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/TRABALHOS/TRAB-FINAL/reconhecimento_de_moedas.zip"><b>Arquivo
+                                compactado</b></a></p>
+                    <p>Para usar, siga as recomendações de Procedimento Experimental contidas em: <a class="text-black"
+                            href="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/TRABALHOS/TRAB-ETAPA-05/"><b>ETAPA
+                                05</b></a></p>
+                </section>
+
+            </details>
+    </main>
+
+    <footer class="mt-5 p-3 ">
+        &copy; 2025 - Desenvolvido por Equipe Olhos de Sauron
+    </footer>
 </body>
 
 </html>
