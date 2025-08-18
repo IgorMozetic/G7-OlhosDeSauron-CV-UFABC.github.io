@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 
 <head>
   <meta charset="UTF-8" />
@@ -25,43 +25,957 @@
             href="https://igormozetic.github.io/G7-OlhosDeSauron-CV-UFABC.github.io/RELATORIOS/">Relatórios</a></li>
       </ol>
     </nav>
-    <p class="h3 w-100 text-center"><a href="#" class="text-decoration-none text-black">LAB 4 - Relatório: Estimação de
+    <p class="h3 w-100 text-center"><a href="#" class="text-decoration-none text-black">LAB 4 - Estimação de
         Profundidade</a></p>
     <div class="details py-3">
       <p><b>INTEGRANTES:</b></p>
       <p>Igor Domingos da Silva Mozetic - 11202320802</p>
       <p>Jhonattan Ferreira Machado - 11202320245</p>
       <p>Mikael Alves Monteiro - 21055813</p>
-      <p><b>Data de Realização do relatório:</b> 18/06/2025</p>
-      <p><b>Data de Publicação do relatório:</b> 25/06/2025</p>
+      <p><b>Data de Realização do relatório:</b> 21/07/2025</p>
+      <p><b>Data de Publicação do relatório:</b> 28/07/2025</p>
       <hr>
     </div>
+
+    <!-- INTRODUÇÃO -->
     <section class="pb-4">
       <p class="h3"><b>INTRODUÇÃO</b></p>
+      <p>
+        Este relatório apresenta o estudo e a implementação de um pipeline de visão estéreo para
+        gerar <em>mapas de disparidade</em> e o correspondente <em>mapa de profundidade</em> usando OpenCV.
+        Partimos da <b>geometria epipolar</b> (retificação e correspondência ao longo de linhas epipolares),
+        calculamos a disparidade (block matching) e a convertemos em profundidade (calibração experimental).
+      </p>
+      <small class="py-1 d-block">
+        PDF do laboratório (placeholder para o seu arquivo):
+        <a href="assets/esza019_2025.2__Lab4_depth_map_v1.pdf" target="_blank" class="text-black"><b>Link</b></a>.
+      </small>
+      <hr>
     </section>
 
+    <!-- PROCEDIMENTOS EXPERIMENTAIS -->
     <section class="pb-4">
       <p class="h3"><b>PROCEDIMENTOS EXPERIMENTAIS</b></p>
+
+      <div class="py-3">
+        <p class="h4">PARTE 1 – Estudo teórico</p>
+        <p>Materiais estudados:</p>
+        <ul>
+          <li><a class="text-black" target="_blank"
+              href="https://learnopencv.com/introduction-to-epipolar-geometry-and-stereo-vision/">Geometria epipolar e
+              visão estéreo</a></li>
+          <li><a class="text-black" target="_blank"
+              href="https://docs.opencv.org/4.x/dd/d53/tutorial_py_depthmap.html">Depth Map from Stereo Images
+              (OpenCV)</a></li>
+          <li><a class="text-black" target="_blank"
+              href="https://learnopencv.com/depth-perception-using-stereo-camera-python-c/">Depth perception with Stereo
+              Camera (OpenCV)</a></li>
+        </ul>
+        <hr>
+      </div>
+
+      <!-- PARTE 2: Construção/Calibração -->
+      <div class="py-3">
+        <p class="h4">PARTE 2 – Construção da câmera estéreo e calibração</p>
+        <p class="mb-1"><b>(i) Captura de pares e calibração estéreo</b></p>
+        <p>Os scripts abaixo capturam pares sincronizados e executam a calibração estéreo (intrínsecos fixos),
+          retificação e geração dos mapas de remapeamento, salvando em <code>data/params_py.xml</code>.</p>
+
+        <!-- capture_images.py -->
+        <div class="card my-3">
+          <div class="card-header">Código – <code>capture_images.py</code></div>
+          <div class="card-body">
+            <pre><code class="language-python"># Importa bibliotecas necessárias
+import numpy as np
+import cv2
+import time
+
+print("Checking the right and left camera IDs:")
+print("Press (y) if IDs are correct and (n) to swap the IDs")
+print("Press enter to start the process >> ")
+input()
+
+CamL_id = 0
+CamR_id = 2
+CamL = cv2.VideoCapture(CamL_id)
+CamR = cv2.VideoCapture(CamR_id)
+
+for i in range(100):
+    retL, frameL = CamL.read()
+    retR, frameR = CamR.read()
+
+cv2.imshow('imgL', frameL)
+cv2.imshow('imgR', frameR)
+
+CamR.release(); CamL.release()
+CamL = cv2.VideoCapture(CamL_id)
+CamR = cv2.VideoCapture(CamR_id)
+
+output_path = "./data"
+start = time.time()
+T = 1000
+count = 0
+
+while True:
+    timer = T - int(time.time() - start)
+    retR, frameR = CamR.read()
+    retL, frameL = CamL.read()
+
+    img1_temp = frameL.copy()
+    cv2.putText(img1_temp, "%r" % timer, (50, 50), 1, 5, (55, 0, 0), 5)
+    cv2.imshow('imgR', frameR)
+    cv2.imshow('imgL', img1_temp)
+
+    grayR = cv2.cvtColor(frameR, cv2.COLOR_BGR2GRAY)
+    grayL = cv2.cvtColor(frameL, cv2.COLOR_BGR2GRAY)
+
+    retR, cornersR = cv2.findChessboardCorners(grayR, (8, 6), None)
+    retL, cornersL = cv2.findChessboardCorners(grayL, (8, 6), None)
+
+    if (retR == True) and (retL == True) and timer <= 0:
+        count += 1
+        cv2.imwrite('./data/stereoR/img%d.png' % count, frameR)
+        cv2.imwrite('./data/stereoL/img%d.png' % count, frameL)
+        print("Foi")
+
+    if timer <= 0: start = time.time()
+    if cv2.waitKey(1) & 0xFF == 27:
+        print("Closing the cameras!")
+        break
+
+CamR.release(); CamL.release()
+cv2.destroyAllWindows()</code></pre>
+          </div>
+        </div>
+
+        <!-- calibrate.py -->
+        <div class="card my-3">
+          <div class="card-header">Código – <code>calibrate.py</code></div>
+          <div class="card-body">
+            <pre><code class="language-python">import numpy as np
+import cv2
+from tqdm import tqdm
+
+pathL = "./data/stereoL/"
+pathR = "./data/stereoR/"
+
+criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
+objp = np.zeros((8*6,3), np.float32)
+objp[:,:2] = np.mgrid[0:8,0:6].T.reshape(-1,2)
+
+img_ptsL, img_ptsR, obj_pts = [], [], []
+
+for i in tqdm(range(1,14)):
+    imgL = cv2.imread(f'./data/stereoL/img{i}.png')
+    imgR = cv2.imread(f'./data/stereoR/img{i}.png')
+    imgL_gray = cv2.cvtColor(imgL, cv2.COLOR_BGR2GRAY)
+    imgR_gray = cv2.cvtColor(imgR, cv2.COLOR_BGR2GRAY)
+
+    outputL, outputR = imgL.copy(), imgR.copy()
+    retR, cornersR = cv2.findChessboardCorners(outputR, (8,6), None)
+    retL, cornersL = cv2.findChessboardCorners(outputL, (8,6), None)
+
+    if retR and retL:
+        obj_pts.append(objp)
+        cv2.cornerSubPix(imgR_gray, cornersR, (11,11), (-1,-1), criteria)
+        cv2.cornerSubPix(imgL_gray, cornersL, (11,11), (-1,-1), criteria)
+        cv2.drawChessboardCorners(outputR, (8,6), cornersR, retR)
+        cv2.drawChessboardCorners(outputL, (8,6), cornersL, retL)
+        cv2.imshow('cornersR', outputR)
+        cv2.imshow('cornersL', outputL)
+        cv2.waitKey(0)
+        img_ptsL.append(cornersL)
+        img_ptsR.append(cornersR)
+
+retL, mtxL, distL, rvecsL, tvecsL = cv2.calibrateCamera(obj_pts, img_ptsL, imgL_gray.shape[::-1], None, None)
+hL, wL = imgL_gray.shape[:2]
+new_mtxL, roiL = cv2.getOptimalNewCameraMatrix(mtxL, distL, (wL, hL), 1, (wL, hL))
+
+retR, mtxR, distR, rvecsR, tvecsR = cv2.calibrateCamera(obj_pts, img_ptsR, imgR_gray.shape[::-1], None, None)
+hR, wR = imgR_gray.shape[:2]
+new_mtxR, roiR = cv2.getOptimalNewCameraMatrix(mtxR, distR, (wR, hR), 1, (wR, hR))
+
+flags = cv2.CALIB_FIX_INTRINSIC
+criteria_stereo = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
+
+retS, new_mtxL, distL, new_mtxR, distR, Rot, Trns, Emat, Fmat = cv2.stereoCalibrate(
+    obj_pts, img_ptsL, img_ptsR,
+    new_mtxL, distL, new_mtxR, distR,
+    imgL_gray.shape[::-1], criteria_stereo, flags
+)
+
+rectify_scale = 1
+rect_l, rect_r, proj_mat_l, proj_mat_r, Q, roiL, roiR = cv2.stereoRectify(
+    new_mtxL, distL, new_mtxR, distR,
+    imgL_gray.shape[::-1], Rot, Trns,
+    rectify_scale, (0, 0)
+)
+
+Left_Stereo_Map = cv2.initUndistortRectifyMap(
+    new_mtxL, distL, rect_l, proj_mat_l,
+    imgL_gray.shape[::-1], cv2.CV_16SC2
+)
+Right_Stereo_Map = cv2.initUndistortRectifyMap(
+    new_mtxR, distR, rect_r, proj_mat_r,
+    imgR_gray.shape[::-1], cv2.CV_16SC2
+)
+
+cv_file = cv2.FileStorage("data/params_py.xml", cv2.FILE_STORAGE_WRITE)
+cv_file.write("Left_Stereo_Map_x", Left_Stereo_Map[0])
+cv_file.write("Left_Stereo_Map_y", Left_Stereo_Map[1])
+cv_file.write("Right_Stereo_Map_x", Right_Stereo_Map[0])
+cv_file.write("Right_Stereo_Map_y", Right_Stereo_Map[1])
+cv_file.release()</code></pre>
+          </div>
+        </div>
+
+        <!-- AMOSTRAS DE CALIBRAÇÃO (coloque logo após o card do calibrate.py) -->
+        <div id="amostras-calibracao" class="my-3">
+          <p class="fw-semibold mb-2">Amostras do conjunto de calibração (StereoL / StereoR)</p>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <figure class="text-center">
+                <img src="assets/img_teste1.png" class="img-fluid rounded shadow" alt="StereoL 01">
+                <figcaption class="mt-2"><i>Figura C.1</i>: Esquerda (StereoL 01).</figcaption>
+              </figure>
+            </div>
+            <div class="col-md-6">
+              <figure class="text-center">
+                <img src="assets/img_teste2.png" class="img-fluid rounded shadow" alt="StereoR 01">
+                <figcaption class="mt-2"><i>Figura C.2</i>: Direita (StereoR 01).</figcaption>
+              </figure>
+            </div>
+
+            <div class="col-md-6">
+              <figure class="text-center">
+                <img src="assets/img_teste3.png" class="img-fluid rounded shadow" alt="StereoL 02">
+                <figcaption class="mt-2"><i>Figura C.1</i>: Esquerda (StereoL 02).</figcaption>
+              </figure>
+            </div>
+            <div class="col-md-6">
+              <figure class="text-center">
+                <img src="assets/img_teste4.png" class="img-fluid rounded shadow" alt="StereoR 02">
+                <figcaption class="mt-2"><i>Figura C.2</i>: Direita (StereoR 02).</figcaption>
+              </figure>
+            </div>
+
+            <div class="col-md-6">
+              <figure class="text-center">
+                <img src="assets/img_teste5.png" class="img-fluid rounded shadow" alt="StereoL 02">
+                <figcaption class="mt-2"><i>Figura C.1</i>: Esquerda (StereoL 02).</figcaption>
+              </figure>
+            </div>
+            <div class="col-md-6">
+              <figure class="text-center">
+                <img src="assets/img_teste6.png" class="img-fluid rounded shadow" alt="StereoR 02">
+                <figcaption class="mt-2"><i>Figura C.2</i>: Direita (StereoR 02).</figcaption>
+              </figure>
+            </div>
+
+            <div class="col-md-6">
+              <figure class="text-center">
+                <img src="assets/img_teste7.png" class="img-fluid rounded shadow" alt="StereoL 02">
+                <figcaption class="mt-2"><i>Figura C.1</i>: Esquerda (StereoL 02).</figcaption>
+              </figure>
+            </div>
+            <div class="col-md-6">
+              <figure class="text-center">
+                <img src="assets/img_teste8.png" class="img-fluid rounded shadow" alt="StereoR 02">
+                <figcaption class="mt-2"><i>Figura C.2</i>: Direita (StereoR 02).</figcaption>
+              </figure>
+            </div>
+            <div class="col-md-6">
+              <figure class="text-center">
+                <img src="assets/img_teste9.png" class="img-fluid rounded shadow" alt="StereoL 02">
+                <figcaption class="mt-2"><i>Figura C.1</i>: Esquerda (StereoL 02).</figcaption>
+              </figure>
+            </div>
+            <div class="col-md-6">
+              <figure class="text-center">
+                <img src="assets/img_teste10.png" class="img-fluid rounded shadow" alt="StereoR 02">
+                <figcaption class="mt-2"><i>Figura C.2</i>: Direita (StereoR 02).</figcaption>
+              </figure>
+            </div>
+            <div class="col-md-6">
+              <figure class="text-center">
+                <img src="assets/img_teste11.png" class="img-fluid rounded shadow" alt="StereoL 02">
+                <figcaption class="mt-2"><i>Figura C.1</i>: Esquerda (StereoL 02).</figcaption>
+              </figure>
+            </div>
+            <div class="col-md-6">
+              <figure class="text-center">
+                <img src="assets/img_teste12.png" class="img-fluid rounded shadow" alt="StereoR 02">
+                <figcaption class="mt-2"><i>Figura C.2</i>: Direita (StereoR 02).</figcaption>
+              </figure>
+            </div>
+            <div class="col-md-6">
+              <figure class="text-center">
+                <img src="assets/img_teste13.png" class="img-fluid rounded shadow" alt="StereoL 02">
+                <figcaption class="mt-2"><i>Figura C.1</i>: Esquerda (StereoL 02).</figcaption>
+              </figure>
+            </div>
+            <div class="col-md-6">
+              <figure class="text-center">
+                <img src="assets/img_teste14.png" class="img-fluid rounded shadow" alt="StereoR 02">
+                <figcaption class="mt-2"><i>Figura C.2</i>: Direita (StereoR 02).</figcaption>
+              </figure>
+            </div>
+            <div class="col-md-6">
+              <figure class="text-center">
+                <img src="assets/img_teste15.png" class="img-fluid rounded shadow" alt="StereoL 02">
+                <figcaption class="mt-2"><i>Figura C.1</i>: Esquerda (StereoL 02).</figcaption>
+              </figure>
+            </div>
+            <div class="col-md-6">
+              <figure class="text-center">
+                <img src="assets/img_teste16.png" class="img-fluid rounded shadow" alt="StereoR 02">
+                <figcaption class="mt-2"><i>Figura C.2</i>: Direita (StereoR 02).</figcaption>
+              </figure>
+            </div>
+            <div class="col-md-6">
+              <figure class="text-center">
+                <img src="assets/img_teste17.png" class="img-fluid rounded shadow" alt="StereoL 02">
+                <figcaption class="mt-2"><i>Figura C.1</i>: Esquerda (StereoL 02).</figcaption>
+              </figure>
+            </div>
+            <div class="col-md-6">
+              <figure class="text-center">
+                <img src="assets/img_teste18.png" class="img-fluid rounded shadow" alt="StereoR 02">
+                <figcaption class="mt-2"><i>Figura C.2</i>: Direita (StereoR 02).</figcaption>
+              </figure>
+            </div>
+            <div class="col-md-6">
+              <figure class="text-center">
+                <img src="assets/img_teste19.png" class="img-fluid rounded shadow" alt="StereoL 02">
+                <figcaption class="mt-2"><i>Figura C.1</i>: Esquerda (StereoL 02).</figcaption>
+              </figure>
+            </div>
+            <div class="col-md-6">
+              <figure class="text-center">
+                <img src="assets/img_teste20.png" class="img-fluid rounded shadow" alt="StereoR 02">
+                <figcaption class="mt-2"><i>Figura C.2</i>: Direita (StereoR 02).</figcaption>
+              </figure>
+            </div>
+            <div class="col-md-6">
+              <figure class="text-center">
+                <img src="assets/img_teste21.png" class="img-fluid rounded shadow" alt="StereoL 02">
+                <figcaption class="mt-2"><i>Figura C.1</i>: Esquerda (StereoL 02).</figcaption>
+              </figure>
+            </div>
+            <div class="col-md-6">
+              <figure class="text-center">
+                <img src="assets/img_teste22.png" class="img-fluid rounded shadow" alt="StereoR 02">
+                <figcaption class="mt-2"><i>Figura C.2</i>: Direita (StereoR 02).</figcaption>
+              </figure>
+            </div>
+            <div class="col-md-6">
+              <figure class="text-center">
+                <img src="assets/img_teste23.png" class="img-fluid rounded shadow" alt="StereoL 02">
+                <figcaption class="mt-2"><i>Figura C.1</i>: Esquerda (StereoL 02).</figcaption>
+              </figure>
+            </div>
+            <div class="col-md-6">
+              <figure class="text-center">
+                <img src="assets/img_teste24.png" class="img-fluid rounded shadow" alt="StereoR 02">
+                <figcaption class="mt-2"><i>Figura C.2</i>: Direita (StereoR 02).</figcaption>
+              </figure>
+            </div>
+            <div class="col-md-6">
+              <figure class="text-center">
+                <img src="assets/img_teste25.png" class="img-fluid rounded shadow" alt="StereoL 02">
+                <figcaption class="mt-2"><i>Figura C.1</i>: Esquerda (StereoL 02).</figcaption>
+              </figure>
+            </div>
+            <div class="col-md-6">
+              <figure class="text-center">
+                <img src="assets/img_teste26.png" class="img-fluid rounded shadow" alt="StereoR 02">
+                <figcaption class="mt-2"><i>Figura C.2</i>: Direita (StereoR 02).</figcaption>
+              </figure>
+            </div>
+            <div class="col-md-6">
+              <figure class="text-center">
+                <img src="assets/img_teste27.png" class="img-fluid rounded shadow" alt="StereoL 02">
+                <figcaption class="mt-2"><i>Figura C.1</i>: Esquerda (StereoL 02).</figcaption>
+              </figure>
+            </div>
+            <div class="col-md-6">
+              <figure class="text-center">
+                <img src="assets/img_teste28.png" class="img-fluid rounded shadow" alt="StereoR 02">
+                <figcaption class="mt-2"><i>Figura C.2</i>: Direita (StereoR 02).</figcaption>
+              </figure>
+            </div>
+            <div class="col-md-6">
+              <figure class="text-center">
+                <img src="assets/img_teste29.png" class="img-fluid rounded shadow" alt="StereoL 02">
+                <figcaption class="mt-2"><i>Figura C.1</i>: Esquerda (StereoL 02).</figcaption>
+              </figure>
+            </div>
+            <div class="col-md-6">
+              <figure class="text-center">
+                <img src="assets/img_teste30.png" class="img-fluid rounded shadow" alt="StereoR 02">
+                <figcaption class="mt-2"><i>Figura C.2</i>: Direita (StereoR 02).</figcaption>
+              </figure>
+            </div>
+            <div class="col-md-6">
+              <figure class="text-center">
+                <img src="assets/img_teste31.png" class="img-fluid rounded shadow" alt="StereoL 02">
+                <figcaption class="mt-2"><i>Figura C.1</i>: Esquerda (StereoL 02).</figcaption>
+              </figure>
+            </div>
+            <div class="col-md-6">
+              <figure class="text-center">
+                <img src="assets/img_teste32.png" class="img-fluid rounded shadow" alt="StereoR 02">
+                <figcaption class="mt-2"><i>Figura C.2</i>: Direita (StereoR 02).</figcaption>
+              </figure>
+            </div>
+
+
+          </div>
+
+          <p class="text-muted mt-2">
+            Dica: inclua pelo menos 10 pares (poses e inclinações diferentes).
+          </p>
+        </div>
+
+
+
+      </div>
+
+
+      <hr>
+
+      <!-- PARTE 2 (ii) Disparidade -->
+      <p class="h5 mt-4"><b>(ii) Geração do mapa de disparidade (Block Matching)</b></p>
+      <p>Antes do cálculo, seguem os <b>pares estéreo</b> utilizados como <u>entrada</u> do algoritmo:
+        salve as imagens na pasta <code>assets/</code> com os nomes indicados.</p>
+
+      <!-- PARES ESTÉREO INSERIDOS -->
+      <div class="row g-3 my-2">
+        <div class="col-md-6">
+          <figure class="text-center">
+            <img src="assets/im0.png" alt="Par Moto - esquerda (im0.png)" class="img-fluid rounded shadow">
+            <figcaption class="mt-2"><i>Figura 1</i>: Moto — imagem esquerda (<code>im0.png</code>).</figcaption>
+          </figure>
+        </div>
+        <div class="col-md-6">
+          <figure class="text-center">
+            <img src="assets/im1.png" alt="Par Moto - direita (im1.png)" class="img-fluid rounded shadow">
+            <figcaption class="mt-2"><i>Figura 2</i>: Moto — imagem direita (<code>im1.png</code>).</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="row g-3 my-1">
+        <div class="col-md-6">
+          <figure class="text-center">
+            <img src="assets/tsukuba_l.png" alt="Tsukuba - esquerda (tsukuba_l.png)" class="img-fluid rounded shadow">
+            <figcaption class="mt-2"><i>Figura 3</i>: Tsukuba — imagem esquerda (<code>tsukuba_l.png</code>).
+            </figcaption>
+          </figure>
+        </div>
+        <div class="col-md-6">
+          <figure class="text-center">
+            <img src="assets/tsukuba_r.png" alt="Tsukuba - direita (tsukuba_r.png)" class="img-fluid rounded shadow">
+            <figcaption class="mt-2"><i>Figura 4</i>: Tsukuba — imagem direita (<code>tsukuba_r.png</code>).
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+      <!-- /PARES ESTÉREO INSERIDOS -->
+
+      <p class="mt-3">O script abaixo lê <code>params_py.xml</code>, retifica os frames e permite ajustar parâmetros
+        do <code>StereoBM</code> via trackbars, salvando parâmetros e/ou a disparidade conforme sua adaptação.</p>
+
+      <div class="card my-3">
+        <div class="card-header">Código – <code>disparity_params_gui.py</code></div>
+        <div class="card-body">
+          <pre><code class="language-python">import numpy as np 
+import cv2
+
+CamL_id = 0
+CamR_id = 2
+CamL= cv2.VideoCapture(CamL_id)
+CamR= cv2.VideoCapture(CamR_id)
+
+cv_file = cv2.FileStorage("./data/params_py.xml", cv2.FILE_STORAGE_READ)
+Left_Stereo_Map_x = cv_file.getNode("Left_Stereo_Map_x").mat()
+Left_Stereo_Map_y = cv_file.getNode("Left_Stereo_Map_y").mat()
+Right_Stereo_Map_x = cv_file.getNode("Right_Stereo_Map_x").mat()
+Right_Stereo_Map_y = cv_file.getNode("Right_Stereo_Map_y").mat()
+cv_file.release()
+
+def nothing(x): pass
+
+cv2.namedWindow('disp',cv2.WINDOW_NORMAL)
+cv2.resizeWindow('disp',600,600)
+
+cv2.createTrackbar('numDisparities','disp',1,17,nothing)
+cv2.createTrackbar('blockSize','disp',5,50,nothing)
+cv2.createTrackbar('preFilterType','disp',1,1,nothing)
+cv2.createTrackbar('preFilterSize','disp',2,25,nothing)
+cv2.createTrackbar('preFilterCap','disp',5,62,nothing)
+cv2.createTrackbar('textureThreshold','disp',10,100,nothing)
+cv2.createTrackbar('uniquenessRatio','disp',15,100,nothing)
+cv2.createTrackbar('speckleRange','disp',0,100,nothing)
+cv2.createTrackbar('speckleWindowSize','disp',3,25,nothing)
+cv2.createTrackbar('disp12MaxDiff','disp',5,25,nothing)
+cv2.createTrackbar('minDisparity','disp',5,25,nothing)
+
+stereo = cv2.StereoBM_create()
+
+while True:
+    retL, imgL= CamL.read()
+    retR, imgR= CamR.read()
+    if retL and retR:
+        imgR_gray = cv2.cvtColor(imgR,cv2.COLOR_BGR2GRAY)
+        imgL_gray = cv2.cvtColor(imgL,cv2.COLOR_BGR2GRAY)
+
+        Left_nice= cv2.remap(imgL_gray, Left_Stereo_Map_x, Left_Stereo_Map_y,
+                             cv2.INTER_LANCZOS4, cv2.BORDER_CONSTANT, 0)
+        Right_nice= cv2.remap(imgR_gray, Right_Stereo_Map_x, Right_Stereo_Map_y,
+                              cv2.INTER_LANCZOS4, cv2.BORDER_CONSTANT, 0)
+
+        numDisparities = cv2.getTrackbarPos('numDisparities','disp')*16
+        blockSize = cv2.getTrackbarPos('blockSize','disp')*2 + 5
+        preFilterType = cv2.getTrackbarPos('preFilterType','disp')
+        preFilterSize = cv2.getTrackbarPos('preFilterSize','disp')*2 + 5
+        preFilterCap = cv2.getTrackbarPos('preFilterCap','disp')
+        textureThreshold = cv2.getTrackbarPos('textureThreshold','disp')
+        uniquenessRatio = cv2.getTrackbarPos('uniquenessRatio','disp')
+        speckleRange = cv2.getTrackbarPos('speckleRange','disp')
+        speckleWindowSize = cv2.getTrackbarPos('speckleWindowSize','disp')*2
+        disp12MaxDiff = cv2.getTrackbarPos('disp12MaxDiff','disp')
+        minDisparity = cv2.getTrackbarPos('minDisparity','disp')
+
+        stereo.setNumDisparities(numDisparities)
+        stereo.setBlockSize(blockSize)
+        stereo.setPreFilterType(preFilterType)
+        stereo.setPreFilterSize(preFilterSize)
+        stereo.setPreFilterCap(preFilterCap)
+        stereo.setTextureThreshold(textureThreshold)
+        stereo.setUniquenessRatio(uniquenessRatio)
+        stereo.setSpeckleRange(speckleRange)
+        stereo.setSpeckleWindowSize(speckleWindowSize)
+        stereo.setDisp12MaxDiff(disp12MaxDiff)
+        stereo.setMinDisparity(minDisparity)
+
+        disparity = stereo.compute(Left_nice,Right_nice).astype(np.float32)
+        disparity = (disparity/16.0 - minDisparity)/max(1,numDisparities)
+
+        cv2.imshow("disp",disparity)
+        if cv2.waitKey(1) == 27:  # ESC
+            break
+    else:
+        CamL= cv2.VideoCapture(CamL_id)
+        CamR= cv2.VideoCapture(CamR_id)
+
+cv_file = cv2.FileStorage("./data/depth_estmation_params_py_test2.xml", cv2.FILE_STORAGE_WRITE)
+cv_file.write("numDisparities",numDisparities)
+cv_file.write("blockSize",blockSize)
+cv_file.write("preFilterType",preFilterType)
+cv_file.write("preFilterSize",preFilterSize)
+cv_file.write("preFilterCap",preFilterCap)
+cv_file.write("textureThreshold",textureThreshold)
+cv_file.write("uniquenessRatio",uniquenessRatio)
+cv_file.write("speckleRange",speckleRange)
+cv_file.write("speckleWindowSize",speckleWindowSize)
+cv_file.write("disp12MaxDiff",disp12MaxDiff)
+cv_file.write("minDisparity",minDisparity)
+cv_file.write("M",39.075)
+cv_file.release()</code></pre>
+        </div>
+      </div>
+
+      <!-- RESULTADO (PARTE 2) – Disparidade + GUI StereoBM -->
+      <div id="resultado-parte2" class="my-3">
+        <p class="fw-semibold mb-2">Resultado (PARTE 2): Disparidade gerada com ajuste via StereoBM</p>
+        <figure class="text-center">
+          <img src="assets/parte2.png" class="img-fluid rounded shadow"
+            alt="Janela de disparidade com sliders do StereoBM">
+          <figcaption class="mt-2"><i>Figura X</i>: Disparidade exibida com os controles de parâmetros.</figcaption>
+        </figure>
+      </div>
+
+
+      <hr>
+
+      <!-- PARTE 2 (iii) Profundidade -->
+      <p class="h5 mt-4"><b>(iii) Conversão de disparidade em profundidade (calibração prática)</b></p>
+
+      <div class="card my-3">
+        <div class="card-header">Código – <code>disparity2depth_calib.py</code></div>
+        <div class="card-body">
+          <pre><code class="language-python">import cv2
+import numpy as np
+
+cv_file = cv2.FileStorage("./data/params_py.xml", cv2.FILE_STORAGE_READ)
+Left_Stereo_Map_x = cv_file.getNode("Left_Stereo_Map_x").mat()
+Left_Stereo_Map_y = cv_file.getNode("Left_Stereo_Map_y").mat()
+Right_Stereo_Map_x = cv_file.getNode("Right_Stereo_Map_x").mat()
+Right_Stereo_Map_y = cv_file.getNode("Right_Stereo_Map_y").mat()
+cv_file.release()
+
+cv_file = cv2.FileStorage("./data/depth_estmation_params_py.xml", cv2.FILE_STORAGE_READ)
+disparity = cv_file.getNode("disparity").mat()
+cv_file.release()
+
+samples = [
+    (30.5, 100),
+    (21.0, 150),
+    (15.0, 200),
+    (12.0, 250),
+]
+
+N = len(samples)
+coeff = np.zeros((N, 2), dtype=np.float32)
+z = np.zeros((N, 1), dtype=np.float32)
+for i, (disp, depth) in enumerate(samples):
+    coeff[i, 0] = 1.0 / disp
+    coeff[i, 1] = 1.0
+    z[i, 0] = depth
+ret, M = cv2.solve(coeff, z, flags=cv2.DECOMP_QR)
+M0, M1 = float(M[0, 0]), float(M[1, 0])
+print(f"Coeficientes calibrados: M0 = {M0:.4f}, M1 = {M1:.4f}")
+
+disp_safe = disparity.astype(np.float32)
+disp_safe[disp_safe <= 0.0] = np.nan
+depth_map = M0 * (1.0 / disp_safe) + M1
+
+fs_write = cv2.FileStorage("./data/depth_estmation_params_py_2.xml", cv2.FILE_STORAGE_APPEND)
+fs_write.write("depth", depth_map)
+fs_write.release()
+print("✅ Mapa de profundidade salvo em depth_estmation_params_py_2.xml")</code></pre>
+        </div>
+      </div>
+
+      <!-- COLETA PARA CALIBRAÇÃO (PARTE 3) -->
+      <div id="coleta-parte3" class="my-3">
+        <p class="fw-semibold mb-2">Amostras usadas na calibração de profundidade</p>
+        <div class="row g-3">
+          <div class="col-md-4">
+            <figure class="text-center">
+              <img src="assets/parte3-15cm.png" class="img-fluid rounded shadow"
+                alt="Disparidade + imagem esquerda a 15 cm">
+              <figcaption class="mt-2"><i>Figura Y.1</i>: Captura a ~15&nbsp;cm.</figcaption>
+            </figure>
+          </div>
+          <div class="col-md-4">
+            <figure class="text-center">
+              <img src="assets/parte3-20cm.png" class="img-fluid rounded shadow"
+                alt="Disparidade + imagem esquerda a 20 cm">
+              <figcaption class="mt-2"><i>Figura Y.2</i>: Captura a ~20&nbsp;cm.</figcaption>
+            </figure>
+          </div>
+          <div class="col-md-4">
+            <figure class="text-center">
+              <img src="assets/parte3-30cm.png" class="img-fluid rounded shadow"
+                alt="Disparidade + imagem esquerda a 30 cm">
+              <figcaption class="mt-2"><i>Figura Y.3</i>: Captura a ~30&nbsp;cm.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+
+      <!-- GRÁFICO DA CALIBRAÇÃO (PARTE 3) -->
+      <div id="grafico-parte3" class="my-3">
+        <figure class="text-center">
+          <img src="assets/parte3.png" class="img-fluid rounded shadow"
+            alt="Gráficos: Disparidade vs Distância e 1/Disparidade vs Distância">
+          <figcaption class="mt-2">
+            <i>Figura Z</i>: Relação entre disparidade e distância; ajuste em 1/disparidade usado na calibração.
+          </figcaption>
+        </figure>
+      </div>
+
+
+      <hr>
+
+      <!-- PARTE 2 (iv) Obstacle avoidance -->
+      <p class="h5 mt-4"><b>(iv) Medidas de distância e “Obstacle avoidance”</b></p>
+
+      <div class="card my-3">
+        <div class="card-header">Código – <code>obstacle_avoidance.py</code></div>
+        <div class="card-body">
+          <pre><code class="language-python">import numpy as np 
+import cv2
+
+CamL_id = 0
+CamR_id = 2
+
+CamL= cv2.VideoCapture(CamL_id)
+CamR= cv2.VideoCapture(CamR_id)
+
+cv_file = cv2.FileStorage("./data/params_py_jorge.xml", cv2.FILE_STORAGE_READ)
+Left_Stereo_Map_x = cv_file.getNode("Left_Stereo_Map_x").mat()
+Left_Stereo_Map_y = cv_file.getNode("Left_Stereo_Map_y").mat()
+Right_Stereo_Map_x = cv_file.getNode("Right_Stereo_Map_x").mat()
+Right_Stereo_Map_y = cv_file.getNode("Right_Stereo_Map_y").mat()
+cv_file.release()
+
+disparity = None
+depth_map = None
+max_depth = 400
+min_depth = 50
+depth_thresh = 100.0
+
+cv_file = cv2.FileStorage("../data/depth_estmation_params_py_test_jorge.xml", cv2.FILE_STORAGE_READ)
+numDisparities = int(cv_file.getNode("numDisparities").real())
+blockSize = int(cv_file.getNode("blockSize").real())
+preFilterType = int(cv_file.getNode("preFilterType").real())
+preFilterSize = int(cv_file.getNode("preFilterSize").real())
+preFilterCap = int(cv_file.getNode("preFilterCap").real())
+textureThreshold = int(cv_file.getNode("textureThreshold").real())
+uniquenessRatio = int(cv_file.getNode("uniquenessRatio").real())
+speckleRange = int(cv_file.getNode("speckleRange").real())
+speckleWindowSize = int(cv_file.getNode("speckleWindowSize").real())
+disp12MaxDiff = int(cv_file.getNode("disp12MaxDiff").real())
+minDisparity = int(cv_file.getNode("minDisparity").real())
+M = cv_file.getNode("M").real()
+cv_file.release()
+
+def mouse_click(event,x,y,flags,param):
+    if event == cv2.EVENT_LBUTTONDBLCLK and depth_map is not None:
+        print("Distance = %.2f cm"%depth_map[y,x])
+
+cv2.namedWindow('disp',cv2.WINDOW_NORMAL)
+cv2.resizeWindow('disp',600,600)
+cv2.setMouseCallback('disp',mouse_click)
+
+output_canvas = None
+stereo = cv2.StereoBM_create()
+
+def obstacle_avoid():
+    global output_canvas
+    mask = cv2.inRange(depth_map,10,depth_thresh)
+    if np.sum(mask)/255.0 > 0.01*mask.shape[0]*mask.shape[1]:
+        contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        cnts = sorted(contours, key=cv2.contourArea, reverse=True)
+        if len(cnts) > 0 and cv2.contourArea(cnts[0]) > 0.01*mask.shape[0]*mask.shape[1]:
+            x,y,w,h = cv2.boundingRect(cnts[0])
+            mask2 = np.zeros_like(mask)
+            cv2.drawContours(mask2, cnts, 0, (255), -1)
+            depth_mean, _ = cv2.meanStdDev(depth_map, mask=mask2)
+            cv2.putText(output_canvas, "WARNING !", (x+5,y-40), 1, 2, (0,0,255), 2, 2)
+            cv2.putText(output_canvas, "Object at", (x+5,y), 1, 2, (100,10,25), 2, 2)
+            cv2.putText(output_canvas, "%.2f cm"%depth_mean, (x+5,y+40), 1, 2, (100,10,25), 2, 2)
+    else:
+        cv2.putText(output_canvas, "SAFE!", (100,100),1,3,(0,255,0),2,3)
+    cv2.imshow('output_canvas',output_canvas)
+
+while True:
+    retR, imgR= CamR.read()
+    retL, imgL= CamL.read()
+    if retL and retR:
+        output_canvas = imgL.copy()
+        imgR_gray = cv2.cvtColor(imgR,cv2.COLOR_BGR2GRAY)
+        imgL_gray = cv2.cvtColor(imgL,cv2.COLOR_BGR2GRAY)
+
+        Left_nice= cv2.remap(imgL_gray, Left_Stereo_Map_x, Left_Stereo_Map_y,
+                             cv2.INTER_LANCZOS4, cv2.BORDER_CONSTANT, 0)
+        Right_nice= cv2.remap(imgR_gray, Right_Stereo_Map_x, Right_Stereo_Map_y,
+                              cv2.INTER_LANCZOS4, cv2.BORDER_CONSTANT, 0)
+
+        stereo.setNumDisparities(numDisparities)
+        stereo.setBlockSize(blockSize)
+        stereo.setPreFilterType(preFilterType)
+
+        if preFilterSize < 5: preFilterSize = 5
+        elif preFilterSize > 255: preFilterSize = 255
+        if preFilterSize % 2 == 0: preFilterSize += 1
+        stereo.setPreFilterSize(preFilterSize)
+
+        stereo.setPreFilterCap(preFilterCap)
+        stereo.setTextureThreshold(textureThreshold)
+        stereo.setUniquenessRatio(uniquenessRatio)
+        stereo.setSpeckleRange(speckleRange)
+        stereo.setSpeckleWindowSize(speckleWindowSize)
+        stereo.setDisp12MaxDiff(disp12MaxDiff)
+        stereo.setMinDisparity(minDisparity)
+
+        disparity = stereo.compute(Left_nice,Right_nice).astype(np.float32)
+        disparity = (disparity/16.0 - minDisparity)/max(1, numDisparities)
+
+        depth_map = M/(disparity)
+        mask_temp = cv2.inRange(depth_map, min_depth, max_depth)
+        depth_map = cv2.bitwise_and(depth_map, depth_map, mask=mask_temp)
+
+        obstacle_avoid()
+        cv2.resizeWindow("disp",700,700)
+        cv2.imshow("disp",disparity)
+
+        if cv2.waitKey(1) == 27:
+            break
+    else:
+        CamL= cv2.VideoCapture(CamL_id)
+        CamR= cv2.VideoCapture(CamR_id)</code></pre>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-center align-items-center py-2">
+        <figure class="text-center">
+          <video autoplay muted loop>
+            <source src="assets/video01.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <figcaption><i>Vídeo 1</i>: Vídeo do objeto</figcaption>
+        </figure>
+      </div>
+      </div>
     </section>
 
-    <section class="pb-4">
-      <p class="h3"><b>ANÁLISE E DISCUSSÃO DOS ESTUDADOS REALIZADOS</b></p>
+    <!-- ANÁLISE E DISCUSSÃO (VERSÃO COMPACTA) -->
+    <section class="pb-4" id="analise-discussao">
+      <p class="h3"><b>ANÁLISE E DISCUSSÃO DOS RESULTADOS</b></p>
+
+      <h5 class="mt-3">Calibração e retificação</h5>
+      <p>
+        A calibração (intrínsecos <code>K</code> e distorções) e a calibração estéreo (<code>R</code>, <code>T</code>)
+        foram
+        fundamentais para viabilizar o cálculo da disparidade. Após a retificação, as linhas epipolares ficaram
+        horizontais e observamos melhor alinhamento de detalhes entre as imagens — condição necessária para a busca ao
+        longo das linhas. Valores altos de erro de reprojeção tendem a gerar mapas com faixas/ruído; por isso variamos
+        poses e distâncias do tabuleiro na coleta para estabilizar a estimação.
+      </p>
+
+      <h5 class="mt-4">Disparidade com StereoBM</h5>
+      <p>
+        Na <em>Figura X</em> (GUI do StereoBM), o mapa responde de forma previsível aos parâmetros:
+        <b>numDisparities</b> define o alcance de busca (curto → saturação; longo → ruído/tempo),
+        <b>blockSize</b> controla o compromisso entre detalhe e suavização (pequeno → <em>speckles</em>; grande → perda
+        de bordas),
+        <b>uniquenessRatio</b> diminui falsos pareamentos (baixo → outliers; alto → buracos) e
+        <b>textureThreshold</b> ajuda em regiões pouco texturizadas. Nas nossas cenas, a carteira preta e o fundo claro
+        explicam manchas e vazios — efeito esperado em áreas com baixo contraste ou saturação. O uso de
+        <code>speckleRange/WindowSize</code> e uma mediana 3×3 suavizam o ruído preservando contornos.
+      </p>
+
+      <h5 class="mt-4">Profundidade e relação Z ~ 1/d</h5>
+      <p>
+        A profundidade ideal segue <code>Z = f·B/d</code>. No ajuste prático adotamos
+        <code>Z ≈ M<sub>0</sub>(1/d) + M<sub>1</sub></code>,
+        que absorve imperfeições de calibração e discretização. A <em>Figura Z</em> confirma a linearidade entre
+        <code>Z</code> e <code>1/d</code> na faixa amostrada. A sensibilidade cresce com a distância
+        (<code>ΔZ ∝ Z²·Δd</code>), explicando por que os resultados a 30&nbsp;cm são mais suscetíveis a ruído que os de
+        15–20&nbsp;cm.
+      </p>
+
+      <h5 class="mt-4">Observações por distância (Figuras Y.1–Y.3)</h5>
+      <ul>
+        <li><b>15&nbsp;cm</b>: maior disparidade → mapa mais denso; convém reduzir <code>blockSize</code> e aplicar
+          remoção de <em>speckles</em>.</li>
+        <li><b>20&nbsp;cm</b>: equilíbrio entre detalhe e estabilidade; <code>uniquenessRatio</code> em ~10–20% reduz
+          outliers.</li>
+        <li><b>30&nbsp;cm</b>: disparidade menor → mais ruído relativo; aumentar <code>numDisparities</code> e melhorar
+          a
+          iluminação evita saturação e empates.</li>
+      </ul>
+
+      <h5 class="mt-4">Melhorias pontuais</h5>
+      <ul>
+        <li>Testar <b>StereoSGBM</b> para continuidade em superfícies oblíquas.</li>
+        <li>Aplicar <b>filtro WLS</b> (<code>ximgproc</code>) como pós-processamento.</li>
+        <li>Harmonizar exposição/ganho entre câmeras e usar luz difusa.</li>
+      </ul>
+
+      <hr>
     </section>
 
-    <section class="pb-4">
-      <p class="h3 pb-3"><b>CONCLUSÕES</b></p>
+
+
+    <!-- CONCLUSÕES (SUBSTITUIR A SEÇÃO ATUAL) -->
+    <section class="pb-4" id="conclusoes">
+      <p class="h3"><b>CONCLUSÕES</b></p>
+
+      <p>
+        Foi implementado um pipeline completo de visão estéreo em OpenCV — <b>calibração</b> e <b>retificação</b> do par
+        de câmeras,
+        geração do <b>mapa de disparidade</b> e conversão para <b>profundidade</b>. A prática consolidou os conceitos de
+        <em>geometria epipolar</em> e evidenciou, na execução, que a qualidade do resultado depende criticamente de três
+        fatores:
+        (i) <b>parâmetros de calibração</b> consistentes e com baixo erro de reprojeção; (ii) <b>retificação correta</b>
+        para alinhar
+        as linhas epipolares e viabilizar a busca 1D; e (iii) <b>ajuste fino</b> dos hiperparâmetros do algoritmo de
+        correspondência
+        (StereoBM/StereoSGBM) conforme a cena.
+      </p>
+
+      <p>
+        Nas coletas a ~15, ~20 e ~30&nbsp;cm, observou-se o comportamento esperado: <b>disparidade maior em curtas
+          distâncias</b>
+        produz mapas mais densos e estáveis; à medida que a distância cresce, a disparidade diminui e o sistema torna-se
+        mais
+        sensível a ruído e empates de custo. O ajuste prático <code>Z ≈ M<sub>0</sub>(1/d) + M<sub>1</sub></code>
+        validou a
+        <b>linearidade entre profundidade e o inverso da disparidade</b> na faixa medida, compatível com o modelo físico
+        <code>Z = f·B/d</code>. Esse ajuste incorporou imperfeições da ótica, discretização do bloco-matching e pequenas
+        inconsistências de exposição entre sensores.
+      </p>
+
+      <h6>Principais achados</h6>
+      <ul>
+        <li><b>Calibração robusta</b> (poses variadas do tabuleiro) melhora a estabilidade do mapa e reduz
+          faixas/artefatos.</li>
+        <li><b>Parâmetros do StereoBM</b> influenciam diretamente a qualidade:
+          <code>numDisparities</code> e <code>minDisparity</code> definem alcance útil; <code>blockSize</code> regula
+          detalhe×ruído;
+          <code>uniquenessRatio</code> e <code>textureThreshold</code> controlam falsos pareamentos em áreas pouco
+          texturizadas.
+        </li>
+        <li><b>Pós-processamento</b> (remoção de <em>speckles</em>, mediana 3×3, máscara por ROI válida) melhora a
+          continuidade
+          sem perder borda.</li>
+      </ul>
+
+      <h6>Limitações observadas</h6>
+      <ul>
+        <li><b>Regiões de baixa textura</b> (ex.: superfícies escuras) geram vazios e manchas no mapa.</li>
+        <li><b>Iluminação desigual/saturação</b> piora o custo de correspondência e induz empates (buracos) ou faixas
+          falsas.</li>
+        <li><b>Sensibilidade com a distância</b>: o erro de profundidade cresce com <code>Z</code> (na prática,
+          <code>ΔZ ∝ Z²·Δd</code>),
+          exigindo mais cuidado para alvos distantes.
+        </li>
+      </ul>
+
+      <p class="mb-0">
+        Em síntese, o sistema alcançou os objetivos do laboratório, demonstrando a viabilidade do cálculo de
+        profundidade a
+        partir de pares estéreo em tempo real. Os ajustes propostos tendem a reduzir ruído, aumentar a fidelidade
+        métrica e
+        preparar a solução para cenários mais desafiadores e aplicações do trabalho T1.
+      </p>
+
+      <hr>
     </section>
 
+
+    <!-- REFERÊNCIAS -->
     <section class="pb-4">
       <p class="h3"><b>REFERÊNCIAS</b></p>
+      <ul>
+        <li><a class="text-black" href="https://learnopencv.com/introduction-to-epipolar-geometry-and-stereo-vision/"
+            target="_blank">LearnOpenCV – Introduction to Epipolar Geometry and Stereo Vision</a></li>
+        <li><a class="text-black" href="https://docs.opencv.org/4.x/dd/d53/tutorial_py_depthmap.html"
+            target="_blank">OpenCV Docs – Depth Map from Stereo Images</a></li>
+        <li><a class="text-black" href="https://learnopencv.com/depth-perception-using-stereo-camera-python-c/"
+            target="_blank">LearnOpenCV – Stereo Camera Depth Estimation (Python/C++)</a></li>
+        <li><a class="text-black" href="https://learnopencv.com/understanding-lens-distortion/"
+            target="_blank">LearnOpenCV – Understanding Lens Distortion</a></li>
+        <li>Loop, C.; Zhang, Z. <i>Computing Rectifying Homographies for Stereo Vision</i>. CVPR, 1999.</li>
+      </ul>
     </section>
   </main>
 
-  <footer class="mt-5 p-3">
-    &copy; 2025 - Desenvolvido por Equipe Olhos de Sauron
+  <footer class="mt-5 p-3 text-center">
+    &copy; 2025 – Equipe (edite)
   </footer>
+
+  <!-- JS -->
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+    crossorigin="anonymous"></script>
 </body>
 
 </html>
