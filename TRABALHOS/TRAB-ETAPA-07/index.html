@@ -206,7 +206,6 @@
                         <strong>totalmente visual e automatizada</strong>, focando no público leigo.
                     </p>
                 </section>
-
                 <section class="pb-3">
                     <p class="h5"><b>BENEFÍCIOS DO SISTEMA AO USUÁRIO</b></p>
                     <ul>
@@ -237,26 +236,26 @@
                         visão computacional. O processo se inicia com a captura da imagem e segue com etapas de
                         pré-processamento, que são cruciais para preparar os dados para a análise posterior.</p>
 
-                    As operações de pré-processamento incluem:<br>
+                    <p>As operações de pré-processamento incluem:</p>
+                    <ul style="border: none;">
+                        <li>Calibração de Câmera: A calibração é um passo fundamental em muitos sistemas de visão
+                            computacional. Ela corrige distorções ópticas da lente e mapeia os pontos da imagem para
+                            coordenadas do mundo real, garantindo uma representação mais precisa dos objetos. Esse
+                            processo envolve o cálculo de parâmetros intrínsecos (como foco e centro da imagem) e
+                            extrínsecos (posição e orientação da câmera).</li>
+                        <li>Filtragem para Redução de Ruído: Imagens capturadas podem conter ruídos que dificultam a
+                            análise. Para minimizar esse problema, utiliza-se a filtragem. Um dos filtros mais comuns é
+                            o Filtro Gaussiano, que aplica uma suavização à imagem, desfocando-a de forma controlada.
+                            Ele se baseia na função Gaussiana, que atribui maior peso aos pixels centrais e menor aos
+                            mais distantes, resultando em um desfoque suave que preserva as bordas enquanto reduz o
+                            ruído.</li>
+                        <li>Detecção de Bordas e Contornos: Após a suavização, o próximo passo é destacar as fronteiras
+                            das moedas. Técnicas de detecção de bordas são aplicadas para identificar áreas com mudanças
+                            bruscas de intensidade de pixels. Com base nessas bordas, a detecção de contornos é
+                            utilizada para localizar com precisão as regiões circulares que correspondem às moedas na
+                            imagem, isolando-as do fundo (para realizar o corte de cada região).</li>
+                    </ul>
 
-                    <p>Calibração de Câmera: A calibração é um passo fundamental em muitos sistemas de visão
-                        computacional. Ela corrige distorções ópticas da lente e mapeia os pontos da imagem para
-                        coordenadas do mundo real, garantindo uma representação mais precisa dos objetos. Esse processo
-                        envolve o cálculo de parâmetros intrínsecos (como foco e centro da imagem) e extrínsecos
-                        (posição e orientação da câmera).</p>
-
-                    <p>Filtragem para Redução de Ruído: Imagens capturadas podem conter ruídos que dificultam a análise.
-                        Para minimizar esse problema, utiliza-se a filtragem. Um dos filtros mais comuns é o Filtro
-                        Gaussiano, que aplica uma suavização à imagem, desfocando-a de forma controlada. Ele se baseia
-                        na função Gaussiana, que atribui maior peso aos pixels centrais e menor aos mais distantes,
-                        resultando em um desfoque suave que preserva as bordas enquanto reduz o ruído.</p>
-
-                    <p>Detecção de Bordas e Contornos: Após a suavização, o próximo passo é destacar as fronteiras das
-                        moedas. Técnicas de detecção de bordas são aplicadas para identificar áreas com mudanças bruscas
-                        de intensidade de pixels. Com base nessas bordas, a detecção de contornos é utilizada para
-                        localizar com precisão as regiões circulares que correspondem às moedas na imagem, isolando-as
-                        do fundo (para realizar o corte de cada região).</p>
-                    <br>
                     <p><b>Aprendizado de Máquina e Redes Neurais Convolucionais (CNNs):</b><br>
                         Uma vez que as moedas são localizadas e segmentadas, a tarefa de classificá-las (ou seja,
                         identificar seu valor) é realizada por um modelo de aprendizado de máquina. Para este projeto,
@@ -323,7 +322,6 @@
                         </div>
                     </div>
                 </section>
-
                 <section class="pb-3">
                     <p class="h5 mb-4"><b>DESCRIÇÃO DETALHADA DOS BLOCOS FUNCIONAIS</b></p>
 
@@ -416,7 +414,6 @@
                             acumulado.</p>
                     </div>
                 </section>
-
                 <section class="pb-3">
                     <p class="h5 mb-4"><b>CONCEITOS DE VISÃO COMPUTACIONAL APLICADOS</b></p>
 
@@ -443,7 +440,6 @@
                         descritos no edital da disciplina e na modelagem aprovada nas etapas anteriores.
                     </p>
                 </section>
-
                 <!-- Tecnologias -->
                 <section class="pb-3">
                     <p class="h5"><b>TECNOLOGIAS UTILIZADAS</b></p>
@@ -478,7 +474,6 @@
                         </tbody>
                     </table>
                 </section>
-
                 <!-- Componentes implementados -->
                 <section class="pb-3">
                     <p class="h5"><b>COMPONENTES IMPLEMENTADOS</b></p>
@@ -539,9 +534,6 @@
                             tornando a interface autoexplicativa para usuários leigos.</p>
                     </div>
                 </section>
-
-
-
                 <!-- Conformidade -->
                 <section class="pb-3">
                     <p class="h5"><b>CONFORMIDADE COM O PROJETO</b></p>
@@ -553,7 +545,6 @@
                         <li>Conceitos de filtragem, transformações geométricas e reconhecimento implementados</li>
                     </ul>
                 </section>
-
                 <!-- Próximos passos -->
                 <section class="pb-3">
                     <p class="h5"><b>PRÓXIMOS PASSOS</b></p>
@@ -561,8 +552,6 @@
                         <li>Integrar calibração de câmera para robustez a distâncias variáveis.</li>
                         <li>Melhorar treinamento do modelo com mais imagens</li>
                         <li>Expandir dataset com moedas desgastadas e sujas.</li>
-                        <li>Criar roteiro do Laboratório Experimental e questionários para Etapa 5.</li>
-                        <li>Validar a possibilidade de feedback sonoro para acessibilidade.</li>
                     </ul>
                 </section>
 
@@ -649,30 +638,31 @@
                     mais avançada. O resultado é apresentado por meio de métricas de desempenho e conclusões extraídas
                     das etapas de implementação e também do teste de campo.</p>
 
-                <p><b>1. Aderência ao Cenário de Aplicação e Desempenho Funcional:</b><br>
+                <p><b>1. Aderência ao Cenário de Aplicação e Desempenho Funcional:</b>
                     O objetivo principal do projeto era criar uma ferramenta de baixo custo, simples e automatizada,
                     visando promover a inclusão digital e a autonomia de usuários com pouca familiaridade tecnológica. A
                     implementação atende essa premissa por meio de uma solução primariamente visual, que elimina a
                     necessidade de comandos de teclado ou cliques, alinhando-se perfeitamente à modelagem funcional.</p>
 
-                <p>Métricas Qualitativas (Resultados do Teste de Campo):<br>
-                    O sucesso da abordagem foi confirmado pelos testes com usuários, que destacaram a "Praticidade e
+                <p><i>Métricas Qualitativas (Resultados do Teste de Campo):</i></p>
+                <p>O sucesso da abordagem foi confirmado pelos testes com usuários, que destacaram a "Praticidade e
                     facilidade de uso" e a "Aplicabilidade social" da solução. A rapidez na contabilização e a confiança
                     na precisão foram outros pontos positivos bastante mencionados, validando a capacidade do sistema em
                     resolver o problema central de forma satisfatória.</p>
 
-                <p>Métricas Objetivas de Desempenho:<br>
+                <p><i>Métricas Objetivas de Desempenho:</i></p>
+                <p>Limiar de Confiança: Para assegurar os resultados e minimizar falsos positivos, o sistema implementa
+                    um filtro que aceita classificações apenas com probabilidade superior a 65-70%.</p>
 
-                    Limiar de Confiança: Para assegurar os resultados e minimizar falsos positivos, o sistema implementa
-                    um filtro que aceita classificações apenas com probabilidade superior a 65-70%;<br>
+                <p><i>Domínio de Classificação:</i></p>
+                <p>O projeto é funcional para as moedas de R$ 0,05, R$ 0,50 e R$ 1,00, selecionadas com base na
+                    proporção de moedas em circulação no Brasil, bom como por sua relevância no problema inicial, que
+                    inclui a frequente confusão visual entre as de 5 e 50 centavos</p>
 
-                    Domínio de Classificação: O projeto é funcional para as moedas de R$ 0,05, R$ 0,50 e R$ 1,00,
-                    selecionadas com base na proporção de moedas em circulação no Brasil, bom como por sua relevância no
-                    problema inicial, que inclui a frequente confusão visual entre as de 5 e 50 centavos;<br>
-
-                    Processamento em Tempo Real: A seleção estratégica de um modelo Keras (baseado em MobileNet-V2) e o
-                    pré-processamento otimizado com OpenCV (640x480 pixels) garantiram o cálculo "ao vivo", atendendo ao
-                    requisito de exibição, em tempo real, do valor total.</p>
+                <p><i>Processamento em Tempo Real:</i></p>
+                <p>A seleção estratégica de um modelo Keras (baseado em MobileNet-V2) e o pré-processamento otimizado
+                    com OpenCV (640x480 pixels) garantiram o cálculo "ao vivo", atendendo ao requisito de exibição, em
+                    tempo real, do valor total.</p>
 
                 <p><b>2. Arquitetura Técnica e Algoritmos</b><br>
                     A implementação do sistema adere à modelagem funcional, executando uma sequência de processamento
@@ -685,22 +675,24 @@
                     emprega o modelo keras_model.h5 para identificar as regiões de interesse recortadas.
                 </p>
 
-                <p><b>3. Limitações e Pontos de Melhoria:</b><br>
-                    Apesar do desempenho satisfatório em condições controladas, a análise revelou limitações que
+                <p><b>3. Limitações e Pontos de Melhoria:</b></p>
+
+                <p>Apesar do desempenho satisfatório em condições controladas, a análise revelou limitações que
                     impactam a robustez do sistema em cenários mais adversos:<br>
-
-                    Sensibilidade Ambiental: A precisão do sistema é suscetível a variações de iluminação, como reflexos
-                    intensos e sombras fortes. A utilização de uma "caixa de contagem" com iluminação dedicada diminuiu
-                    o problema, mas confirmou a necessidade de um ambiente controlado;<br>
-
-                    Oclusão de Moedas: O sistema não é projetado para tratar a oclusão, pois o algoritmo de contornos
-                    segmenta moedas sobrepostas ou muito próximas como uma única entidade, uma dificuldade relatada
-                    pelos usuários durante os teste;<br>
-
-                    Escalabilidade do Reconhecimento: O modelo Keras atual não foi treinado com as moedas de R$ 0,10 e
-                    R$ 0,25. Uma futura expansão do dataset de treinamento, incluindo todas as moedas de Real Brasileiro
-                    em circulação e exemplares com diferentes níveis de desgaste e oxidação, é um ponto de melhoria
-                    essencial para uma aplicação mais abrangente.</p>
+                <p><i>Sensibilidade Ambiental:</i></p>
+                <p>A precisão do sistema é suscetível a variações de iluminação, como reflexos intensos e sombras
+                    fortes. A utilização de uma "caixa de contagem" com iluminação dedicada diminuiu o problema, mas
+                    confirmou a necessidade de um ambiente controlado.</p>
+                <p><i> Oclusão de Moedas:</i></p>
+                <p>O sistema não é projetado para tratar a oclusão, pois o algoritmo de contornos segmenta moedas
+                    sobrepostas ou muito próximas como uma única entidade, uma dificuldade relatada pelos usuários
+                    durante os teste.
+                </p>
+                <p><i>Escalabilidade do Reconhecimento:</i></p>
+                <p>O modelo Keras atual não foi treinado com as moedas de R$ 0,10 e R$ 0,25. Uma futura expansão do
+                    dataset de treinamento, incluindo todas as moedas de Real Brasileiro em circulação e exemplares com
+                    diferentes níveis de desgaste e oxidação, é um ponto de melhoria essencial para uma aplicação mais
+                    abrangente.</p>
 
                 <p>Em resumo, esta análise técnica conclui que o sistema desenvolvido cumpre adequadamente os requisitos
                     do cenário de aplicação proposto, oferecendo uma solução funcional e de boa usabilidade. As métricas
@@ -1138,26 +1130,23 @@
                 <p>Apesar do sucesso alcançado, o projeto estabelece uma base sólida para diversas explorações futuras e
                     aprimoramentos. As sugestões, coletadas tanto em entrevistas quanto em testes com usuários, indicam
                     caminhos relevantes para a evolução do sistema. Entre as principais melhorias a realizar,
-                    destacam-se:<br><br>
+                    destacam-se:</p>
 
-                    <b>Expansão da funcionalidade</b>: Adicionar o reconhecimento das moedas de Real Brasileiro
-                    restantes e, posteriormente, de cédulas brasileiras, além da possibilidade de adaptar o modelo para
-                    moedas de outros países;<br>
-
-                    <b>Melhoria da robustez e precisão</b>: Aprimorar o treinamento do modelo com um conjunto de dados
-                    com maior diversidade, incluindo moedas oxidadas e desgastadas, e aplicar técnicas avançadas de
-                    pré-processamento de imagem, como o HoughCircles, para otimizar a detecção;<br>
-
-                    <b>Aprimoramento da experiência do usuário</b>: Implementar um contador por denominação, um
-                    histórico de contagens para últimas somas (com direito à soma dessas etapas), e a calibração
-                    automática da câmera para lidar com diferentes distâncias;<br>
-
-                    <b>Acessibilidade aprimorada</b>: Introduzir um feedback sonoro, como um alerta para moedas não
-                    reconhecidas, para aumentar a acessibilidade;<br>
-
-                    <b>Otimização de desempenho</b>: Melhorar a eficiência do código e sugerir o uso de hardware mais
-                    potente para acelerar o processamento das imagens.
-                </p>
+                <ul style="border:none">
+                    <li>Expansão da funcionalidade: Adicionar o reconhecimento das moedas de Real Brasileiro
+                        restantes e, posteriormente, de cédulas brasileiras, além da possibilidade de adaptar o modelo
+                        para moedas de outros países</li>
+                    <li>Melhoria da robustez e precisão: Aprimorar o treinamento do modelo com um conjunto de dados
+                        com maior diversidade, incluindo moedas oxidadas e desgastadas, e aplicar técnicas avançadas de
+                        pré-processamento de imagem, como o HoughCircles, para otimizar a detecção</li>
+                    <li>Aprimoramento da experiência do usuário: Implementar um contador por denominação, um
+                        histórico de contagens para últimas somas (com direito à soma dessas etapas), e a calibração
+                        automática da câmera para lidar com diferentes distâncias</li>
+                    <li>Acessibilidade aprimorada: Introduzir um feedback sonoro, como um alerta para moedas não
+                        reconhecidas, para aumentar a acessibilidade</li>
+                    <li>Otimização de desempenho: Melhorar a eficiência do código e sugerir o uso de hardware mais
+                        potente para acelerar o processamento das imagens.</li>
+                </ul>
 
                 <p>Em resumo, o projeto não só comprova a eficácia da abordagem escolhida, mas também abre um vasto
                     leque de oportunidades para otimizações e expansões futuras. A base consistente criada permite que o
